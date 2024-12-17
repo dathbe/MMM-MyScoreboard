@@ -461,7 +461,7 @@ module.exports = {
     filteredGamesList = filteredGamesList.filter(function(event) {
       const eventDate = moment.tz(event.date, localTZ).format("YYYY-MM-DD");
       return eventDate === today;
-    }
+    });
 
     //sort by start time, then by away team shortcode.
     filteredGamesList.sort(function(a,b) {
