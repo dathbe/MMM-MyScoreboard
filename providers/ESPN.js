@@ -434,6 +434,7 @@ module.exports = {
     // var self = this;
     var formattedGamesList = new Array();
     var localTZ = moment.tz.guess();
+    var today = moment.tz(localTZ).format("YYYY-MM-DD");
 
     var filteredGamesList;
     if (teams != null) { //filter to teams list
@@ -455,6 +456,11 @@ module.exports = {
 
     } else { //return all games
       filteredGamesList = data.events;
+    }
+
+    filteredGamesList = filteredGamesList.filter(function(event) {
+      const eventDate = moment.tz(event.date, localTZ).format("YYYY-MM-DD");
+      return eventDate === today;
     }
 
     //sort by start time, then by away team shortcode.
