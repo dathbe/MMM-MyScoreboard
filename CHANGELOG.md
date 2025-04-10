@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.6.0...v4.6.1) - 2025-04-XX
+- Fix some css errors
+- Add styling to local sports channels (FanDuel and NBC Sports)
+- Update README images
+
 ## [4.6.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.5.0...v4.6.0) - 2025-04-09
 - **NEW FEATURE**: New config option to `showLocalBroadcasts`
 - **NEW FEATURE**: New config option to `skipChannels`
