@@ -696,10 +696,12 @@ module.exports = {
             if (channelName.startsWith('FanDuel')) {
               localDesignation = channelName.replace('FanDuel ', '')
               localDesignation = localDesignation.replace('SN ', '')
+              localDesignation = `<span class="FanDuel">${localDesignation}</span>`
               channelName = 'FanDuel'
             }
             else if (channelName.startsWith('NBC Sports')) {
               localDesignation = channelName.replace('NBC Sports ', '')
+              localDesignation = `<span class="NBCSports">${localDesignation}</span>`
               channelName = 'NBC Sports'
             }
             if ((payload.showLocalBroadcasts /* && homeOrAway[market.market] */ && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {

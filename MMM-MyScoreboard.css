@@ -1043,3 +1043,11 @@
 .MMM-MyScoreboard .oneLine .oneLineWithLogos {
   order: 2;
 }
+
+.MMM-MyScoreboard .broadcast .FanDuel {
+  color: #0078ff;
+}
+
+.MMM-MyScoreboard .broadcast .NBCSports {
+  color: #fccc12;
+}
