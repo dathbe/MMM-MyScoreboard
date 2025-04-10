@@ -1034,13 +1034,13 @@
 }
 
 .MMM-MyScoreboard .oneLine .broadcast,
-.MMM-MyScoreboard .oneLine .oneLineWithLogos {
+.MMM-MyScoreboard .oneLineWithLogos .broadcast {
   order: 1;
 }
 
 
 .MMM-MyScoreboard .oneLine .statusPart,
-.MMM-MyScoreboard .oneLine .oneLineWithLogos {
+.MMM-MyScoreboard .oneLineWithLogos .statusPart {
   order: 2;
 }
 
