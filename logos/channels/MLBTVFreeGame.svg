@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 0 892.046 222.28023"
+   viewBox="0 0 890.37803 202.56094"
    version="1.1"
    id="svg9"
    sodipodi:docname="MLBTVFreeGame.svg"
-   width="892.04602"
-   height="222.28024"
+   width="890.37805"
+   height="202.56096"
    inkscape:version="1.4 (86a8ad7, 2024-10-11)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,12 +24,12 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="0.86743483"
-     inkscape:cx="493.98524"
-     inkscape:cy="223.07151"
+     inkscape:cx="492.83241"
+     inkscape:cy="222.4951"
      inkscape:window-width="2401"
-     inkscape:window-height="1211"
+     inkscape:window-height="1212"
      inkscape:window-x="52"
-     inkscape:window-y="52"
+     inkscape:window-y="51"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg9" />
   <defs
@@ -43,7 +43,7 @@
      id="Layer_2"
      data-name="Layer 2"
      style="display:inline"
-     transform="matrix(1.5663702,0,0,1.5663702,185.3923,1.6344708e-4)">
+     transform="matrix(1.5663702,0,0,1.5663702,363.07659,1.6344708e-4)">
     <g
        id="Artwork">
       <path
@@ -72,11 +72,11 @@
          id="path6" />
       <polygon
          class="cls-1"
-         points="27.46,17.03 18.2,17.03 18.2,62.8 27.59,62.8 27.59,35.48 39.75,55.81 44.89,55.81 57.06,35.48 57.06,62.8 66.44,62.8 66.44,17.03 57.19,17.03 42.32,41.87 "
+         points="39.75,55.81 44.89,55.81 57.06,35.48 57.06,62.8 66.44,62.8 66.44,17.03 57.19,17.03 42.32,41.87 27.46,17.03 18.2,17.03 18.2,62.8 27.59,62.8 27.59,35.48 "
          id="polygon6" />
       <polygon
          class="cls-1"
-         points="74.08,62.8 104.43,62.8 104.43,53.53 83.46,53.53 83.46,17.03 74.08,17.03 "
+         points="74.08,17.03 74.08,62.8 104.43,62.8 104.43,53.53 83.46,53.53 83.46,17.03 "
          id="polygon7" />
       <path
          class="cls-1"
@@ -103,27 +103,27 @@
   </metadata>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:135.656px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:start;letter-spacing:-7.19825px;word-spacing:5.7993px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:2.54354"
-     x="392.83197"
-     y="249.09642"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:149.605px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:start;letter-spacing:-7.93844px;word-spacing:6.39564px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f2f2f2;stroke-width:2.80508"
+     x="183.57198"
+     y="109.31322"
      id="text9"
-     transform="scale(1.1298791,0.88505044)"><tspan
+     transform="scale(0.90967608,1.0992924)"><tspan
        sodipodi:role="line"
-       x="389.23285"
-       y="249.09642"
+       x="179.60275"
+       y="109.31322"
        id="tspan10"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:135.656px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:center;letter-spacing:-7.19825px;word-spacing:5.7993px;text-anchor:middle;fill:#ffffff;stroke-width:2.54354"
-       dx="0">FREE GAME</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:149.605px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:center;letter-spacing:-7.93844px;word-spacing:6.39564px;text-anchor:middle;fill:#f2f2f2;stroke-width:2.80508"
+       dx="0">FREE</tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:130.525px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:start;letter-spacing:-6.92596px;word-spacing:5.57993px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:2.44733"
-     x="407.54233"
-     y="345.81458"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:94.4862px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:start;letter-spacing:-4.60475px;word-spacing:4.03928px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f2f2f2;stroke-width:1.77161"
+     x="407.64923"
+     y="215.82381"
      id="text9-2"
-     transform="scale(1.0871397,0.91984499)"><tspan
+     transform="scale(1.0725365,0.93236924)"><tspan
        sodipodi:role="line"
-       x="404.07932"
-       y="345.81458"
+       x="405.34683"
+       y="215.82381"
        id="tspan10-4"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:130.525px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:center;letter-spacing:-6.92596px;word-spacing:5.57993px;text-anchor:middle;fill:#ffffff;stroke-width:2.44733">OF THE DAY</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:94.4862px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:center;letter-spacing:-4.60475px;word-spacing:4.03928px;text-anchor:middle;fill:#f2f2f2;stroke-width:1.77161">GAME OF THE DAY</tspan></text>
 </svg>

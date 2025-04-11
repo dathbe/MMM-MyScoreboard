@@ -200,6 +200,7 @@ module.exports = {
     // Asian Soccer
     AFC_CHAMPIONS: 'soccer/afc.champions',
     AUS_A_LEAGUE: 'soccer/aus.1',
+    AUS_A_WOMEN: 'soccer/aus.w.1',
     CHN_SUPER_LEAGUE: 'soccer/chn.1',
     IDN_SUPER_LEAGUE: 'soccer/idn.1',
     IND_I_LEAGUE: 'soccer/ind.2',
@@ -423,6 +424,7 @@ module.exports = {
     'Max': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Max_logo.svg',
     'MLB Net': 'https://upload.wikimedia.org/wikipedia/en/a/ac/MLBNetworkLogo.svg',
     'MLB.TV Free Game': './modules/MMM-MyScoreboard/logos/channels/MLBTVFreeGame.svg',
+    'MLS Season Pass': 'https://upload.wikimedia.org/wikipedia/commons/7/71/MLS_Season_Pass_logo_black.svg',
     'NBA League Pass': 'https://cdn.nba.com/manage/2025/02/NBA_League_Pass_horiz_onDkBkgd_NEWLOGO.png',
     'NBA TV': 'https://upload.wikimedia.org/wikipedia/en/d/d2/NBA_TV.svg',
     'NBC': 'https://upload.wikimedia.org/wikipedia/commons/9/9f/NBC_Peacock_1986.svg',
@@ -442,7 +444,7 @@ module.exports = {
     'CHSN+': './modules/MMM-MyScoreboard/logos/channels/CHSNPlus.webp',
     'CLEGuardians.TV': './modules/MMM-MyScoreboard/logos/channels/CLEGuardiansTV.svg',
     'ClipperVision': './modules/MMM-MyScoreboard/logos/channels/ClipperVision.webp',
-    'DBACKS.TV': 'https://www.mlbstatic.com/team-logos/product-on-dark/dbacks-tv-partner.svg',
+    'DBACKS.TV': './modules/MMM-MyScoreboard/logos/channels/DBACKSTV.svg',
     // 'FanDuel': 'https://www.stayonsearch.com/wp-content/uploads/2018/09/fanduel-logo-300.png',
     'FanDuel': 'https://upload.wikimedia.org/wikipedia/en/f/f4/Fanduel_Official_Logo_2022.svg',
     'GCSEN': 'https://upload.wikimedia.org/wikipedia/en/7/70/GCSEN_Logo.png',
@@ -450,15 +452,20 @@ module.exports = {
     'KATU 2.2': './modules/MMM-MyScoreboard/logos/channels/KATU.svg',
     'KCOP': 'https://static.foxtv.com/static/orion/img/core/s/logos/fts-los-angeles-a.svg',
     'KENS 5': 'https://www.kens5.com/assets/shared-images/logos/kens.png',
+    'KFAA-TV': './modules/MMM-MyScoreboard/logos/channels/KFAATV.webp',
     'KHN': './modules/MMM-MyScoreboard/logos/channels/KHN1.png',
     'KING 5': 'https://upload.wikimedia.org/wikipedia/commons/1/1c/KING-TV_Logo.svg',
     'KJZZ-TV': './modules/MMM-MyScoreboard/logos/channels/KJZZ-TV.png',
+    'KMOV-TV': 'https://www.firstalert4.com/pf/resources/images/mastheads/logos/kmov.svg?d=486&mxId=00000000',
     'KONG': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/KONG_%28TV%29_logo_2016.svg',
+    'KTVD-TV (My20)': 'https://my20denver.azurewebsites.net/graphics/logo-top.png',
     'KUNP 16': './modules/MMM-MyScoreboard/logos/channels/KUNP16.svg',
     'KUSA-TV (9NEWS)': 'https://www.9news.com/assets/shared-images/logos/kusa.png',
     'Marquee Sports Net': 'https://dupvhm5r1oaxt.cloudfront.net/uploads/2020/02/CUBS_MSN_Logo_white.png',
     'MASN': 'https://www.masnsports.com/images/masn.svg',
     'MASN2': 'https://video.masnsports.com/assets/images/masn2.svg',
+    'Matrix Midwest': 'https://upload.wikimedia.org/wikipedia/en/b/b1/Matrix_Midwest_Logo.svg',
+    'Mavs.com': 'https://www.mavs.com/wp-content/uploads/2024/12/mavstv-logo.png',
     'MLB.com': 'https://www.mlbstatic.com/team-logos/league-on-dark/1.svg',
     'MLB.TV': 'https://images.ctfassets.net/iiozhi00a8lc/78yBC9oWuP1VldT6aJT1sL/8cc2b4b9d9ab83e6a90ee48476b66074/MLBTV_19_ondark_RGB.svg',
     'MNMT': './modules/MMM-MyScoreboard/logos/channels/MNMT.svg',
@@ -491,12 +498,14 @@ module.exports = {
     'TV-20 Detroit': './modules/MMM-MyScoreboard/logos/channels/TV20Detroit.png',
     'Twins.TV': './modules/MMM-MyScoreboard/logos/channels/TwinsTV.svg',
     'Utah 16': 'https://upload.wikimedia.org/wikipedia/commons/f/f4/KUPX-TV_logo_2023.svg',
-    'WLNY': 'https://upload.wikimedia.org/wikipedia/en/1/10/WLNY_New_York_55_2023.svg',
+    'WLNY': './modules/MMM-MyScoreboard/logos/channels/WLNY.svg',
+    'WTOG': 'https://upload.wikimedia.org/wikipedia/commons/1/1d/TAMPA_BAY_44_WTOG.png',
     'YES': 'https://static.yesnetwork.com/assets/images/light-on-dark/yes.svg',
   },
 
   broadcastIconsInvert: {
     'ABC': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ABC-2021-LOGO.svg',
+    'Apple TV+': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg',
     // CBS: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/CBS_Eyemark.svg',
     'CBS': 'https://upload.wikimedia.org/wikipedia/commons/e/ee/CBS_logo_%282020%29.svg',
     'FOX': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fox_Broadcasting_Company_logo_%282019%29.svg',
@@ -504,6 +513,7 @@ module.exports = {
     'Altitude Sports': 'https://upload.wikimedia.org/wikipedia/en/e/e2/Altitude_Sports_logo.svg',
     'Spectrum Sports Net +': 'https://thestreamable.com/media/pages/video-streaming/spectrum-sportsnet-plus/4a9b2bff0c-1698772675/sportsnetb-1.svg',
     'Victory+': 'https://thestreamable.com/media/pages/video-streaming/victory-plus/84029ec6cd-1720450552/victoryplus.svg',
+    'WFAA Channel 8': 'https://upload.wikimedia.org/wikipedia/commons/6/65/WFAA_logo.svg',
   },
 
   freeGameOfTheDay: {
@@ -551,11 +561,12 @@ module.exports = {
         const freeGameResponse = await fetch(MLBurl)
         const freeGameBody = await freeGameResponse.json()
         freeGameBody['results'].forEach ((game) => {
-          if (game['videoFeeds'][1]['freeGame']) {
-            // Log.debug(game['gameData']['away']['teamAbbrv'])
-            this.freeGameOfTheDay = {
-              day: moment().format('YYYY-MM-DD'),
-              teams: [game['gameData']['away']['teamAbbrv'], game['gameData']['home']['teamAbbrv']],
+          if (game['videoFeeds'][0]['freeGame']) {
+            this.freeGameOfTheDay['day'] = moment().format('YYYY-MM-DD')
+            this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
+            this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
+            if (this.freeGameOfTheDay['teams'].includes('AZ')) {
+              this.freeGameOfTheDay['teams'].push("ARI")
             }
           }
         })
@@ -679,7 +690,7 @@ module.exports = {
                   channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">`)
                 }
                 else if (this.broadcastIconsInvert[channelName] !== undefined) {
-                  channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert"">`)
+                  channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">`)
                 }
                 else {
                   channels.push(channelName)

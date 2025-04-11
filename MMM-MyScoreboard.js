@@ -219,6 +219,7 @@ Module.register('MMM-MyScoreboard', {
     // Asian Soccer
     AFC_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     AUS_A_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    AUS_A_WOMEN: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     CHN_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     IDN_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     IND_I_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
