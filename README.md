@@ -420,7 +420,7 @@ Canadian (group that includes all seven Canadian teams)
 Teams:
 ---------------
 
-AZ    Arizona Diamondbacks
+ARI    Arizona Diamondbacks
 ATH   Athletics
 ATL   Atlanta Braves
 BAL   Baltimore Orioles
