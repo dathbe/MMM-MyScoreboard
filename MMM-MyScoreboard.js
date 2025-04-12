@@ -576,7 +576,7 @@ Module.register('MMM-MyScoreboard', {
     var self = this
     this.config.sports.forEach(function (sport, index) {
       var leagueSeparator = []
-      if (self.sportsData[index] != null && self.sportsData[index].length > 0) {
+      if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
         // anyGames = true
         if (self.config.showLeagueSeparators) {
           leagueSeparator = document.createElement('div')
@@ -589,13 +589,13 @@ Module.register('MMM-MyScoreboard', {
           }
           wrapper.appendChild(leagueSeparator)
         }
-        self.sportsData[index].forEach(function (game, gidx) {
+        self.sportsData[sport.league].forEach(function (game, gidx) {
           var boxScore = self.boxScoreFactory(sport.league, game)
           boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
           wrapper.appendChild(boxScore)
         })
       }
-      if (self.sportsDataYd[index] != null && self.sportsDataYd[index].length > 0) {
+      if (self.sportsDataYd[sport.league] != null && self.sportsDataYd[sport.league].length > 0) {
         // anyGames = true
         if (self.config.showLeagueSeparators) {
           leagueSeparator = document.createElement('div')
@@ -608,7 +608,7 @@ Module.register('MMM-MyScoreboard', {
           }
           wrapper.appendChild(leagueSeparator)
         }
-        self.sportsDataYd[index].forEach(function (game, gidx) {
+        self.sportsDataYd[sport.league].forEach(function (game, gidx) {
           var boxScore = self.boxScoreFactory(sport.league, game)
           boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
           wrapper.appendChild(boxScore)
@@ -640,7 +640,7 @@ Module.register('MMM-MyScoreboard', {
       this.sportsData[payload.index] = payload.scores
       this.updateDom()
       if (payload.scores.length === 0) {
-        this.noGamesToday[this.config.sports[payload.index].league] = moment().format('YYYY-MM-DD')
+        this.noGamesToday[payload.index] = moment().format('YYYY-MM-DD')
       }
     }
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
@@ -697,8 +697,8 @@ Module.register('MMM-MyScoreboard', {
     */
 
     this.loaded = false
-    this.sportsData = new Array()
-    this.sportsDataYd = new Array()
+    this.sportsData = {}
+    this.sportsDataYd = {}
 
     if (this.viewStyles.indexOf(this.config.viewStyle) == -1) {
       this.config.viewStyle = 'largeLogos'
