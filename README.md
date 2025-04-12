@@ -18,7 +18,7 @@ leagues, including:
 * Over 100 soccer leagues
 * And more
 
-![Screenshot](example1.png)
+![Screenshot](example2.png)
 
 ## Installation
 
@@ -348,10 +348,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 
 Examples of the available view styles you can specify with the `viewStyle` parameter.
 
-![View Styles](/example2.jpg)
-
-`smallLogos`<br />
-![Small Logos](example3_smallLogos.png)
+![View Styles](/example4.png)
 
 
 ## Team Shortcodes and Groups
@@ -423,7 +420,7 @@ Canadian (group that includes all seven Canadian teams)
 Teams:
 ---------------
 
-AZ    Arizona Diamondbacks
+ARI    Arizona Diamondbacks
 ATH   Athletics
 ATL   Atlanta Braves
 BAL   Baltimore Orioles

@@ -1,6 +1,6 @@
 {
   "name": "mmm-myscoreboard",
-  "version": "4.6.0",
+  "version": "4.7",
   "description": "A MagicMirror² module to display scores for your favorite teams from many major sports.",
   "repository": {
     "type": "git",
@@ -10,7 +10,26 @@
     "MagicMirror",
     "Module",
     "Sports",
-    "Sport"
+    "Scores",
+    "NBA",
+    "WNBA",
+    "NCAA",
+    "NCAAM",
+    "NCAAW",
+    "Basketball",
+    "MLB",
+    "Baseball",
+    "NFL",
+    "NCAAF",
+    "CFL",
+    "Football",
+    "NHL",
+    "Hockey",
+    "MLS",
+    "NWSL",
+    "Soccer",
+    "Lacrosse",
+    "Rugby"
   ],
   "author": "Jeff Clarke",
   "contributors": [

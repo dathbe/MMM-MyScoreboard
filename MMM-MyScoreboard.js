@@ -219,6 +219,7 @@ Module.register('MMM-MyScoreboard', {
     // Asian Soccer
     AFC_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     AUS_A_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    AUS_A_WOMEN: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     CHN_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     IDN_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     IND_I_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -274,6 +275,8 @@ Module.register('MMM-MyScoreboard', {
   ],
 
   localLogos: {},
+  ydLoaded: {loaded: false, date: ''},
+  noGamesToday: {},
 
   viewStyleHasLogos: function (v) {
     switch (v) {
@@ -573,7 +576,7 @@ Module.register('MMM-MyScoreboard', {
     var self = this
     this.config.sports.forEach(function (sport, index) {
       var leagueSeparator = []
-      if (self.sportsData[index] != null && self.sportsData[index].length > 0) {
+      if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
         // anyGames = true
         if (self.config.showLeagueSeparators) {
           leagueSeparator = document.createElement('div')
@@ -586,13 +589,13 @@ Module.register('MMM-MyScoreboard', {
           }
           wrapper.appendChild(leagueSeparator)
         }
-        self.sportsData[index].forEach(function (game, gidx) {
+        self.sportsData[sport.league].forEach(function (game, gidx) {
           var boxScore = self.boxScoreFactory(sport.league, game)
           boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
           wrapper.appendChild(boxScore)
         })
       }
-      if (self.sportsDataYd[index] != null && self.sportsDataYd[index].length > 0 && self.config.alwaysShowToday) {
+      if (self.sportsDataYd[sport.league] != null && self.sportsDataYd[sport.league].length > 0) {
         // anyGames = true
         if (self.config.showLeagueSeparators) {
           leagueSeparator = document.createElement('div')
@@ -605,7 +608,7 @@ Module.register('MMM-MyScoreboard', {
           }
           wrapper.appendChild(leagueSeparator)
         }
-        self.sportsDataYd[index].forEach(function (game, gidx) {
+        self.sportsDataYd[sport.league].forEach(function (game, gidx) {
           var boxScore = self.boxScoreFactory(sport.league, game)
           boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
           wrapper.appendChild(boxScore)
@@ -636,12 +639,16 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
       this.updateDom()
+      if (payload.scores.length === 0) {
+        this.noGamesToday[payload.index] = moment().format('YYYY-MM-DD')
+      }
     }
-    else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier && this.config.alwaysShowToday) {
+    else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
       Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()
+      this.ydLoaded = {loaded: true, date: moment().format('YYYY-MM-DD')}
     }
     else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
       this.localLogos = payload.logos
@@ -690,8 +697,8 @@ Module.register('MMM-MyScoreboard', {
     */
 
     this.loaded = false
-    this.sportsData = new Array()
-    this.sportsDataYd = new Array()
+    this.sportsData = {}
+    this.sportsDataYd = {}
 
     if (this.viewStyles.indexOf(this.config.viewStyle) == -1) {
       this.config.viewStyle = 'largeLogos'
@@ -733,18 +740,17 @@ Module.register('MMM-MyScoreboard', {
 
   getScores: function () {
     var gameDate = moment() // get today's date
-    var whichDay = 'one'
+    var whichDay = {today: false, yesterday: 'no'}
 
-    if (gameDate.hour() < this.config.rolloverHours) {
-      /*
-        it's past midnight local time, but within the
-        rollover window.  Query for yesterday's games,
-        not today's
-      */
-      gameDate.subtract(1, 'day')
-      if (this.config.alwaysShowToday) {
-        whichDay = 'both'
-      }
+    if (gameDate.hour() < this.config.rolloverHours && ( !this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD') )) {
+      whichDay.yesterday = 'yes'
+    }
+    if (gameDate.hour() >= this.config.rolloverHours) {
+      whichDay.today = true
+      whichDay.yesterday = 'erase'
+    }
+    else if (this.config.alwaysShowToday) {
+      whichDay.today = true
     }
 
     // just used for debug, if you want to force a specific date
@@ -754,21 +760,23 @@ Module.register('MMM-MyScoreboard', {
 
     var self = this
     this.config.sports.forEach(function (sport, index) {
-      var payload = {
-        instanceId: self.identifier,
-        index: index,
-        league: sport.league,
-        teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
-        provider: self.supportedLeagues[sport.league].provider,
-        gameDate: gameDate,
-        whichDay: whichDay,
-        hideBroadcasts: self.config.hideBroadcasts,
-        skipChannels: self.config.skipChannels,
-        showLocalBroadcasts: self.config.showLocalBroadcasts,
-        displayLocalChannels: self.config.displayLocalChannels,
-      }
+      if (self.noGamesToday[sport.league] !== gameDate.format('YYYY-MM-DD')) {
+        var payload = {
+          instanceId: self.identifier,
+          index: index,
+          league: sport.league,
+          teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
+          provider: self.supportedLeagues[sport.league].provider,
+          gameDate: gameDate,
+          whichDay: whichDay,
+          hideBroadcasts: self.config.hideBroadcasts,
+          skipChannels: self.config.skipChannels,
+          showLocalBroadcasts: self.config.showLocalBroadcasts,
+          displayLocalChannels: self.config.displayLocalChannels,
+        }
 
-      self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
+        self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
+      }
     })
   },
 

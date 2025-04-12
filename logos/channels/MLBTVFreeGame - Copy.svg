@@ -24,7 +24,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="0.86743483"
-     inkscape:cx="493.98524"
+     inkscape:cx="492.83241"
      inkscape:cy="222.4951"
      inkscape:window-width="2401"
      inkscape:window-height="1212"
@@ -34,12 +34,6 @@
      inkscape:current-layer="svg9" />
   <defs
      id="defs1">
-    <rect
-       x="77.239232"
-       y="240.94029"
-       width="940.70468"
-       height="140.64457"
-       id="rect1" />
     <style
        id="style1">.cls-1{fill:#fff;}.cls-2{fill:#bc0022;}.cls-3{fill:#041e42;}</style>
   </defs>
@@ -109,7 +103,7 @@
   </metadata>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:149.605px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:start;letter-spacing:-7.93844px;word-spacing:6.39564px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:2.80508"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:149.605px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:start;letter-spacing:-7.93844px;word-spacing:6.39564px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f2f2f2;stroke-width:2.80508"
      x="183.57231"
      y="109.31322"
      id="text9"
@@ -118,16 +112,18 @@
        x="179.60309"
        y="109.31322"
        id="tspan10"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:149.605px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:center;letter-spacing:-7.93844px;word-spacing:6.39564px;text-anchor:middle;fill:#ffffff;stroke-width:2.80508"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:149.605px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:center;letter-spacing:-7.93844px;word-spacing:6.39564px;text-anchor:middle;fill:#f2f2f2;stroke-width:2.80508"
        dx="0">FREE</tspan></text>
   <text
      xml:space="preserve"
-     id="text1"
-     style="font-weight:bold;font-size:85.3333px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:center;letter-spacing:-1.28px;word-spacing:10.45px;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1);fill:#ffffff;fill-opacity:1"
-     transform="translate(-104.90701,-102.60137)"><tspan
-       x="101.85517"
-       y="303.85828"
-       id="tspan2"><tspan
-         dx="0 0 0 0 -10.449999 10.450015 0 -10.450006 10.449985 0 0 -10.449984 10.450015"
-         id="tspan1">GAME OF THE DAY</tspan></tspan></text>
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:89.877px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:start;letter-spacing:-4.38014px;word-spacing:3.84224px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f2f2f2;stroke-width:1.68518"
+     x="434.98663"
+     y="205.29575"
+     id="text9-2"
+     transform="scale(1.0202173,0.98018335)"><tspan
+       sodipodi:role="line"
+       x="432.79654"
+       y="205.29575"
+       id="tspan10-4"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:89.877px;line-height:0.9;font-family:Sans;-inkscape-font-specification:'Sans Bold';text-align:center;letter-spacing:-4.38014px;word-spacing:3.84224px;text-anchor:middle;fill:#f2f2f2;stroke-width:1.68518">GAME OF THE DAY</tspan></text>
 </svg>

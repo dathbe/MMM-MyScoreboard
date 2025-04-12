@@ -1033,13 +1033,30 @@
   padding-left: 2px;
 }
 
+.MMM-MyScoreboard .oneLine .moreBroadcasts,
+.MMM-MyScoreboard .oneLineWithLogos .moreBroadcasts {
+  padding-right: 5px;
+}
+
 .MMM-MyScoreboard .oneLine .broadcast,
-.MMM-MyScoreboard .oneLine .oneLineWithLogos {
+.MMM-MyScoreboard .oneLineWithLogos .broadcast {
   order: 1;
 }
 
 
 .MMM-MyScoreboard .oneLine .statusPart,
-.MMM-MyScoreboard .oneLine .oneLineWithLogos {
+.MMM-MyScoreboard .oneLineWithLogos .statusPart {
   order: 2;
+}
+
+.MMM-MyScoreboard .broadcast .FanDuel {
+  color: #0078ff;
+  font-size: 11px;
+  line-height: 9px;
+}
+
+.MMM-MyScoreboard .broadcast .NBCSports {
+  color: #fccc12;
+  font-size: 11px;
+  line-height: 9px;
 }
