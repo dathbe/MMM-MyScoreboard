@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.7.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.6.0...v4.7.0) - 2025-04-XX
 - **NEW FEATURE**: Australian A-League Women's soccer added
 - BUG FIX: Update README with correct ARI Diamondbacks abbreviation
+- Logic changes to reduce the number of unecessary API calls
 - Fix some css errors
 - Add styling to local sports channels (FanDuel and NBC Sports)
 - Update README images

@@ -275,6 +275,8 @@ Module.register('MMM-MyScoreboard', {
   ],
 
   localLogos: {},
+  ydLoaded: {loaded: false, date: ''},
+  noGamesToday: {},
 
   viewStyleHasLogos: function (v) {
     switch (v) {
@@ -593,7 +595,7 @@ Module.register('MMM-MyScoreboard', {
           wrapper.appendChild(boxScore)
         })
       }
-      if (self.sportsDataYd[index] != null && self.sportsDataYd[index].length > 0 && self.config.alwaysShowToday) {
+      if (self.sportsDataYd[index] != null && self.sportsDataYd[index].length > 0) {
         // anyGames = true
         if (self.config.showLeagueSeparators) {
           leagueSeparator = document.createElement('div')
@@ -637,12 +639,16 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
       this.updateDom()
+      if (payload.scores.length === 0) {
+        this.noGamesToday[this.config.sports[payload.index].league] = moment().format('YYYY-MM-DD')
+      }
     }
-    else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier && this.config.alwaysShowToday) {
+    else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
       Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()
+      this.ydLoaded = {loaded: true, date: moment().format('YYYY-MM-DD')}
     }
     else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
       this.localLogos = payload.logos
@@ -734,18 +740,17 @@ Module.register('MMM-MyScoreboard', {
 
   getScores: function () {
     var gameDate = moment() // get today's date
-    var whichDay = 'one'
+    var whichDay = {today: false, yesterday: 'no'}
 
-    if (gameDate.hour() < this.config.rolloverHours) {
-      /*
-        it's past midnight local time, but within the
-        rollover window.  Query for yesterday's games,
-        not today's
-      */
-      gameDate.subtract(1, 'day')
-      if (this.config.alwaysShowToday) {
-        whichDay = 'both'
-      }
+    if (gameDate.hour() < this.config.rolloverHours && ( !this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD') )) {
+      whichDay.yesterday = 'yes'
+    }
+    if (gameDate.hour() >= this.config.rolloverHours) {
+      whichDay.today = true
+      whichDay.yesterday = 'erase'
+    }
+    else if (this.config.alwaysShowToday) {
+      whichDay.today = true
     }
 
     // just used for debug, if you want to force a specific date
@@ -755,21 +760,23 @@ Module.register('MMM-MyScoreboard', {
 
     var self = this
     this.config.sports.forEach(function (sport, index) {
-      var payload = {
-        instanceId: self.identifier,
-        index: index,
-        league: sport.league,
-        teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
-        provider: self.supportedLeagues[sport.league].provider,
-        gameDate: gameDate,
-        whichDay: whichDay,
-        hideBroadcasts: self.config.hideBroadcasts,
-        skipChannels: self.config.skipChannels,
-        showLocalBroadcasts: self.config.showLocalBroadcasts,
-        displayLocalChannels: self.config.displayLocalChannels,
-      }
+      if (self.noGamesToday[sport.league] !== gameDate.format('YYYY-MM-DD')) {
+        var payload = {
+          instanceId: self.identifier,
+          index: index,
+          league: sport.league,
+          teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
+          provider: self.supportedLeagues[sport.league].provider,
+          gameDate: gameDate,
+          whichDay: whichDay,
+          hideBroadcasts: self.config.hideBroadcasts,
+          skipChannels: self.config.skipChannels,
+          showLocalBroadcasts: self.config.showLocalBroadcasts,
+          displayLocalChannels: self.config.displayLocalChannels,
+        }
 
-      self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
+        self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
+      }
     })
   },
 

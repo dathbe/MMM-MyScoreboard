@@ -7,7 +7,7 @@
   Provides scores for
     NCAAF (College Football, FBS Division)
     NCAAM (College Basketball. Division I)
-    NCAAM_MM (College Basketball, March Madness Torunament)
+    NCAAM_MM (College Basketball, March Madness Tournament)
     MLB (Major League Baseball)
     NHL
     NFL
@@ -31,7 +31,7 @@
   Data is polled on demand per league configured in the
   front end. Each time the front end makes a request for a
   particular league a request for JSON is made to ESPN's
-  servers.  The front end polls every two miuntes.
+  servers.  The front end polls every two minutes.
 
 */
 
@@ -417,22 +417,23 @@ module.exports = {
     'ESPN+': './modules/MMM-MyScoreboard/logos/channels/ESPN+.svg',
     'ESPNEWS': 'https://upload.wikimedia.org/wikipedia/commons/1/1b/ESPNews.svg',
     'ESPNU': 'https://storage.googleapis.com/byucougars-prod/2023/08/15/FDU7FuMUvL1g21JvnaSPUSCWAvfZZXq11MRP7pKp.svg',
-    'ESPN Deportes': 'https://upload.wikimedia.org/wikipedia/commons/d/d5/ESPN_Deportes.svg',
+    'ESPN Deportes': './modules/MMM-MyScoreboard/logos/channels/ESPNDeportes.svg',
     'FS1': 'https://upload.wikimedia.org/wikipedia/commons/3/37/2015_Fox_Sports_1_logo.svg',
     'FS2': 'https://upload.wikimedia.org/wikipedia/commons/3/38/FS2_logo_2015.svg',
     'Hulu': 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Hulu_logo_%282018%29.svg',
     'Max': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Max_logo.svg',
     'MLB Net': 'https://upload.wikimedia.org/wikipedia/en/a/ac/MLBNetworkLogo.svg',
     'MLB.TV Free Game': './modules/MMM-MyScoreboard/logos/channels/MLBTVFreeGame.svg',
-    'MLS Season Pass': 'https://upload.wikimedia.org/wikipedia/commons/7/71/MLS_Season_Pass_logo_black.svg',
     'NBA League Pass': 'https://cdn.nba.com/manage/2025/02/NBA_League_Pass_horiz_onDkBkgd_NEWLOGO.png',
     'NBA TV': 'https://upload.wikimedia.org/wikipedia/en/d/d2/NBA_TV.svg',
     'NBC': 'https://upload.wikimedia.org/wikipedia/commons/9/9f/NBC_Peacock_1986.svg',
     'NHL Net': 'https://upload.wikimedia.org/wikipedia/commons/f/f4/NHL_Network_2012.svg',
+    'NWSL+': './modules/MMM-MyScoreboard/logos/channels/NWSL+.webp',
     'Paramount+': 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Paramount%2B_logo.svg',
     'Peacock': './modules/MMM-MyScoreboard/logos/channels/Peacock.svg',
     'Prime Video': 'https://upload.wikimedia.org/wikipedia/commons/9/90/Prime_Video_logo_%282024%29.svg',
     'TBS': 'https://upload.wikimedia.org/wikipedia/commons/2/2c/TBS_2020.svg',
+    'Tele': './modules/MMM-MyScoreboard/logos/channels/Tele.svg',
     'TNT': 'https://www.tntdrama.com/themes/custom/ten_theme/images/tnt/tnt_logo_top.png',
     'truTV': './modules/MMM-MyScoreboard/logos/channels/truTV.svg',
     'USA Net': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/USA_Network_logo_%282016%29.svg',
@@ -509,10 +510,12 @@ module.exports = {
     // CBS: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/CBS_Eyemark.svg',
     'CBS': 'https://upload.wikimedia.org/wikipedia/commons/e/ee/CBS_logo_%282020%29.svg',
     'FOX': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fox_Broadcasting_Company_logo_%282019%29.svg',
+    'ION': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Ion_logo.svg',
+    'MLS Season Pass': 'https://upload.wikimedia.org/wikipedia/commons/7/71/MLS_Season_Pass_logo_black.svg',
 
     'Altitude Sports': 'https://upload.wikimedia.org/wikipedia/en/e/e2/Altitude_Sports_logo.svg',
     'Spectrum Sports Net +': 'https://thestreamable.com/media/pages/video-streaming/spectrum-sportsnet-plus/4a9b2bff0c-1698772675/sportsnetb-1.svg',
-    'Victory+': 'https://thestreamable.com/media/pages/video-streaming/victory-plus/84029ec6cd-1720450552/victoryplus.svg',
+    'Victory+': './modules/MMM-MyScoreboard/logos/channels/Victory+.svg',
     'WFAA Channel 8': 'https://upload.wikimedia.org/wikipedia/commons/6/65/WFAA_logo.svg',
   },
 
@@ -556,20 +559,23 @@ module.exports = {
 
     try {
       const response = await fetch(url)
+      Log.debug(url + ' fetched')
       const body = await response.json()
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
         const freeGameResponse = await fetch(MLBurl)
         const freeGameBody = await freeGameResponse.json()
-        freeGameBody['results'].forEach ((game) => {
-          if (game['videoFeeds'][0]['freeGame']) {
-            this.freeGameOfTheDay['day'] = moment().format('YYYY-MM-DD')
-            this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
-            this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
-            if (this.freeGameOfTheDay['teams'].includes('AZ')) {
-              this.freeGameOfTheDay['teams'].push("ARI")
+        if (freeGameBody['results']) {
+          freeGameBody['results'].forEach ((game) => {
+            if (game['videoFeeds'][0]['freeGame']) {
+              this.freeGameOfTheDay['day'] = moment().format('YYYY-MM-DD')
+              this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
+              this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
+              if (this.freeGameOfTheDay['teams'].includes('AZ')) {
+                this.freeGameOfTheDay['teams'].push("ARI")
+              }
             }
-          }
-        })
+          })
+        }
       }
       callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')))
     }
@@ -742,14 +748,15 @@ module.exports = {
       channels = [...new Set(channels)]
 
       switch (game.status.type.id) {
-        case '0' : // TBD
-          gameState = 0
-          status.push('TBD')
-          break
+        // Not started
         case '5': // cancelled
         case '6': // postponed
           gameState = 0
           status.push(game.status.type.detail)
+          break
+        case '0' : // TBD
+          gameState = 0
+          status.push('TBD')
           break
         case '8': // suspended
           gameState = 0
@@ -760,6 +767,8 @@ module.exports = {
           status.push(moment(game.competitions[0].date).tz(localTZ).format(timeFormat))
           broadcast = channels
           break
+
+        // In progress
         case '2': // in-progress
         case '21': // beginning of period
         case '22': // end period
@@ -790,6 +799,8 @@ module.exports = {
           status.push('HALFTIME (ET)')
           broadcast = channels
           break
+
+        // Completed
         case '3': // final
         case '28': // SOCCER Full Time
           gameState = 2
@@ -811,6 +822,8 @@ module.exports = {
           gameState = 2
           status.push('Forfeit')
           break
+
+        // Other
         default: // Anything else, grab the description ESPN gives
           gameState = 0
           status.push(game.status.type.detail)
