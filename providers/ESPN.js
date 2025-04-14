@@ -572,7 +572,7 @@ module.exports = {
               this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
               this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
               if (this.freeGameOfTheDay['teams'].includes('AZ')) {
-                this.freeGameOfTheDay['teams'].push("ARI")
+                this.freeGameOfTheDay['teams'].push('ARI')
               }
             }
           })

@@ -26,7 +26,7 @@ module.exports = NodeHelper.create({
         this.localLogos[league.name] = logoFiles
       }
     })
-    
+
     this.localLogosCustom = {}
     fsTree = this.getDirectoryTree('./modules/MMM-MyScoreboard/logos_custom')
     fsTree.forEach((league) => {

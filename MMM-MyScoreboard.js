@@ -276,7 +276,7 @@ Module.register('MMM-MyScoreboard', {
 
   localLogos: {},
   localLogosCustom: {},
-  ydLoaded: {loaded: false, date: ''},
+  ydLoaded: { loaded: false, date: '' },
   noGamesToday: {},
 
   viewStyleHasLogos: function (v) {
@@ -588,7 +588,7 @@ Module.register('MMM-MyScoreboard', {
     */
     // var anyGames = false
     var self = this
-    this.config.sports.forEach(function (sport, index) {
+    this.config.sports.forEach(function (sport) {
       var leagueSeparator = []
       if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
         // anyGames = true
@@ -662,7 +662,7 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()
-      this.ydLoaded = {loaded: true, date: moment().format('YYYY-MM-DD')}
+      this.ydLoaded = { loaded: true, date: moment().format('YYYY-MM-DD') }
     }
     else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
       this.localLogos = payload.logos
@@ -755,9 +755,9 @@ Module.register('MMM-MyScoreboard', {
 
   getScores: function () {
     var gameDate = moment() // get today's date
-    var whichDay = {today: false, yesterday: 'no'}
+    var whichDay = { today: false, yesterday: 'no' }
 
-    if (gameDate.hour() < this.config.rolloverHours && ( !this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD') )) {
+    if (gameDate.hour() < this.config.rolloverHours && (!this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD'))) {
       whichDay.yesterday = 'yes'
     }
     if (gameDate.hour() >= this.config.rolloverHours) {
