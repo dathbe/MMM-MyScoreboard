@@ -16,7 +16,7 @@ module.exports = NodeHelper.create({
     this.providers.ESPN = require('./providers/ESPN.js')
 
     this.localLogos = {}
-    const fsTree = this.getDirectoryTree('./modules/MMM-MyScoreboard/logos')
+    var fsTree = this.getDirectoryTree('./modules/MMM-MyScoreboard/logos')
     fsTree.forEach((league) => {
       if (league.children) {
         var logoFiles = []
@@ -24,6 +24,18 @@ module.exports = NodeHelper.create({
           logoFiles.push(file.name)
         })
         this.localLogos[league.name] = logoFiles
+      }
+    })
+    
+    this.localLogosCustom = {}
+    fsTree = this.getDirectoryTree('./modules/MMM-MyScoreboard/logos_custom')
+    fsTree.forEach((league) => {
+      if (league.children) {
+        var logoFiles = []
+        league.children.forEach((file) => {
+          logoFiles.push(file.name)
+        })
+        this.localLogosCustom[league.name] = logoFiles
       }
     })
   },
@@ -85,7 +97,7 @@ module.exports = NodeHelper.create({
       }
     }
     else if (notification == 'MMM-MYSCOREBOARD-GET-LOCAL-LOGOS') {
-      this.sendSocketNotification('MMM-MYSCOREBOARD-LOCAL-LOGO-LIST', { instanceId: payload.instanceId, index: payload.league, logos: this.localLogos })
+      this.sendSocketNotification('MMM-MYSCOREBOARD-LOCAL-LOGO-LIST', { instanceId: payload.instanceId, index: payload.league, logos: this.localLogos, logosCustom: this.localLogosCustom })
     }
   },
 

@@ -4,10 +4,16 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.8.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.7.1...v4.8.0) - 2025-04-XX
+
+- **NEW FEATURE**: Added `logos_custom` folder where users can place their own custom team logos that will not be overwritten when updating the module.
+
 ## [4.7.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.7.0...v4.7.1) - 2025-04-13
+
 - Bug fix: Fix logic error that would cause yesterday's scores to continue displaying if there were no today's scores
 
 ## [4.7.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.6.0...v4.7.0) - 2025-04-12
+
 - **NEW FEATURE**: Australian A-League Women's soccer added
 - BUG FIX: Update README with correct ARI Diamondbacks abbreviation
 - Logic changes to reduce the number of unecessary API calls
@@ -18,6 +24,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Add some broadcast logos
 
 ## [4.6.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.5.0...v4.6.0) - 2025-04-09
+
 - **NEW FEATURE**: New config option to `showLocalBroadcasts`
 - **NEW FEATURE**: New config option to `skipChannels`
 - **NEW FEATURE**: New config option to `displayLocalChannels`

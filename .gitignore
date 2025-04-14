@@ -1,2 +1,4 @@
 node_modules/
 **/.DS_Store
+/logos_custom/**
+!/logos_custom/README.md**
