@@ -752,6 +752,9 @@ Module.register('MMM-MyScoreboard', {
     else if (this.config.alwaysShowToday) {
       whichDay.today = true
     }
+    /* if (this.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
+      whichDay.today = false
+    } */
 
     // just used for debug, if you want to force a specific date
     if (this.config.DEBUG_gameDate) {
@@ -760,23 +763,24 @@ Module.register('MMM-MyScoreboard', {
 
     var self = this
     this.config.sports.forEach(function (sport, index) {
-      if (self.noGamesToday[sport.league] !== gameDate.format('YYYY-MM-DD')) {
-        var payload = {
-          instanceId: self.identifier,
-          index: index,
-          league: sport.league,
-          teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
-          provider: self.supportedLeagues[sport.league].provider,
-          gameDate: gameDate,
-          whichDay: whichDay,
-          hideBroadcasts: self.config.hideBroadcasts,
-          skipChannels: self.config.skipChannels,
-          showLocalBroadcasts: self.config.showLocalBroadcasts,
-          displayLocalChannels: self.config.displayLocalChannels,
-        }
-
-        self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
+      if (self.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
+        whichDay.today = false
       }
+      var payload = {
+        instanceId: self.identifier,
+        index: index,
+        league: sport.league,
+        teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
+        provider: self.supportedLeagues[sport.league].provider,
+        gameDate: gameDate,
+        whichDay: whichDay,
+        hideBroadcasts: self.config.hideBroadcasts,
+        skipChannels: self.config.skipChannels,
+        showLocalBroadcasts: self.config.showLocalBroadcasts,
+        displayLocalChannels: self.config.displayLocalChannels,
+      }
+
+      self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
     })
   },
 

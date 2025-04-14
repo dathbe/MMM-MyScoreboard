@@ -423,7 +423,7 @@ module.exports = {
     'Hulu': 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Hulu_logo_%282018%29.svg',
     'Max': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Max_logo.svg',
     'MLB Net': 'https://upload.wikimedia.org/wikipedia/en/a/ac/MLBNetworkLogo.svg',
-    'MLB.TV Free Game': './modules/MMM-MyScoreboard/logos/channels/MLBTVFreeGame.svg',
+    'MLB.TV Free Game': './modules/MMM-MyScoreboard/logos/channels/MLBTVFreeGame.png',
     'NBA League Pass': 'https://cdn.nba.com/manage/2025/02/NBA_League_Pass_horiz_onDkBkgd_NEWLOGO.png',
     'NBA TV': 'https://upload.wikimedia.org/wikipedia/en/d/d2/NBA_TV.svg',
     'NBC': 'https://upload.wikimedia.org/wikipedia/commons/9/9f/NBC_Peacock_1986.svg',
@@ -500,6 +500,7 @@ module.exports = {
     'Twins.TV': './modules/MMM-MyScoreboard/logos/channels/TwinsTV.svg',
     'Utah 16': 'https://upload.wikimedia.org/wikipedia/commons/f/f4/KUPX-TV_logo_2023.svg',
     'WLNY': './modules/MMM-MyScoreboard/logos/channels/WLNY.svg',
+    'WPIX': 'https://pix11.com/wp-content/uploads/sites/25/2021/02/PIX11_White_600x248.png',
     'WTOG': 'https://upload.wikimedia.org/wikipedia/commons/1/1d/TAMPA_BAY_44_WTOG.png',
     'YES': 'https://static.yesnetwork.com/assets/images/light-on-dark/yes.svg',
   },
@@ -720,6 +721,16 @@ module.exports = {
               localDesignation = channelName.replace('NBC Sports ', '')
               localDesignation = `<span class="NBCSports">${localDesignation}</span>`
               channelName = 'NBC Sports'
+            }
+            else if (channelName === 'Space City Home (Alt.)') {
+              localDesignation = '(Alt.)'
+              localDesignation = `<span class="SpaceCityHome">${localDesignation}</span>`
+              channelName = 'Space City Home Network'
+            }
+            else if (channelName === 'MSGB') {
+              localDesignation = 'B'
+              localDesignation = `<span class="MSG">${localDesignation}</span>`
+              channelName = 'MSG'
             }
             if ((payload.showLocalBroadcasts /* && homeOrAway[market.market] */ && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
               if (this.broadcastIcons[channelName] !== undefined) {
