@@ -1800,6 +1800,10 @@ Teams:
 ```
 </details>
 
+## Logos
+
+You can add your own custom personal logos into the `logos_custom` folder, and they will not be disturbed when you update the module.  [Specific guidance can be found here](https://github.com/dathbe/MMM-MyScoreboard/tree/4.7.2/logos_custom).
+
 ## Contributing
 
 If you find any problems, bugs or have questions, please [open a GitHub issue](https://github.com/dathbe/MMM-MyScoreboard/issues) in this repository.
