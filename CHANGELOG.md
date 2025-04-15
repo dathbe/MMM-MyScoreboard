@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [4.8.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.7.1...v4.8.0) - 2025-04-XX
 
+- **NEW FEATURE**: Added `localMarkets` config option to display broadcasts from your local markets
 - **NEW FEATURE**: Added `logos_custom` folder where users can place their own custom team logos that will not be overwritten when updating the module
 - Some new channel logos
 
