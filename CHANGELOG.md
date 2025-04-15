@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - **NEW FEATURE**: Added `localMarkets` config option to display broadcasts from your local markets
 - **NEW FEATURE**: Added `logos_custom` folder where users can place their own custom team logos that will not be overwritten when updating the module
+- **NEW FEATURE**: Added `ALL_SOCCER` league option
+- **NEW FEATURE**: Added `SOCCER_ON_TV` league option
+- **NEW FEATURE**: Added `RUGBY` league option
 - Some new channel logos
 
 ## [4.7.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.7.0...v4.7.1) - 2025-04-13

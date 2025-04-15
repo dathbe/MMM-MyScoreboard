@@ -78,6 +78,9 @@ Module.register('MMM-MyScoreboard', {
     NBAG: { provider: 'ESPN', logoFormat: 'url' },
     NLL: { provider: 'ESPN', logoFormat: 'url' },
     PLL: { provider: 'ESPN', logoFormat: 'url' },
+    RUGBY: { provider: 'ESPN', logoFormat: 'url' },
+    ALL_SOCCER: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    SOCCER_ON_TV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // International Soccer
     AFC_ASIAN_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },

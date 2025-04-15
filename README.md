@@ -127,12 +127,15 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 ### Other Leagues
 
 * **AFL** - Australian Football League
+* **RUGBY** - All Rugby leagues (team abbreviations not maintained here)
 
 **Note:** You can probably guess the team abbreviations based on the city, but team abbreviation code lists for the leagues above are later in this README.  If you notice an error, open an issue and let me know.
 
 ### Soccer Leagues & Competitions
 
 #### Most Popular
+* **ALL_SOCCER** - Will return all soccer matches.  The list gets very long, so pair this with a `teams` list.  Useful if your team plays in various cups and competitions.  Note that team abbreviations are not necessarily unique, so your mileage may vary with this "league."
+* **SOCCER_ON_TV** - Will return all soccer matches that have a broadcast option.  Handy if you just want to know what soccer you can watch today.  It will respect your `skipChannels` list and not display games that are only broadcast on one of those channels.
 * **ENG_PREMIERE_LEAGUE** - English Premier League
 * **UEFA_CHAMPIONS** - UEFA Champions League
 * **UEFA_EUROPA** - UEFA Europa League

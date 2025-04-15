@@ -58,6 +58,9 @@ module.exports = {
     NFL: 'football/nfl',
     NHL: 'hockey/nhl',
     MLS: 'soccer/usa.1',
+    RUGBY: 'rugby/scorepanel',
+    ALL_SOCCER: 'soccer/scorepanel',
+    SOCCER_ON_TV: 'soccer/scorepanel',
 
     // International Soccer
     AFC_ASIAN_CUP: 'soccer/afc.cup',
@@ -535,9 +538,14 @@ module.exports = {
     var self = this
 
     var url = 'https://site.api.espn.com/apis/site/v2/sports/'
-      + this.getLeaguePath(payload.league)
-      + '/scoreboard?dates='
-      + moment(gameDate).format('YYYYMMDD') + '&limit=200'
+      url += this.getLeaguePath(payload.league)
+      if (this.getLeaguePath(payload.league).includes('scorepanel')) {
+        url += '?dates='
+      }
+      else {
+        url += '/scoreboard?dates='
+      }
+      url += moment(gameDate).format('YYYYMMDD') + '&limit=200'
     var MLBurl = 'https://mastapi.mobile.mlbinfra.com/api/epg/v3/search?date='
       + moment().format('YYYY-MM-DD') + '&exp=MLB'
     /*
@@ -563,7 +571,8 @@ module.exports = {
     try {
       const response = await fetch(url)
       Log.debug(url + ' fetched')
-      const body = await response.json()
+      var body = await response.json()
+
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
         const freeGameResponse = await fetch(MLBurl)
         const freeGameBody = await freeGameResponse.json()
@@ -580,6 +589,15 @@ module.exports = {
           })
         }
       }
+      
+      if (this.getLeaguePath(payload.league).includes('scorepanel')) {
+        var body2 = {'events': []}
+        for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
+          body2['events'] = body2['events'].concat(body['scores'][leagueIdx]['events'])
+        }
+        body = body2
+      }
+      
       callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')))
     }
     catch (error) {
@@ -684,6 +702,7 @@ module.exports = {
       }
       var channels = []
 
+      var hasBroadcast = false
       if (game.competitions[0].broadcasts.length > 0 && !payload.hideBroadcasts) {
         game.competitions[0].broadcasts.forEach((market) => {
           if (market.market === 'national') {
@@ -691,12 +710,15 @@ module.exports = {
               if (!payload.skipChannels.includes(channelName)) {
                 if (this.broadcastIcons[channelName] !== undefined) {
                   channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">`)
+                  hasBroadcast = true
                 }
                 else if (this.broadcastIconsInvert[channelName] !== undefined) {
                   channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">`)
+                  hasBroadcast = true
                 }
                 else {
                   channels.push(channelName)
+                  hasBroadcast = true
                 }
               }
             })
@@ -741,12 +763,15 @@ module.exports = {
 
               if (this.broadcastIcons[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
+                hasBroadcast = true
               }
               else if (this.broadcastIconsInvert[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`)
+                hasBroadcast = true
               }
               else {
                 channels.push(channelName)
+                hasBroadcast = true
               }
             }
             else if (!payload.showLocalBroadcasts && !payload.skipChannels.includes(channelName) && !payload.displayLocalChannels.includes(channelName)) {
@@ -760,6 +785,7 @@ module.exports = {
       }
       if (this.freeGameOfTheDay['day'] === moment(game.competitions[0].date).format('YYYY-MM-DD') && payload.league === 'MLB' && this.freeGameOfTheDay['teams'].includes(hTeamData.team.abbreviation)) {
         channels.push(`<img src="${this.broadcastIcons['MLB.TV Free Game']}" class="broadcastIcon">`)
+        hasBroadcast = true
       }
       channels = [...new Set(channels)]
 
@@ -897,6 +923,9 @@ module.exports = {
         hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
         vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
       })
+      if (payload.league === 'SOCCER_ON_TV' && hasBroadcast === false) {
+        formattedGamesList.pop()
+      }
     })
 
     return formattedGamesList
