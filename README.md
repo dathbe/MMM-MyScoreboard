@@ -18,6 +18,8 @@ leagues, including:
 * Over 100 soccer leagues
 * And more
 
+Intended to match the design aesthetic of, and pair nicely with, [MMM-MyStandings](https://github.com/dathbe/MMM-MyStandings/).
+
 ![Screenshot](example2.png)
 
 ## Installation
