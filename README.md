@@ -41,6 +41,42 @@ npm install
 
 ## Configuration
 
+Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` file. The following example config shows a minimal configuration option.  More options are described below. 
+
+```js
+{
+  module: "MMM-MyScoreboard",
+  position: "top_right",
+  config: {
+    viewStyle: "mediumLogos",
+    sports: [
+      {
+        league: "NHL",
+        groups: ["Atlantic"]
+      },
+      {
+        league: "NBA",
+        teams: ["TOR"],
+        groups: ["Pacific", "Central"]
+      },
+      {
+        league: "MLB",
+        teams: ["TOR", "CHW", "NYY"]
+      },
+      {
+        league: "NFL",
+        teams: ["BUF", "NYJ", "NYG"]
+      },
+      {
+        league: "CFL",
+        teams: ["TOR", "MTL", "OTT"]
+      },
+    ]
+
+  }
+},
+```
+
 | Option                 | Description
 |----------------------- |------------
 | `sports`               | **REQUIRED** An array of leagues and teams you wish to follow.<br>See below for instructions to configure your `sports` list.<br><br>**Type** `Array`
@@ -70,48 +106,6 @@ Each entry in your `sports` array is an object with the following properties:
 | `groups`   | In addition to specifying individual teams, you may also specify groups.  Generally these groups correspond to the league's respective conferences and divisions.  See below for a full listing of groups available for each league. (e.g.: `["Atlantic", "Metropolitan"]` for teams in the Atlantic and Metropolitain divisions.<br><br>**Type** `Array`
 
 It should be noted that if you specify arrays for both `teams` and `groups` they will be added together.  So it's possible to make a team list out of a division and a few other specific teams.  If you omit both parameters, then all games for the particular league will be shown.
-
-
-## Example configuration
-
-```js
-{
-  module: "MMM-MyScoreboard",
-  position: "top_right",
-  classes: "default everyone",
-  header: "My Scoreboard",
-  config: {
-    showLeagueSeparators: true,
-    colored: true,
-    viewStyle: "mediumLogos",
-    sports: [
-      {
-        league: "NHL",
-        groups: ["Atlantic"]
-      },
-      {
-        league: "NBA",
-        teams: ["TOR"],
-        groups: ["Pacific", "Central"]
-      },
-      {
-        league: "MLB",
-        teams: ["TOR", "CHW", "NYY"]
-      },
-      {
-        league: "NFL",
-        teams: ["BUF", "NYJ", "NYG"]
-      },
-      {
-        league: "CFL",
-        teams: ["TOR", "MTL", "OTT"]
-      },
-    ]
-
-  }
-},
-
-```
 
 ## Supported Leagues
 
