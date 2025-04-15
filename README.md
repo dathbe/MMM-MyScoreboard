@@ -1,28 +1,23 @@
 # MMM-MyScoreboard
 
-This a module for **MagicMirror**<br>
-https://magicmirror.builders/<br>
-https://github.com/MagicMirrorOrg/MagicMirror
-
-This module displays today's scores for your favourite teams across a number of different
+A [MagicMirror²](https://magicmirror.builders/) module to display today's scores for your favorite teams across a number of different
 leagues, including:
 
 * NHL Hockey
-* NBA / WNBA Basketball
+* NBA / WNBA / NCAA Basketball
 * MLB Baseball
-* NFL Football
+* NFL / NCAA Football
 * CFL Football (Canadian Football League)
-* MLS Soccer
-* NCAA College Football (FBS Division)
-* NCAA College Basketball (Men's and Women's)
 * Over 100 soccer leagues
 * And more
+
+This is a fork of the original MMM-MyScoreboard from user jclarke0000.  It has been updated with bug fixes, security patches, and many feature additions.
 
 Intended to match the design aesthetic of, and pair nicely with, [MMM-MyStandings](https://github.com/dathbe/MMM-MyStandings/).
 
 ![Screenshot](example2.png)
 
-## Installation
+## Installing the Module
 
 ```sh
 cd ~/MagicMirror/modules
@@ -31,7 +26,7 @@ cd MMM-MyScoreboard
 npm install
 ```
 
-## Update
+## Updating the Module
 
 ```sh
 cd ~/MagicMirror/modules/MMM-MyScoreboard
@@ -94,7 +89,7 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `displayLocalChannels` | A list of local channels you would like to display, even if `showLocalBroadcasts` is set to `false`.  This allows you to manually set the local broadcast channels you receive.  A list of channels available for a game will show up in your MagicMirror logs.  I.e., start with no channels and add the ones you want.<br><br>**Type** `Array` or `Strings`<br>**Default** `[]`
 
 
-## Configuring your sports list
+### Configuring Your "Sports" List
 
 Each entry in your `sports` array is an object with the following properties:
 
@@ -107,7 +102,7 @@ Each entry in your `sports` array is an object with the following properties:
 
 It should be noted that if you specify arrays for both `teams` and `groups` they will be added together.  So it's possible to make a team list out of a division and a few other specific teams.  If you omit both parameters, then all games for the particular league will be shown.
 
-## Supported Leagues
+## Available Leagues
 
 Currently this module supports the following leagues.  Use the bold uppercase shortcodes in your config above. Please note that while this module supports well over 100 leagues, please do not abuse this.  We're lucky to be able to use the sports API's free and clear, but there's no telling what might happen if we all configure our modules to get scores for every league.  Please just use configure the leagues you are most interested in.
 
