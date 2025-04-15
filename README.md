@@ -7,7 +7,6 @@ leagues, including:
 * NBA / WNBA / NCAA Basketball
 * MLB Baseball
 * NFL / NCAA / CFL Football
-* CFL Football (Canadian Football League)
 * Over 100 soccer leagues
 * And more
 
