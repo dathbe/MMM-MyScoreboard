@@ -411,7 +411,6 @@ Module.register('MMM-MyScoreboard', {
 
       var vTeamLogoImg = document.createElement('img')
 
-      Log.debug(this.localLogosCustom)
       if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.vTeam + '.svg') !== -1) {
         vTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.vTeam + '.svg')
       }
