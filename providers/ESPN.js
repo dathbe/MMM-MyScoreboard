@@ -684,12 +684,6 @@ module.exports = {
       }
       var channels = []
 
-      /* var homeWanted = (payload.teams === null || payload.teams.indexOf(hTeamData.team.abbreviation) != -1)
-      var awayWanted = (payload.teams === null || payload.teams.indexOf(vTeamData.team.abbreviation) != -1)
-      var homeOrAway = {
-        home: homeWanted,
-        away: awayWanted,
-      } */
       if (game.competitions[0].broadcasts.length > 0 && !payload.hideBroadcasts) {
         game.competitions[0].broadcasts.forEach((market) => {
           if (market.market === 'national') {
@@ -704,7 +698,6 @@ module.exports = {
                 else {
                   channels.push(channelName)
                 }
-                // Log.debug(channelName)
               }
             })
           }
@@ -734,7 +727,18 @@ module.exports = {
               localDesignation = `<span class="MSG">${localDesignation}</span>`
               channelName = 'MSG'
             }
-            if ((payload.showLocalBroadcasts /* && homeOrAway[market.market] */ && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
+            var homeAwayWanted = []
+            for (let competitorIdx = 0; competitorIdx < game.competitions[0]['competitors'].length; competitorIdx++) {
+              if (game.competitions[0]['competitors'][competitorIdx]['homeAway'] === market.market && payload.localMarkets.includes(game.competitions[0]['competitors'][competitorIdx]['team']['abbreviation'])) {
+                // Log.debug(market.market)
+                // Log.debug(payload.localMarkets)
+                // Log.debug(game.competitions[0]['competitors'][competitorIdx]['team']['abbreviation'])
+                // Log.debug(game.competitions[0]['competitors'][competitorIdx]['homeAway'])
+                homeAwayWanted.push(market.market)
+              }
+            } 
+            if (((payload.showLocalBroadcasts || homeAwayWanted.includes(market.market)) && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
+
               if (this.broadcastIcons[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
               }
@@ -744,7 +748,6 @@ module.exports = {
               else {
                 channels.push(channelName)
               }
-              // Log.debug(channelName)
             }
             else if (!payload.showLocalBroadcasts && !payload.skipChannels.includes(channelName) && !payload.displayLocalChannels.includes(channelName)) {
               localGamesList.push(channelName)
