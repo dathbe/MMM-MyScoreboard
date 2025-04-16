@@ -26,7 +26,7 @@ leagues, including:
 cd ~/MagicMirror/modules
 git clone https://github.com/dathbe/MMM-MyScoreboard
 cd MMM-MyScoreboard
-npm install
+npm install --omit=dev
 ```
 
 ## Update
@@ -1811,6 +1811,13 @@ Pull requests are of course also very welcome 🙂
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 ### Developer commands
+
+You will need to first install the dev dependencies:
+
+```bash
+cd ~/MagicMirror/modules/MMM-MyScoreboard
+npm install
+```
 
 - `npm run lint` - Run linting checks.
 - `npm run lint:fix` - Fix automatically fixable linting errors.
