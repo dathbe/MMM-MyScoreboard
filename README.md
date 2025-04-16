@@ -33,7 +33,7 @@ Dependencies:
 ```sh
 cd ~/MagicMirror/modules/MMM-MyScoreboard
 git pull
-npm install
+npm install --omit=dev
 ```
 
 ## Configuration
