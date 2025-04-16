@@ -25,6 +25,9 @@ cd MMM-MyScoreboard
 npm install
 ```
 
+Dependencies:
+* [moment-timezone](https://www.npmjs.com/package/moment-timezone)
+
 ## Updating the Module
 
 ```sh
