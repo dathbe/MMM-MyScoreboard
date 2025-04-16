@@ -25,6 +25,7 @@ Module.register('MMM-MyScoreboard', {
     hideBroadcasts: false,
     showLocalBroadcasts: false,
     skipChannels: [],
+    localMarkets: [],
     displayLocalChannels: [],
     limitBroadcasts: 1,
     sports: [
@@ -77,6 +78,9 @@ Module.register('MMM-MyScoreboard', {
     NBAG: { provider: 'ESPN', logoFormat: 'url' },
     NLL: { provider: 'ESPN', logoFormat: 'url' },
     PLL: { provider: 'ESPN', logoFormat: 'url' },
+    RUGBY: { provider: 'ESPN', logoFormat: 'url' },
+    ALL_SOCCER: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    SOCCER_ON_TV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // International Soccer
     AFC_ASIAN_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -275,7 +279,8 @@ Module.register('MMM-MyScoreboard', {
   ],
 
   localLogos: {},
-  ydLoaded: {loaded: false, date: ''},
+  localLogosCustom: {},
+  ydLoaded: { loaded: false, date: '' },
   noGamesToday: {},
 
   viewStyleHasLogos: function (v) {
@@ -377,7 +382,13 @@ Module.register('MMM-MyScoreboard', {
 
       var hTeamLogoImg = document.createElement('img')
 
-      if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.hTeam + '.svg') !== -1) {
+      if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.hTeam + '.svg') !== -1) {
+        hTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.hTeam + '.svg')
+      }
+      else if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.hTeam + '.png') !== -1) {
+        hTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.hTeam + '.png')
+      }
+      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.hTeam + '.svg') !== -1) {
         hTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.hTeam + '.svg')
       }
       else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.hTeam + '.png') !== -1) {
@@ -404,7 +415,13 @@ Module.register('MMM-MyScoreboard', {
 
       var vTeamLogoImg = document.createElement('img')
 
-      if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.vTeam + '.svg') !== -1) {
+      if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.vTeam + '.svg') !== -1) {
+        vTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.vTeam + '.svg')
+      }
+      else if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.vTeam + '.png') !== -1) {
+        vTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.vTeam + '.png')
+      }
+      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.vTeam + '.svg') !== -1) {
         vTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.vTeam + '.svg')
       }
       else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.vTeam + '.png') !== -1) {
@@ -574,7 +591,7 @@ Module.register('MMM-MyScoreboard', {
     */
     // var anyGames = false
     var self = this
-    this.config.sports.forEach(function (sport, index) {
+    this.config.sports.forEach(function (sport) {
       var leagueSeparator = []
       if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
         // anyGames = true
@@ -648,10 +665,11 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()
-      this.ydLoaded = {loaded: true, date: moment().format('YYYY-MM-DD')}
+      this.ydLoaded = { loaded: true, date: moment().format('YYYY-MM-DD') }
     }
     else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
       this.localLogos = payload.logos
+      this.localLogosCustom = payload.logosCustom
 
       /*
         get scores and set up polling
@@ -740,9 +758,9 @@ Module.register('MMM-MyScoreboard', {
 
   getScores: function () {
     var gameDate = moment() // get today's date
-    var whichDay = {today: false, yesterday: 'no'}
+    var whichDay = { today: false, yesterday: 'no' }
 
-    if (gameDate.hour() < this.config.rolloverHours && ( !this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD') )) {
+    if (gameDate.hour() < this.config.rolloverHours && (!this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD'))) {
       whichDay.yesterday = 'yes'
     }
     if (gameDate.hour() >= this.config.rolloverHours) {
@@ -778,6 +796,7 @@ Module.register('MMM-MyScoreboard', {
         skipChannels: self.config.skipChannels,
         showLocalBroadcasts: self.config.showLocalBroadcasts,
         displayLocalChannels: self.config.displayLocalChannels,
+        localMarkets: self.config.localMarkets,
       }
 
       self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)

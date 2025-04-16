@@ -58,6 +58,9 @@ module.exports = {
     NFL: 'football/nfl',
     NHL: 'hockey/nhl',
     MLS: 'soccer/usa.1',
+    RUGBY: 'rugby/scorepanel',
+    ALL_SOCCER: 'soccer/scorepanel',
+    SOCCER_ON_TV: 'soccer/scorepanel',
 
     // International Soccer
     AFC_ASIAN_CUP: 'soccer/afc.cup',
@@ -456,8 +459,10 @@ module.exports = {
     'KFAA-TV': './modules/MMM-MyScoreboard/logos/channels/KFAATV.webp',
     'KHN': './modules/MMM-MyScoreboard/logos/channels/KHN1.png',
     'KING 5': 'https://upload.wikimedia.org/wikipedia/commons/1/1c/KING-TV_Logo.svg',
+    'WITI FOX-6': 'https://static.foxtv.com/static/orion/img/core/s/logos/fts-milwaukee-a.svg',
     'KJZZ-TV': './modules/MMM-MyScoreboard/logos/channels/KJZZ-TV.png',
     'KMOV-TV': 'https://www.firstalert4.com/pf/resources/images/mastheads/logos/kmov.svg?d=486&mxId=00000000',
+    'KMSP-TV': 'https://static.foxtv.com/static/orion/img/core/s/logos/fts-minneapolis-a.svg',
     'KONG': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/KONG_%28TV%29_logo_2016.svg',
     'KTVD-TV (My20)': 'https://my20denver.azurewebsites.net/graphics/logo-top.png',
     'KUNP 16': './modules/MMM-MyScoreboard/logos/channels/KUNP16.svg',
@@ -533,9 +538,14 @@ module.exports = {
     var self = this
 
     var url = 'https://site.api.espn.com/apis/site/v2/sports/'
-      + this.getLeaguePath(payload.league)
-      + '/scoreboard?dates='
-      + moment(gameDate).format('YYYYMMDD') + '&limit=200'
+      url += this.getLeaguePath(payload.league)
+      if (this.getLeaguePath(payload.league).includes('scorepanel')) {
+        url += '?dates='
+      }
+      else {
+        url += '/scoreboard?dates='
+      }
+      url += moment(gameDate).format('YYYYMMDD') + '&limit=200'
     var MLBurl = 'https://mastapi.mobile.mlbinfra.com/api/epg/v3/search?date='
       + moment().format('YYYY-MM-DD') + '&exp=MLB'
     /*
@@ -561,7 +571,8 @@ module.exports = {
     try {
       const response = await fetch(url)
       Log.debug(url + ' fetched')
-      const body = await response.json()
+      var body = await response.json()
+
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
         const freeGameResponse = await fetch(MLBurl)
         const freeGameBody = await freeGameResponse.json()
@@ -572,12 +583,21 @@ module.exports = {
               this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
               this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
               if (this.freeGameOfTheDay['teams'].includes('AZ')) {
-                this.freeGameOfTheDay['teams'].push("ARI")
+                this.freeGameOfTheDay['teams'].push('ARI')
               }
             }
           })
         }
       }
+      
+      if (this.getLeaguePath(payload.league).includes('scorepanel')) {
+        var body2 = {'events': []}
+        for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
+          body2['events'] = body2['events'].concat(body['scores'][leagueIdx]['events'])
+        }
+        body = body2
+      }
+      
       callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')))
     }
     catch (error) {
@@ -682,12 +702,7 @@ module.exports = {
       }
       var channels = []
 
-      /* var homeWanted = (payload.teams === null || payload.teams.indexOf(hTeamData.team.abbreviation) != -1)
-      var awayWanted = (payload.teams === null || payload.teams.indexOf(vTeamData.team.abbreviation) != -1)
-      var homeOrAway = {
-        home: homeWanted,
-        away: awayWanted,
-      } */
+      var hasBroadcast = false
       if (game.competitions[0].broadcasts.length > 0 && !payload.hideBroadcasts) {
         game.competitions[0].broadcasts.forEach((market) => {
           if (market.market === 'national') {
@@ -695,14 +710,16 @@ module.exports = {
               if (!payload.skipChannels.includes(channelName)) {
                 if (this.broadcastIcons[channelName] !== undefined) {
                   channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">`)
+                  hasBroadcast = true
                 }
                 else if (this.broadcastIconsInvert[channelName] !== undefined) {
                   channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">`)
+                  hasBroadcast = true
                 }
                 else {
                   channels.push(channelName)
+                  hasBroadcast = true
                 }
-                // Log.debug(channelName)
               }
             })
           }
@@ -732,17 +749,30 @@ module.exports = {
               localDesignation = `<span class="MSG">${localDesignation}</span>`
               channelName = 'MSG'
             }
-            if ((payload.showLocalBroadcasts /* && homeOrAway[market.market] */ && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
+            var homeAwayWanted = []
+            for (let competitorIdx = 0; competitorIdx < game.competitions[0]['competitors'].length; competitorIdx++) {
+              if (game.competitions[0]['competitors'][competitorIdx]['homeAway'] === market.market && payload.localMarkets.includes(game.competitions[0]['competitors'][competitorIdx]['team']['abbreviation'])) {
+                // Log.debug(market.market)
+                // Log.debug(payload.localMarkets)
+                // Log.debug(game.competitions[0]['competitors'][competitorIdx]['team']['abbreviation'])
+                // Log.debug(game.competitions[0]['competitors'][competitorIdx]['homeAway'])
+                homeAwayWanted.push(market.market)
+              }
+            } 
+            if (((payload.showLocalBroadcasts || homeAwayWanted.includes(market.market)) && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
+
               if (this.broadcastIcons[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
+                hasBroadcast = true
               }
               else if (this.broadcastIconsInvert[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`)
+                hasBroadcast = true
               }
               else {
                 channels.push(channelName)
+                hasBroadcast = true
               }
-              // Log.debug(channelName)
             }
             else if (!payload.showLocalBroadcasts && !payload.skipChannels.includes(channelName) && !payload.displayLocalChannels.includes(channelName)) {
               localGamesList.push(channelName)
@@ -755,6 +785,7 @@ module.exports = {
       }
       if (this.freeGameOfTheDay['day'] === moment(game.competitions[0].date).format('YYYY-MM-DD') && payload.league === 'MLB' && this.freeGameOfTheDay['teams'].includes(hTeamData.team.abbreviation)) {
         channels.push(`<img src="${this.broadcastIcons['MLB.TV Free Game']}" class="broadcastIcon">`)
+        hasBroadcast = true
       }
       channels = [...new Set(channels)]
 
@@ -892,6 +923,9 @@ module.exports = {
         hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
         vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
       })
+      if (payload.league === 'SOCCER_ON_TV' && hasBroadcast === false) {
+        formattedGamesList.pop()
+      }
     })
 
     return formattedGamesList

@@ -1,26 +1,22 @@
 # MMM-MyScoreboard
 
-This a module for **MagicMirror**<br>
-https://magicmirror.builders/<br>
-https://github.com/MagicMirrorOrg/MagicMirror
-
-This module displays today's scores for your favourite teams across a number of different
+A [MagicMirror²](https://magicmirror.builders/) module to display today's scores for your favorite teams across a number of different
 leagues, including:
 
 * NHL Hockey
-* NBA / WNBA Basketball
+* NBA / WNBA / NCAA Basketball
 * MLB Baseball
-* NFL Football
-* CFL Football (Canadian Football League)
-* MLS Soccer
-* NCAA College Football (FBS Division)
-* NCAA College Basketball (Men's and Women's)
+* NFL / NCAA / CFL Football
 * Over 100 soccer leagues
 * And more
 
+This is a fork of the original MMM-MyScoreboard from user jclarke0000.  It has been updated with bug fixes, security patches, and many feature additions.
+
+Intended to match the design aesthetic of, and pair nicely with, [MMM-MyStandings](https://github.com/dathbe/MMM-MyStandings/).
+
 ![Screenshot](example2.png)
 
-## Installation
+## Installing the Module
 
 ```sh
 cd ~/MagicMirror/modules
@@ -29,7 +25,10 @@ cd MMM-MyScoreboard
 npm install --omit=dev
 ```
 
-## Update
+Dependencies:
+* [moment-timezone](https://www.npmjs.com/package/moment-timezone)
+
+## Updating the Module
 
 ```sh
 cd ~/MagicMirror/modules/MMM-MyScoreboard
@@ -39,48 +38,13 @@ npm install
 
 ## Configuration
 
-| Option                 | Description
-|----------------------- |------------
-| `sports`               | **REQUIRED** An array of leagues and teams you wish to follow.<br>See below for instructions to configure your `sports` list.<br><br>**Type** `Array`
-| `showLeagueSeparators` | Whether to show separators between different leagues.<br><br>**Type** `Boolean`<br>**Default** `true`
-| `colored`              | Whether to present module in colour or black-and-white.<br><br>**Type** `Boolean`<br>**Default** `true`
-| `rolloverHours`        | How many hours past midnight to continue to show the previous day's games.<br><br>**Type** `Number`<br>**Default** `3` (i.e.: continue to show yesterday's games until 3:00 AM)
-| `alwaysShowToday`      | Whether to show today's games _along with_ the previous day's games during `rolloverHours` period.<br><br>**Type** `Boolean`<br>**Default** `false`
-| `viewStyle`            | One of the following: `largeLogos`, `mediumLogos`, `smallLogos`, `oneLine`, `oneLineWithLogos`, `stacked` or `stackedWithLogos`.<br>See below for examples of the view styles.<br><br>**Type** `String`<br>**Default** `largeLogos`
-| `shadeRows`            | Whether to shade alternate rows.<br><br>**Type** `Boolean`<br>**Default** `false`
-| `highlightWinners`     | For games that are final, the winning team / score is highlighted.<br><br>**Type** `Boolean`<br>**Default** `true`
-| `showRankings`         | For the NCAAF and NCAAM, whether to show the rankings for the top 25 teams.<br><br>**Type** `Boolean`<br>**Default** `true`
-| `hideBroadcasts`       | Hide the display of broadcast channel when set to `true` (though if you are having problems with how broadcast channels are displayed, please open an Issue with a suggestion).<br><br>**Type** `Boolean`<br>**Default** `false`
-| `showLocalBroadcasts`  | Will show local broadcast channels for displayed games when set to `true`.<br><br>**Type** `Boolean`<br>**Default** `false` because your local television market might not match with your selected team
-| `skipChannels`         | A list of channels that you would never like to see displayed (e.g., if you do not subscribe to that channel).  You can find the abbreviation for a channel that displays as a logo by checking `MMM-MyScoreboard/providers/ESPN.js`.  I.e., start with all the channels and remove the ones you don't want.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
-| `displayLocalChannels` | A list of local channels you would like to display, even if `showLocalBroadcasts` is set to `false`.  This allows you to manually set the local broadcast channels you receive.  A list of channels available for a game will show up in your MagicMirror logs.  I.e., start with no channels and add the ones you want.<br><br>**Type** `Array` or `Strings`<br>**Default** `[]`
-
-
-## Configuring your sports list
-
-Each entry in your `sports` array is an object with the following properties:
-
-| Property   | Description
-|----------- |------------
-| `league`   | **REQUIRED** e.g.: `"NHL"`. See the list below.<br><br>**Type** `String`
-| `label`    | If `showLeagueSeparators` is set to `true`, you can optionally set a custom label for the separator. Useful in particular to show something other than `"NCAAM_MM"` for the March Madness tournament.<br><br>**Type** `String`<br />**Default** the value for `league`.
-| `teams`    | An array of teams for which you want to see scores.  Specify teams using their shortcodes (e.g.: `"TOR"` for Toronto Maple Leafs).<br>See below for a listing of teams and their short codes<br><br>**Type** `Array`<br>**UPDATE v2.0:** This is no longer required.
-| `groups`   | In addition to specifying individual teams, you may also specify groups.  Generally these groups correspond to the league's respective conferences and divisions.  See below for a full listing of groups available for each league. (e.g.: `["Atlantic", "Metropolitan"]` for teams in the Atlantic and Metropolitain divisions.<br><br>**Type** `Array`
-
-It should be noted that if you specify arrays for both `teams` and `groups` they will be added together.  So it's possible to make a team list out of a division and a few other specific teams.  If you omit both parameters, then all games for the particular league will be shown.
-
-
-## Example configuration
+Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` file. The following example config shows a minimal configuration option.  More options are described below. 
 
 ```js
 {
   module: "MMM-MyScoreboard",
   position: "top_right",
-  classes: "default everyone",
-  header: "My Scoreboard",
   config: {
-    showLeagueSeparators: true,
-    colored: true,
     viewStyle: "mediumLogos",
     sports: [
       {
@@ -108,10 +72,40 @@ It should be noted that if you specify arrays for both `teams` and `groups` they
 
   }
 },
-
 ```
 
-## Supported Leagues
+| Option                 | Description
+|----------------------- |------------
+| `sports`               | **REQUIRED** An array of leagues and teams you wish to follow.<br>See below for instructions to configure your `sports` list.<br><br>**Type** `Array`
+| `showLeagueSeparators` | Whether to show separators between different leagues.<br><br>**Type** `Boolean`<br>**Default** `true`
+| `colored`              | Whether to present module in colour or black-and-white.<br><br>**Type** `Boolean`<br>**Default** `true`
+| `rolloverHours`        | How many hours past midnight to continue to show the previous day's games.<br><br>**Type** `Number`<br>**Default** `3` (i.e.: continue to show yesterday's games until 3:00 AM)
+| `alwaysShowToday`      | Whether to show today's games _along with_ the previous day's games during `rolloverHours` period.<br><br>**Type** `Boolean`<br>**Default** `false`
+| `viewStyle`            | One of the following: `largeLogos`, `mediumLogos`, `smallLogos`, `oneLine`, `oneLineWithLogos`, `stacked` or `stackedWithLogos`.<br>See below for examples of the view styles.<br><br>**Type** `String`<br>**Default** `largeLogos`
+| `shadeRows`            | Whether to shade alternate rows.<br><br>**Type** `Boolean`<br>**Default** `false`
+| `highlightWinners`     | For games that are final, the winning team / score is highlighted.<br><br>**Type** `Boolean`<br>**Default** `true`
+| `showRankings`         | For the NCAAF and NCAAM, whether to show the rankings for the top 25 teams.<br><br>**Type** `Boolean`<br>**Default** `true`
+| `hideBroadcasts`       | Hide the display of broadcast channel when set to `true` (though if you are having problems with how broadcast channels are displayed, please open an Issue with a suggestion).<br><br>**Type** `Boolean`<br>**Default** `false`
+| `showLocalBroadcasts`  | Will show all local broadcast channels for all teams in displayed games when set to `true`.<br><br>**Type** `Boolean`<br>**Default** `false` because your local television market might not match with your selected team
+| `localMarkets`         | A list of your local markets so that you can display only broadcast stations from your local market.  Use the team abbreviations for any teams in your local broadcast market.  For example, if you live in Los Angeles, you may want to use `['ANA', 'LA', 'LAA', 'LAD', 'LAC', 'LAL', 'LAR', 'LAF', 'GAL', 'UCLA', 'USC']` (note: 'LAC' will pick up both the Chargers and the Clippers). If you live in Miami, you may only need `['MIA']`.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
+| `skipChannels`         | A list of channels that you would never like to see displayed (e.g., if you do not subscribe to that channel).  You can find the abbreviation for a channel that displays as a logo by checking `MMM-MyScoreboard/providers/ESPN.js`.  I.e., start with all the channels and remove the ones you don't want.  `skipChannels` will override any other option to display certain channels.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
+| `displayLocalChannels` | A list of local channels you would like to display, even if `showLocalBroadcasts` is set to `false`.  This allows you to manually set the local broadcast channels you receive.  A list of channels available for a game will show up in your MagicMirror logs.  I.e., start with no channels and add the ones you want.  `displayLocalChannels` will override any other option to turn off channels.<br><br>**Type** `Array` or `Strings`<br>**Default** `[]`
+
+
+### Configuring Your "Sports" List
+
+Each entry in your `sports` array is an object with the following properties:
+
+| Property   | Description
+|----------- |------------
+| `league`   | **REQUIRED** e.g.: `"NHL"`. See the list below.<br><br>**Type** `String`
+| `teams`    | An array of teams for which you want to see scores.  Specify teams using their shortcodes (e.g.: `"TOR"` for Toronto Maple Leafs).<br>See below for a listing of teams and their short codes<br><br>**Type** `Array`<br>**UPDATE v2.0:** This is no longer required.
+| `groups`   | In addition to specifying individual teams, you may also specify groups.  Generally these groups correspond to the league's respective conferences and divisions.  See below for a full listing of groups available for each league. (e.g.: `["Atlantic", "Metropolitan"]` for teams in the Atlantic and Metropolitain divisions.<br><br>**Type** `Array`
+| `label`    | If `showLeagueSeparators` is set to `true`, you can optionally set a custom label for the separator. Useful in particular to show something other than `"NCAAM_MM"` for the March Madness tournament.<br><br>**Type** `String`<br />**Default** the value for `league`.
+
+It should be noted that if you specify arrays for both `teams` and `groups` they will be added together.  So it's possible to make a team list out of a division and a few other specific teams.  If you omit both parameters, then all games for the particular league will be shown.
+
+## Available Leagues
 
 Currently this module supports the following leagues.  Use the bold uppercase shortcodes in your config above. Please note that while this module supports well over 100 leagues, please do not abuse this.  We're lucky to be able to use the sports API's free and clear, but there's no telling what might happen if we all configure our modules to get scores for every league.  Please just use configure the leagues you are most interested in.
 
@@ -136,12 +130,15 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 ### Other Leagues
 
 * **AFL** - Australian Football League
+* **RUGBY** - All Rugby leagues (team abbreviations not maintained here)
 
 **Note:** You can probably guess the team abbreviations based on the city, but team abbreviation code lists for the leagues above are later in this README.  If you notice an error, open an issue and let me know.
 
 ### Soccer Leagues & Competitions
 
 #### Most Popular
+* **ALL_SOCCER** - Will return all soccer matches.  The list gets very long, so pair this with a `teams` list.  Useful if your team plays in various cups and competitions.  Note that team abbreviations are not necessarily unique, so your mileage may vary with this "league."
+* **SOCCER_ON_TV** - Will return all soccer matches that have a broadcast option.  Handy if you just want to know what soccer you can watch today.  It will respect your `skipChannels` list and not display games that are only broadcast on one of those channels.
 * **ENG_PREMIERE_LEAGUE** - English Premier League
 * **UEFA_CHAMPIONS** - UEFA Champions League
 * **UEFA_EUROPA** - UEFA Europa League
@@ -1799,6 +1796,10 @@ Teams:
 - WCE - West Coast Eagles
 ```
 </details>
+
+## Logos
+
+You can add your own custom personal logos into the `logos_custom` folder, and they will not be disturbed when you update the module.  [Specific guidance can be found here](https://github.com/dathbe/MMM-MyScoreboard/tree/4.7.2/logos_custom).  (But if you have a logo that you think should be added for all users, please [share it by opening an issue](https://github.com/dathbe/MMM-MyScoreboard/issues).)
 
 ## Contributing
 
