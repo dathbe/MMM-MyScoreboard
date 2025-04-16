@@ -493,8 +493,11 @@ module.exports = {
     'Space City Home Network': 'https://static.wixstatic.com/media/b2a684_6cb9aa9a46fa4478bdeb7f3afe95713d~mv2.png/v1/fill/w_233,h_77,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/b2a684_6cb9aa9a46fa4478bdeb7f3afe95713d~mv2.png',
     'Spectrum Sports Net': 'https://spectrumsportsnet.com/content/dam/sports/images/SpectrumSportsNetLogo.svg',
     'Sportsnet': './modules/MMM-MyScoreboard/logos/channels/Sportsnet.svg',
+    'Sportsnet 360': './modules/MMM-MyScoreboard/logos/channels/Sportsnet360.svg',
+    'Sportsnet East': './modules/MMM-MyScoreboard/logos/channels/SportsnetEast.png',
     'Sportsnet LA': 'https://spectrumsportsnet.com/content/dam/sports/images/logo-sports-net-la.svg',
     'Sportsnet One': './modules/MMM-MyScoreboard/logos/channels/SportsnetOne.svg',
+    'Sportsnet Ontario': './modules/MMM-MyScoreboard/logos/channels/SportsnetOntario.svg',
     'SportsNet PIT': './modules/MMM-MyScoreboard/logos/channels/SportsNetPIT.svg',
     'SportsNet PIT+': './modules/MMM-MyScoreboard/logos/channels/SportsNetPITPlus.svg',
     'Suns Live': './modules/MMM-MyScoreboard/logos/channels/SunsLive.svg',
@@ -707,13 +710,35 @@ module.exports = {
         game.competitions[0].broadcasts.forEach((market) => {
           if (market.market === 'national') {
             market.names.forEach((channelName) => {
+              var localDesignation = ''
+              if (channelName.startsWith('FanDuel')) {
+                localDesignation = channelName.replace('FanDuel ', '')
+                localDesignation = localDesignation.replace('SN ', '')
+                localDesignation = `<span class="FanDuel">${localDesignation}</span>`
+                channelName = 'FanDuel'
+              }
+              else if (channelName.startsWith('NBC Sports')) {
+                localDesignation = channelName.replace('NBC Sports ', '')
+                localDesignation = `<span class="NBCSports">${localDesignation}</span>`
+                channelName = 'NBC Sports'
+              }
+              else if (channelName === 'Space City Home (Alt.)') {
+                localDesignation = '(Alt.)'
+                localDesignation = `<span class="SpaceCityHome">${localDesignation}</span>`
+                channelName = 'Space City Home Network'
+              }
+              else if (channelName === 'MSGB') {
+                localDesignation = 'B'
+                localDesignation = `<span class="MSG">${localDesignation}</span>`
+                channelName = 'MSG'
+              }
               if (!payload.skipChannels.includes(channelName)) {
                 if (this.broadcastIcons[channelName] !== undefined) {
-                  channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">`)
+                  channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
                   hasBroadcast = true
                 }
                 else if (this.broadcastIconsInvert[channelName] !== undefined) {
-                  channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">`)
+                  channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`)
                   hasBroadcast = true
                 }
                 else {
@@ -752,15 +777,10 @@ module.exports = {
             var homeAwayWanted = []
             for (let competitorIdx = 0; competitorIdx < game.competitions[0]['competitors'].length; competitorIdx++) {
               if (game.competitions[0]['competitors'][competitorIdx]['homeAway'] === market.market && payload.localMarkets.includes(game.competitions[0]['competitors'][competitorIdx]['team']['abbreviation'])) {
-                // Log.debug(market.market)
-                // Log.debug(payload.localMarkets)
-                // Log.debug(game.competitions[0]['competitors'][competitorIdx]['team']['abbreviation'])
-                // Log.debug(game.competitions[0]['competitors'][competitorIdx]['homeAway'])
                 homeAwayWanted.push(market.market)
               }
-            } 
+            }
             if (((payload.showLocalBroadcasts || homeAwayWanted.includes(market.market)) && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
-
               if (this.broadcastIcons[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
                 hasBroadcast = true
