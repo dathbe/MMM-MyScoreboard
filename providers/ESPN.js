@@ -518,6 +518,7 @@ module.exports = {
     'Apple TV+': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg',
     // CBS: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/CBS_Eyemark.svg',
     'CBS': 'https://upload.wikimedia.org/wikipedia/commons/e/ee/CBS_logo_%282020%29.svg',
+    'CBSSN': 'https://upload.wikimedia.org/wikipedia/commons/0/04/CBS_Sports_Network_2021.svg',
     'FOX': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fox_Broadcasting_Company_logo_%282019%29.svg',
     'ION': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Ion_logo.svg',
     'MLS Season Pass': 'https://upload.wikimedia.org/wikipedia/commons/7/71/MLS_Season_Pass_logo_black.svg',
@@ -541,14 +542,14 @@ module.exports = {
     var self = this
 
     var url = 'https://site.api.espn.com/apis/site/v2/sports/'
-      url += this.getLeaguePath(payload.league)
-      if (this.getLeaguePath(payload.league).includes('scorepanel')) {
-        url += '?dates='
-      }
-      else {
-        url += '/scoreboard?dates='
-      }
-      url += moment(gameDate).format('YYYYMMDD') + '&limit=200'
+    url += this.getLeaguePath(payload.league)
+    if (this.getLeaguePath(payload.league).includes('scorepanel')) {
+      url += '?dates='
+    }
+    else {
+      url += '/scoreboard?dates='
+    }
+    url += moment(gameDate).format('YYYYMMDD') + '&limit=200'
     var MLBurl = 'https://mastapi.mobile.mlbinfra.com/api/epg/v3/search?date='
       + moment().format('YYYY-MM-DD') + '&exp=MLB'
     /*
@@ -592,15 +593,15 @@ module.exports = {
           })
         }
       }
-      
+
       if (this.getLeaguePath(payload.league).includes('scorepanel')) {
-        var body2 = {'events': []}
+        var body2 = { events: [] }
         for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
           body2['events'] = body2['events'].concat(body['scores'][leagueIdx]['events'])
         }
         body = body2
       }
-      
+
       callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')))
     }
     catch (error) {
