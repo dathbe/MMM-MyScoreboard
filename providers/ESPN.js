@@ -587,7 +587,8 @@ module.exports = {
         const freeGameBody = await freeGameResponse.json()
         if (freeGameBody['results']) {
           freeGameBody['results'].forEach ((game) => {
-            if (game['videoFeeds'][0]['freeGame']) {
+            //Log.debug(game['videoFeeds'][0])
+            if (game['videoFeeds'].length > 0 && game['videoFeeds'][0]['freeGame']) {
               this.freeGameOfTheDay['day'] = moment().format('YYYY-MM-DD')
               this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
               this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
