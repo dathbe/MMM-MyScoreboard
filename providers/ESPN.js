@@ -878,7 +878,7 @@ module.exports = {
           break
         case '47': // Soccer Final PK
           gameState = 2
-          status.push('Full Time (PK) ' + this.getFinalPK(hTeamData, vTeamData))
+          status.push('FT (PK) ' + this.getFinalPK(hTeamData, vTeamData))
           break
         case '4': // forfeit
         case '9': // forfeit of home team
