@@ -187,6 +187,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 * **UEFA_EUROPEAN_CHAMPIONSHIP_U19** - UEFA Under-19 Championship
 * **UEFA_EUROPEAN_CHAMPIONSHIP_U21** - UEFA Under-21 Championship
 * **UEFA_EUROPA** - UEFA Europa League
+* **UEFA_EUROPA_CONF** - UEFA Conference League
 * **UEFA_NATIONS** - UEFA Nations League
 * **SAFF_CHAMPIONSHIP** - SAFF Championship
 * **WOMENS_EUROPEAN_CHAMPIONSHIP** - Women's European Championship

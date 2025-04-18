@@ -115,6 +115,7 @@ Module.register('MMM-MyScoreboard', {
     UEFA_EUROPEAN_CHAMPIONSHIP_U19: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_EUROPEAN_CHAMPIONSHIP_U21: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_EUROPA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    UEFA_EUROPA_CONF: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_NATIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     SAFF_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     WOMENS_EUROPEAN_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -652,7 +653,7 @@ Module.register('MMM-MyScoreboard', {
 
   socketNotificationReceived: function (notification, payload) {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
-      //Log.info('[MMM-MyScoreboard] Updating Scores')
+      // Log.info('[MMM-MyScoreboard] Updating Scores')
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
       this.updateDom()
@@ -661,7 +662,7 @@ Module.register('MMM-MyScoreboard', {
       }
     }
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
-      //Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
+      // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()

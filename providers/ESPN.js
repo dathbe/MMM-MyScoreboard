@@ -91,6 +91,7 @@ module.exports = {
     FIFA_WORLD_U20: 'soccer/fifa.world.u20',
     UEFA_CHAMPIONS: 'soccer/uefa.champions',
     UEFA_EUROPA: 'soccer/uefa.europa',
+    UEFA_EUROPA_CONF: 'soccer/uefa.europa.conf',
     UEFA_EUROPEAN_CHAMPIONSHIP: 'soccer/uefa.euro',
     UEFA_EUROPEAN_CHAMPIONSHIP_Q: 'soccer/uefa.euroq',
     UEFA_EUROPEAN_CHAMPIONSHIP_U19: 'soccer/uefa.euro.u19',
