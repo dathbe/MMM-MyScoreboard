@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [4.8.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.8.0...v4.8.1) - 2025-04-17
 
+- **NEW FEATURE**: Added UEFA Conference League
 - BUG FIX: Scores would disappear when a league with no games was before a league with games in config
 - Some new channel logos
 

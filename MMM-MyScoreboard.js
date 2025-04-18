@@ -115,6 +115,7 @@ Module.register('MMM-MyScoreboard', {
     UEFA_EUROPEAN_CHAMPIONSHIP_U19: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_EUROPEAN_CHAMPIONSHIP_U21: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_EUROPA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    UEFA_EUROPA_CONF: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_NATIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     SAFF_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     WOMENS_EUROPEAN_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
