@@ -87,7 +87,7 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `showRankings`         | For the NCAAF and NCAAM, whether to show the rankings for the top 25 teams.<br><br>**Type** `Boolean`<br>**Default** `true`
 | `hideBroadcasts`       | Hide the display of broadcast channel when set to `true` (though if you are having problems with how broadcast channels are displayed, please open an Issue with a suggestion).<br><br>**Type** `Boolean`<br>**Default** `false`
 | `showLocalBroadcasts`  | Will show all local broadcast channels for all teams in displayed games when set to `true`.<br><br>**Type** `Boolean`<br>**Default** `false` because your local television market might not match with your selected team
-| `localMarkets`         | A list of your local markets so that you can display only broadcast stations from your local market.  Use the team abbreviations for any teams in your local broadcast market.  For example, if you live in Los Angeles, you may want to use `['ANA', 'LA', 'LAA', 'LAD', 'LAC', 'LAL', 'LAR', 'LAF', 'GAL', 'UCLA', 'USC']` (note: 'LAC' will pick up both the Chargers and the Clippers). If you live in Miami, you may only need `['MIA']`.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
+| `localMarkets`         | A list of your local markets so that you can display only broadcast stations from your local market.  Use the team abbreviations for any teams in your local broadcast market.  For example, if you live in Los Angeles, you may want to use `['ANA', 'LA', 'LAA', 'LAD', 'LAC', 'LAL', 'LAR', 'LAF', 'UCLA', 'USC']` (note: 'LAC' will pick up both the Chargers and the Clippers). If you live in Miami, you may only need `['MIA']`.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
 | `skipChannels`         | A list of channels that you would never like to see displayed (e.g., if you do not subscribe to that channel).  You can find the abbreviation for a channel that displays as a logo by checking `MMM-MyScoreboard/providers/ESPN.js`.  I.e., start with all the channels and remove the ones you don't want.  `skipChannels` will override any other option to display certain channels.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
 | `displayLocalChannels` | A list of local channels you would like to display, even if `showLocalBroadcasts` is set to `false`.  This allows you to manually set the local broadcast channels you receive.  A list of channels available for a game will show up in your MagicMirror logs.  I.e., start with no channels and add the ones you want.  `displayLocalChannels` will override any other option to turn off channels.<br><br>**Type** `Array` or `Strings`<br>**Default** `[]`
 
@@ -727,7 +727,7 @@ DC    D.C. United
 DAL   FC Dallas
 HOU   Houston Dynamo FC
 SKC   Sporting Kansas City
-GAL   LA Galaxy
+LA    LA Galaxy
 LAF   Los Angeles FC
 MIA   Inter Miami CF
 MNU   Minnesota United
