@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.9.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.9.0...v4.9.1) - 2025-04-XX
 
 - BUG FIX: Remove error thrown when MLB game does not have 'freeGame' key because, e.g., game postponed
+- Fix LA Galaxy abbreviation
 - Some new channel logos
 
 ## [4.9.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.8.1...v4.9.0) - 2025-04-17
