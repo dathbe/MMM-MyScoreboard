@@ -652,7 +652,7 @@ Module.register('MMM-MyScoreboard', {
 
   socketNotificationReceived: function (notification, payload) {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
-      Log.info('[MMM-MyScoreboard] Updating Scores')
+      //Log.info('[MMM-MyScoreboard] Updating Scores')
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
       this.updateDom()
@@ -661,7 +661,7 @@ Module.register('MMM-MyScoreboard', {
       }
     }
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
-      Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
+      //Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()
@@ -763,16 +763,14 @@ Module.register('MMM-MyScoreboard', {
     if (gameDate.hour() < this.config.rolloverHours && (!this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD'))) {
       whichDay.yesterday = 'yes'
     }
+
     if (gameDate.hour() >= this.config.rolloverHours) {
-      whichDay.today = true
+      var tempToday = true
       whichDay.yesterday = 'erase'
     }
     else if (this.config.alwaysShowToday) {
-      whichDay.today = true
+      tempToday = true
     }
-    /* if (this.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
-      whichDay.today = false
-    } */
 
     // just used for debug, if you want to force a specific date
     if (this.config.DEBUG_gameDate) {
@@ -783,6 +781,9 @@ Module.register('MMM-MyScoreboard', {
     this.config.sports.forEach(function (sport, index) {
       if (self.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
         whichDay.today = false
+      }
+      else {
+        whichDay.today = tempToday
       }
       var payload = {
         instanceId: self.identifier,

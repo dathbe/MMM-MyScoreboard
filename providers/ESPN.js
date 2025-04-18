@@ -425,7 +425,8 @@ module.exports = {
     'FS2': 'https://upload.wikimedia.org/wikipedia/commons/3/38/FS2_logo_2015.svg',
     'Hulu': 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Hulu_logo_%282018%29.svg',
     'Max': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Max_logo.svg',
-    'MLB Net': 'https://upload.wikimedia.org/wikipedia/en/a/ac/MLBNetworkLogo.svg',
+    // 'MLB Net': 'https://upload.wikimedia.org/wikipedia/en/a/ac/MLBNetworkLogo.svg',
+    'MLBN': 'https://upload.wikimedia.org/wikipedia/en/a/ac/MLBNetworkLogo.svg',
     'MLB.TV Free Game': './modules/MMM-MyScoreboard/logos/channels/MLBTVFreeGame.png',
     'NBA League Pass': 'https://cdn.nba.com/manage/2025/02/NBA_League_Pass_horiz_onDkBkgd_NEWLOGO.png',
     'NBA TV': 'https://upload.wikimedia.org/wikipedia/en/d/d2/NBA_TV.svg',
@@ -493,8 +494,11 @@ module.exports = {
     'Space City Home Network': 'https://static.wixstatic.com/media/b2a684_6cb9aa9a46fa4478bdeb7f3afe95713d~mv2.png/v1/fill/w_233,h_77,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/b2a684_6cb9aa9a46fa4478bdeb7f3afe95713d~mv2.png',
     'Spectrum Sports Net': 'https://spectrumsportsnet.com/content/dam/sports/images/SpectrumSportsNetLogo.svg',
     'Sportsnet': './modules/MMM-MyScoreboard/logos/channels/Sportsnet.svg',
+    'Sportsnet 360': './modules/MMM-MyScoreboard/logos/channels/Sportsnet360.svg',
+    'Sportsnet East': './modules/MMM-MyScoreboard/logos/channels/SportsnetEast.png',
     'Sportsnet LA': 'https://spectrumsportsnet.com/content/dam/sports/images/logo-sports-net-la.svg',
     'Sportsnet One': './modules/MMM-MyScoreboard/logos/channels/SportsnetOne.svg',
+    'Sportsnet Ontario': './modules/MMM-MyScoreboard/logos/channels/SportsnetOntario.svg',
     'SportsNet PIT': './modules/MMM-MyScoreboard/logos/channels/SportsNetPIT.svg',
     'SportsNet PIT+': './modules/MMM-MyScoreboard/logos/channels/SportsNetPITPlus.svg',
     'Suns Live': './modules/MMM-MyScoreboard/logos/channels/SunsLive.svg',
@@ -515,6 +519,7 @@ module.exports = {
     'Apple TV+': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg',
     // CBS: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/CBS_Eyemark.svg',
     'CBS': 'https://upload.wikimedia.org/wikipedia/commons/e/ee/CBS_logo_%282020%29.svg',
+    'CBSSN': 'https://upload.wikimedia.org/wikipedia/commons/0/04/CBS_Sports_Network_2021.svg',
     'FOX': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fox_Broadcasting_Company_logo_%282019%29.svg',
     'ION': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Ion_logo.svg',
     'MLS Season Pass': 'https://upload.wikimedia.org/wikipedia/commons/7/71/MLS_Season_Pass_logo_black.svg',
@@ -538,14 +543,14 @@ module.exports = {
     var self = this
 
     var url = 'https://site.api.espn.com/apis/site/v2/sports/'
-      url += this.getLeaguePath(payload.league)
-      if (this.getLeaguePath(payload.league).includes('scorepanel')) {
-        url += '?dates='
-      }
-      else {
-        url += '/scoreboard?dates='
-      }
-      url += moment(gameDate).format('YYYYMMDD') + '&limit=200'
+    url += this.getLeaguePath(payload.league)
+    if (this.getLeaguePath(payload.league).includes('scorepanel')) {
+      url += '?dates='
+    }
+    else {
+      url += '/scoreboard?dates='
+    }
+    url += moment(gameDate).format('YYYYMMDD') + '&limit=200'
     var MLBurl = 'https://mastapi.mobile.mlbinfra.com/api/epg/v3/search?date='
       + moment().format('YYYY-MM-DD') + '&exp=MLB'
     /*
@@ -589,15 +594,15 @@ module.exports = {
           })
         }
       }
-      
+
       if (this.getLeaguePath(payload.league).includes('scorepanel')) {
-        var body2 = {'events': []}
+        var body2 = { events: [] }
         for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
           body2['events'] = body2['events'].concat(body['scores'][leagueIdx]['events'])
         }
         body = body2
       }
-      
+
       callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')))
     }
     catch (error) {
@@ -707,13 +712,35 @@ module.exports = {
         game.competitions[0].broadcasts.forEach((market) => {
           if (market.market === 'national') {
             market.names.forEach((channelName) => {
+              var localDesignation = ''
+              if (channelName.startsWith('FanDuel')) {
+                localDesignation = channelName.replace('FanDuel ', '')
+                localDesignation = localDesignation.replace('SN ', '')
+                localDesignation = `<span class="FanDuel">${localDesignation}</span>`
+                channelName = 'FanDuel'
+              }
+              else if (channelName.startsWith('NBC Sports')) {
+                localDesignation = channelName.replace('NBC Sports ', '')
+                localDesignation = `<span class="NBCSports">${localDesignation}</span>`
+                channelName = 'NBC Sports'
+              }
+              else if (channelName === 'Space City Home (Alt.)') {
+                localDesignation = '(Alt.)'
+                localDesignation = `<span class="SpaceCityHome">${localDesignation}</span>`
+                channelName = 'Space City Home Network'
+              }
+              else if (channelName === 'MSGB') {
+                localDesignation = 'B'
+                localDesignation = `<span class="MSG">${localDesignation}</span>`
+                channelName = 'MSG'
+              }
               if (!payload.skipChannels.includes(channelName)) {
                 if (this.broadcastIcons[channelName] !== undefined) {
-                  channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">`)
+                  channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
                   hasBroadcast = true
                 }
                 else if (this.broadcastIconsInvert[channelName] !== undefined) {
-                  channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">`)
+                  channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`)
                   hasBroadcast = true
                 }
                 else {
@@ -752,15 +779,10 @@ module.exports = {
             var homeAwayWanted = []
             for (let competitorIdx = 0; competitorIdx < game.competitions[0]['competitors'].length; competitorIdx++) {
               if (game.competitions[0]['competitors'][competitorIdx]['homeAway'] === market.market && payload.localMarkets.includes(game.competitions[0]['competitors'][competitorIdx]['team']['abbreviation'])) {
-                // Log.debug(market.market)
-                // Log.debug(payload.localMarkets)
-                // Log.debug(game.competitions[0]['competitors'][competitorIdx]['team']['abbreviation'])
-                // Log.debug(game.competitions[0]['competitors'][competitorIdx]['homeAway'])
                 homeAwayWanted.push(market.market)
               }
-            } 
+            }
             if (((payload.showLocalBroadcasts || homeAwayWanted.includes(market.market)) && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
-
               if (this.broadcastIcons[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
                 hasBroadcast = true
@@ -856,7 +878,7 @@ module.exports = {
           break
         case '47': // Soccer Final PK
           gameState = 2
-          status.push('Full Time (PK) ' + this.getFinalPK(hTeamData, vTeamData))
+          status.push('FT (PK) ' + this.getFinalPK(hTeamData, vTeamData))
           break
         case '4': // forfeit
         case '9': // forfeit of home team
