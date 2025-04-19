@@ -418,6 +418,7 @@ module.exports = {
     'Disney+': 'https://upload.wikimedia.org/wikipedia/commons/6/64/Disney%2B_2024.svg',
     'ESPN': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg',
     'ESPN2': 'https://upload.wikimedia.org/wikipedia/commons/b/bf/ESPN2_logo.svg',
+    'ESPN3': 'https://upload.wikimedia.org/wikipedia/commons/2/2b/ESPN3_logo.svg',
     'ESPN+': './modules/MMM-MyScoreboard/logos/channels/ESPN+.svg',
     'ESPNEWS': 'https://upload.wikimedia.org/wikipedia/commons/1/1b/ESPNews.svg',
     'ESPNU': 'https://storage.googleapis.com/byucougars-prod/2023/08/15/FDU7FuMUvL1g21JvnaSPUSCWAvfZZXq11MRP7pKp.svg',
@@ -934,25 +935,30 @@ module.exports = {
         vTeamLong = vTeamData.team.shortDisplayName
       }
 
-      formattedGamesList.push({
-        classes: classes,
-        gameMode: gameState,
-        hTeam: hTeamData.team.abbreviation == undefined ? hTeamData.team.name.substring(0, 4).toUpperCase() + ' ' : hTeamData.team.abbreviation,
-        vTeam: vTeamData.team.abbreviation == undefined ? vTeamData.team.name.substring(0, 4).toUpperCase() + ' ' : vTeamData.team.abbreviation,
-        hTeamLong: hTeamLong,
-        vTeamLong: vTeamLong,
-        hTeamRanking: (payload.league == 'NCAAF' || payload.league == 'NCAAM') ? this.formatT25Ranking(hTeamData.curatedRank.current) : null,
-        vTeamRanking: (payload.league == 'NCAAF' || payload.league == 'NCAAM') ? this.formatT25Ranking(vTeamData.curatedRank.current) : null,
-        hScore: parseInt(hTeamData.score),
-        vScore: parseInt(vTeamData.score),
-        status: status,
-        broadcast: broadcast,
-        hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
-        vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
-      })
-      if (payload.league === 'SOCCER_ON_TV' && (hasBroadcast === false || gameState === 2)) {
-        formattedGamesList.pop()
+      if (payload.league === 'SOCCER_ON_TV') {
+        broadcast = channels
       }
+      if (payload.league !== 'SOCCER_ON_TV' || (hasBroadcast === true && gameState !== 2)) {
+        formattedGamesList.push({
+          classes: classes,
+          gameMode: gameState,
+          hTeam: hTeamData.team.abbreviation == undefined ? hTeamData.team.name.substring(0, 4).toUpperCase() + ' ' : hTeamData.team.abbreviation,
+          vTeam: vTeamData.team.abbreviation == undefined ? vTeamData.team.name.substring(0, 4).toUpperCase() + ' ' : vTeamData.team.abbreviation,
+          hTeamLong: hTeamLong,
+          vTeamLong: vTeamLong,
+          hTeamRanking: (payload.league == 'NCAAF' || payload.league == 'NCAAM') ? this.formatT25Ranking(hTeamData.curatedRank.current) : null,
+          vTeamRanking: (payload.league == 'NCAAF' || payload.league == 'NCAAM') ? this.formatT25Ranking(vTeamData.curatedRank.current) : null,
+          hScore: parseInt(hTeamData.score),
+          vScore: parseInt(vTeamData.score),
+          status: status,
+          broadcast: broadcast,
+          hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
+          vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
+        })
+      }
+      // if (payload.league === 'SOCCER_ON_TV' && (hasBroadcast === false /* || gameState === 2 */)) {
+        // formattedGamesList.pop()
+      // }
     })
 
     return formattedGamesList
