@@ -950,7 +950,7 @@ module.exports = {
         hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
         vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
       })
-      if (payload.league === 'SOCCER_ON_TV' && hasBroadcast === false) {
+      if (payload.league === 'SOCCER_ON_TV' && (hasBroadcast === false || gameState === 2)) {
         formattedGamesList.pop()
       }
     })
