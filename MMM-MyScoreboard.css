@@ -977,7 +977,8 @@
 }
 
 .MMM-MyScoreboard .broadcastIcon {
-	height: 15px;
+  height: 15px;
+  max-width: 80px;
   margin: 0px 2px 0px 2px;
 }
 

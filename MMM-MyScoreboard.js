@@ -496,15 +496,15 @@ Module.register('MMM-MyScoreboard', {
       statusPart.classList.add('statusPart')
       status.appendChild(statusPart)
     })
-    if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(this.config.viewStyle)) {
+/*     if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(this.config.viewStyle)) {
       var maxBroadcasts = Math.min(1, gameObj.broadcast.length, this.config.limitBroadcasts)
     }
     else if (['largeLogos', 'stacked', 'stackedWithLogos'].includes(this.config.viewStyle)) {
       maxBroadcasts = Math.min(2, gameObj.broadcast.length, this.config.limitBroadcasts)
     }
-    else {
+    else { */
       maxBroadcasts = Math.min(gameObj.broadcast.length, this.config.limitBroadcasts)
-    }
+/*     } */
     var broadcastPart = document.createElement('div')
     broadcastPart.classList.add('broadcast')
     if (gameObj.broadcast.length === 1) {

@@ -444,6 +444,7 @@ module.exports = {
     'truTV': './modules/MMM-MyScoreboard/logos/channels/truTV.svg',
     'USA Net': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/USA_Network_logo_%282016%29.svg',
     'Universo': './modules/MMM-MyScoreboard/logos/channels/Universo.svg',
+    'Victory+': './modules/MMM-MyScoreboard/logos/channels/Victory+.svg',
 
     'Arizona\'s Family 3TV': 'https://upload.wikimedia.org/wikipedia/commons/0/00/KTVK_logo.svg',
     'BlazerVision': './modules/MMM-MyScoreboard/logos/channels/BlazerVision.png',
@@ -531,7 +532,6 @@ module.exports = {
 
     'Altitude Sports': 'https://upload.wikimedia.org/wikipedia/en/e/e2/Altitude_Sports_logo.svg',
     'Spectrum Sports Net +': 'https://thestreamable.com/media/pages/video-streaming/spectrum-sportsnet-plus/4a9b2bff0c-1698772675/sportsnetb-1.svg',
-    'Victory+': './modules/MMM-MyScoreboard/logos/channels/Victory+.svg',
     'WFAA Channel 8': 'https://upload.wikimedia.org/wikipedia/commons/6/65/WFAA_logo.svg',
   },
 
@@ -713,7 +713,6 @@ module.exports = {
       }
       var channels = []
 
-      var hasBroadcast = false
       if (game.competitions[0].broadcasts.length > 0 && !payload.hideBroadcasts) {
         game.competitions[0].broadcasts.forEach((market) => {
           if (market.market === 'national') {
@@ -743,15 +742,12 @@ module.exports = {
               if (!payload.skipChannels.includes(channelName)) {
                 if (this.broadcastIcons[channelName] !== undefined) {
                   channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
-                  hasBroadcast = true
                 }
                 else if (this.broadcastIconsInvert[channelName] !== undefined) {
                   channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`)
-                  hasBroadcast = true
                 }
                 else {
                   channels.push(channelName)
-                  hasBroadcast = true
                 }
               }
             })
@@ -791,15 +787,12 @@ module.exports = {
             if (((payload.showLocalBroadcasts || homeAwayWanted.includes(market.market)) && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
               if (this.broadcastIcons[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
-                hasBroadcast = true
               }
               else if (this.broadcastIconsInvert[channelName] !== undefined) {
                 channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`)
-                hasBroadcast = true
               }
               else {
                 channels.push(channelName)
-                hasBroadcast = true
               }
             }
             else if (!payload.showLocalBroadcasts && !payload.skipChannels.includes(channelName) && !payload.displayLocalChannels.includes(channelName)) {
@@ -813,7 +806,6 @@ module.exports = {
       }
       if (this.freeGameOfTheDay['day'] === moment(game.competitions[0].date).format('YYYY-MM-DD') && payload.league === 'MLB' && this.freeGameOfTheDay['teams'].includes(hTeamData.team.abbreviation)) {
         channels.push(`<img src="${this.broadcastIcons['MLB.TV Free Game']}" class="broadcastIcon">`)
-        hasBroadcast = true
       }
       channels = [...new Set(channels)]
 
@@ -935,10 +927,10 @@ module.exports = {
         vTeamLong = vTeamData.team.shortDisplayName
       }
 
-      if (payload.league === 'SOCCER_ON_TV') {
+      /* if (payload.league === 'SOCCER_ON_TV') {
         broadcast = channels
-      }
-      if (payload.league !== 'SOCCER_ON_TV' || (hasBroadcast === true && gameState !== 2)) {
+      } */
+      if (payload.league !== 'SOCCER_ON_TV' || (broadcast.length > 0)) {
         formattedGamesList.push({
           classes: classes,
           gameMode: gameState,
@@ -956,9 +948,6 @@ module.exports = {
           vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
         })
       }
-      // if (payload.league === 'SOCCER_ON_TV' && (hasBroadcast === false /* || gameState === 2 */)) {
-        // formattedGamesList.pop()
-      // }
     })
 
     return formattedGamesList
