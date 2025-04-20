@@ -29,6 +29,7 @@ Module.register('MMM-MyScoreboard', {
     displayLocalChannels: [],
     limitBroadcasts: 1,
     debugHours: 0,
+    debugMinutes: 0,
     sports: [
       {
         league: 'NHL',
@@ -282,7 +283,7 @@ Module.register('MMM-MyScoreboard', {
 
   localLogos: {},
   localLogosCustom: {},
-  ydLoaded: { loaded: false, date: '' },
+  ydLoaded: {},
   noGamesToday: {},
 
   viewStyleHasLogos: function (v) {
@@ -658,8 +659,10 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
       this.updateDom()
-      if (payload.scores.length === 0) {
-        this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').format('YYYY-MM-DD')
+      Log.debug(`payload.notRun: ${payload.notRun}`)
+      if (payload.scores.length === 0  && payload.notRun != true) {
+        this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
+        Log.debug(this.noGamesToday)
       }
     }
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
@@ -667,7 +670,13 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()
-      this.ydLoaded = { loaded: true, date: moment().add(this.config.debugHours, 'hours').format('YYYY-MM-DD') }
+      var stopGrabbingYD = true
+      for (i=0; i<payload.scores.length; i++) {
+        if (payload.scores[i].gameMode < 2) {
+          stopGrabbingYD = false
+        }
+      }
+      this.ydLoaded[payload.index] = { loaded: stopGrabbingYD, date: moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD') }
     }
     else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
       this.localLogos = payload.logos
@@ -759,16 +768,16 @@ Module.register('MMM-MyScoreboard', {
   },
 
   getScores: function () {
-    var gameDate = moment().add(this.config.debugHours, 'hours') // get today's date
+    var gameDate = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes') // get today's date
     var whichDay = { today: false, yesterday: 'no' }
 
-    if (gameDate.hour() < this.config.rolloverHours && (!this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD'))) {
-      whichDay.yesterday = 'yes'
+    if (gameDate.hour() < this.config.rolloverHours ) {
+      tempYesterday = 'yes'
     }
 
     if (gameDate.hour() >= this.config.rolloverHours) {
       var tempToday = true
-      whichDay.yesterday = 'erase'
+      tempYesterday = 'erase'
     }
     else if (this.config.alwaysShowToday) {
       tempToday = true
@@ -787,6 +796,12 @@ Module.register('MMM-MyScoreboard', {
       else {
         whichDay.today = tempToday
       }
+      if (self.ydLoaded[sport.league] && self.ydLoaded[sport.league].loaded && self.ydLoaded.date === gameDate.format('YYYY-MM-DD')) {
+        whichDay.yesterday = false
+      }
+      else {
+        whichDay.yesterday = tempYesterday
+      }
       var payload = {
         instanceId: self.identifier,
         index: index,
@@ -801,6 +816,7 @@ Module.register('MMM-MyScoreboard', {
         displayLocalChannels: self.config.displayLocalChannels,
         localMarkets: self.config.localMarkets,
         debugHours: self.config.debugHours,
+        debugMinutes: self.config.debugMinutes,
       }
 
       self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
