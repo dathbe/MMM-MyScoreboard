@@ -800,9 +800,9 @@ module.exports = {
             }
           })
         })
-        if (localGamesList.length > 0) {
-          Log.info(`The local channels available for ${game.shortName} are: ${localGamesList.join(', ')}`)
-        }
+        //if (localGamesList.length > 0) {
+        //  Log.info(`The local channels available for ${game.shortName} are: ${localGamesList.join(', ')}`)
+        //}
       }
       if (this.freeGameOfTheDay['day'] === moment(game.competitions[0].date).format('YYYY-MM-DD') && payload.league === 'MLB' && this.freeGameOfTheDay['teams'].includes(hTeamData.team.abbreviation)) {
         channels.push(`<img src="${this.broadcastIcons['MLB.TV Free Game']}" class="broadcastIcon">`)
