@@ -866,7 +866,7 @@ module.exports = {
         case '28': // SOCCER Full Time
           gameState = 2
           status.push(game.status.type.description)
-          //broadcast = channels
+          // broadcast = channels
           break
         case '45': // SOCCER Final ET
         case '46': // SOCCER final score - after golden goal

@@ -28,7 +28,7 @@ Module.register('MMM-MyScoreboard', {
     localMarkets: [],
     displayLocalChannels: [],
     channelRotateInterval: 7000,
-    //limitBroadcasts: 1,
+    // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
     sports: [
@@ -500,7 +500,7 @@ Module.register('MMM-MyScoreboard', {
       statusPart.classList.add('statusPart')
       status.appendChild(statusPart)
     })
-/*     if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(this.config.viewStyle)) {
+    /*     if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(this.config.viewStyle)) {
       var maxBroadcasts = Math.min(1, gameObj.broadcast.length, this.config.limitBroadcasts)
     }
     else if (['largeLogos', 'stacked', 'stackedWithLogos'].includes(this.config.viewStyle)) {
@@ -509,24 +509,24 @@ Module.register('MMM-MyScoreboard', {
     else {
       maxBroadcasts = Math.min(gameObj.broadcast.length, this.config.limitBroadcasts)
      } */
-    //maxBroadcasts = gameObj.broadcast.length
+    // maxBroadcasts = gameObj.broadcast.length
     var broadcastPart = document.createElement('div')
     broadcastPart.classList.add('broadcast')
-/*     if (gameObj.broadcast.length === 1) {
+    /*     if (gameObj.broadcast.length === 1) {
       broadcastPart.innerHTML += gameObj.broadcast[0]
     } */
-/*     else if (maxBroadcasts === 1) {
+    /*     else if (maxBroadcasts === 1) {
       broadcastPart.innerHTML += gameObj.broadcast[Math.floor(Math.random() * gameObj.broadcast.length)]
     } */
-    //else {
+    // else {
     for (var i = 0; i < gameObj.broadcast.length; i++) {
-      //broadcastPart.innerHTML += gameObj.broadcast[i]
+      // broadcastPart.innerHTML += gameObj.broadcast[i]
       var broadcastPartDiv = document.createElement('div')
       broadcastPartDiv.classList.add('broadcastIconDiv')
       broadcastPartDiv.innerHTML += gameObj.broadcast[i]
       broadcastPart.appendChild(broadcastPartDiv)
     }
-    //}
+    // }
     /* if (gameObj.broadcast.length > 1) {
       broadcastPart.innerHTML += `<span class="moreBroadcasts">+${gameObj.broadcast.length - 1}</span>`
     } */
@@ -666,7 +666,7 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
       this.updateDom()
-      if (payload.scores.length === 0  && payload.notRun != true) {
+      if (payload.scores.length === 0 && payload.notRun != true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
     }
@@ -676,7 +676,7 @@ Module.register('MMM-MyScoreboard', {
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()
       var stopGrabbingYD = true
-      for (i=0; i<payload.scores.length; i++) {
+      for (let i = 0; i < payload.scores.length; i++) {
         if (payload.scores[i].gameMode < 2) {
           stopGrabbingYD = false
         }
@@ -746,12 +746,12 @@ Module.register('MMM-MyScoreboard', {
     */
 
     this.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: this.identifier })
-    
+
     // Schedule the first logo rotation
     this.rotateChannels()
 
     // Schedule the UI load based on normal interval
-    var self = this
+    // var self = this
     setInterval(function () {
       self.rotateChannels()
     }, this.config.channelRotateInterval)
@@ -785,8 +785,8 @@ Module.register('MMM-MyScoreboard', {
     var gameDate = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes') // get today's date
     var whichDay = { today: false, yesterday: 'no' }
 
-    if (gameDate.hour() < this.config.rolloverHours ) {
-      tempYesterday = 'yes'
+    if (gameDate.hour() < this.config.rolloverHours) {
+      var tempYesterday = 'yes'
     }
 
     if (gameDate.hour() >= this.config.rolloverHours) {
@@ -836,30 +836,30 @@ Module.register('MMM-MyScoreboard', {
       self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
     })
   },
-  
+
   rotateChannels: function () {
-    //Log.debug(`${this.logoIndex} <- logoIndex1`)
-    let broadcastDivs = document.getElementsByClassName("broadcast")
+    // Log.debug(`${this.logoIndex} <- logoIndex1`)
+    let broadcastDivs = document.getElementsByClassName('broadcast')
     for (let j = 0; j < broadcastDivs.length; j++) {
-      let logos = document.getElementsByClassName("broadcast")[j].getElementsByClassName("broadcastIconDiv")
-      
+      let logos = document.getElementsByClassName('broadcast')[j].getElementsByClassName('broadcastIconDiv')
+
       for (let i = 0; i < logos.length; i++) {
-        logos[i].style.display = "none";  
+        logos[i].style.display = 'none'
       }
       if (logos.length > 0) {
-        //Log.debug(`${this.logoIndex} <- logoIndex2`)
-        logos[(this.logoIndex) % logos.length].style.display = "flex"
-        //logos[0].style.display = "block"
-        //logos[moment().unix() % logos.length].style.display = "block"
+        // Log.debug(`${this.logoIndex} <- logoIndex2`)
+        logos[(this.logoIndex) % logos.length].style.display = 'flex'
+        // logos[0].style.display = "block"
+        // logos[moment().unix() % logos.length].style.display = "block"
       }
     }
-    //Log.debug(`${this.logoIndex} <- logoIndex3`)
+    // Log.debug(`${this.logoIndex} <- logoIndex3`)
     this.logoIndex++
-    //Log.debug(`${this.logoIndex} <- logoIndex4`)
+    // Log.debug(`${this.logoIndex} <- logoIndex4`)
     if (this.logoIndex === 17280) {
       this.logoIndex = 0
     }
-    //Log.debug(`${this.logoIndex} <- logoIndex5`)
+    // Log.debug(`${this.logoIndex} <- logoIndex5`)
     /* setTimeout(self.rotateChannels, 5000); // Change image every 5 seconds */
   },
 
