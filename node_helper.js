@@ -85,7 +85,7 @@ module.exports = NodeHelper.create({
         })
       }
       else {
-        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [] })
+        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [], notRun: true })
       }
       if (payload.whichDay.yesterday === 'yes') {
         provider2.getScores(payload, moment(payload.gameDate).subtract(1, 'day'), function (scores) {

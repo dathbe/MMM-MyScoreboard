@@ -27,7 +27,10 @@ Module.register('MMM-MyScoreboard', {
     skipChannels: [],
     localMarkets: [],
     displayLocalChannels: [],
-    limitBroadcasts: 1,
+    channelRotateInterval: 7000,
+    // limitBroadcasts: 1,
+    debugHours: 0,
+    debugMinutes: 0,
     sports: [
       {
         league: 'NHL',
@@ -281,8 +284,9 @@ Module.register('MMM-MyScoreboard', {
 
   localLogos: {},
   localLogosCustom: {},
-  ydLoaded: { loaded: false, date: '' },
+  ydLoaded: {},
   noGamesToday: {},
+  logoIndex: 0,
 
   viewStyleHasLogos: function (v) {
     switch (v) {
@@ -496,7 +500,7 @@ Module.register('MMM-MyScoreboard', {
       statusPart.classList.add('statusPart')
       status.appendChild(statusPart)
     })
-    if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(this.config.viewStyle)) {
+    /*     if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(this.config.viewStyle)) {
       var maxBroadcasts = Math.min(1, gameObj.broadcast.length, this.config.limitBroadcasts)
     }
     else if (['largeLogos', 'stacked', 'stackedWithLogos'].includes(this.config.viewStyle)) {
@@ -504,23 +508,28 @@ Module.register('MMM-MyScoreboard', {
     }
     else {
       maxBroadcasts = Math.min(gameObj.broadcast.length, this.config.limitBroadcasts)
-    }
+     } */
+    // maxBroadcasts = gameObj.broadcast.length
     var broadcastPart = document.createElement('div')
     broadcastPart.classList.add('broadcast')
-    if (gameObj.broadcast.length === 1) {
+    /*     if (gameObj.broadcast.length === 1) {
       broadcastPart.innerHTML += gameObj.broadcast[0]
-    }
-    else if (maxBroadcasts === 1) {
+    } */
+    /*     else if (maxBroadcasts === 1) {
       broadcastPart.innerHTML += gameObj.broadcast[Math.floor(Math.random() * gameObj.broadcast.length)]
+    } */
+    // else {
+    for (var i = 0; i < gameObj.broadcast.length; i++) {
+      // broadcastPart.innerHTML += gameObj.broadcast[i]
+      var broadcastPartDiv = document.createElement('div')
+      broadcastPartDiv.classList.add('broadcastIconDiv')
+      broadcastPartDiv.innerHTML += gameObj.broadcast[i]
+      broadcastPart.appendChild(broadcastPartDiv)
     }
-    else {
-      for (var i = 0; i < maxBroadcasts; i++) {
-        broadcastPart.innerHTML += gameObj.broadcast[i]
-      }
-    }
-    if (maxBroadcasts < gameObj.broadcast.length) {
-      broadcastPart.innerHTML += `<span class="moreBroadcasts">+${gameObj.broadcast.length - maxBroadcasts}</span>`
-    }
+    // }
+    /* if (gameObj.broadcast.length > 1) {
+      broadcastPart.innerHTML += `<span class="moreBroadcasts">+${gameObj.broadcast.length - 1}</span>`
+    } */
     status.appendChild(broadcastPart)
     boxScore.appendChild(status)
 
@@ -657,8 +666,8 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
       this.updateDom()
-      if (payload.scores.length === 0) {
-        this.noGamesToday[payload.index] = moment().format('YYYY-MM-DD')
+      if (payload.scores.length === 0 && payload.notRun != true) {
+        this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
     }
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
@@ -666,7 +675,13 @@ Module.register('MMM-MyScoreboard', {
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
       this.updateDom()
-      this.ydLoaded = { loaded: true, date: moment().format('YYYY-MM-DD') }
+      var stopGrabbingYD = true
+      for (let i = 0; i < payload.scores.length; i++) {
+        if (payload.scores[i].gameMode < 2) {
+          stopGrabbingYD = false
+        }
+      }
+      this.ydLoaded[payload.index] = { loaded: stopGrabbingYD, date: moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD') }
     }
     else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
       this.localLogos = payload.logos
@@ -730,7 +745,16 @@ Module.register('MMM-MyScoreboard', {
       Once this returns the list, we'll start polling for data
     */
 
-    self.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: self.identifier })
+    this.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: this.identifier })
+
+    // Schedule the first logo rotation
+    this.rotateChannels()
+
+    // Schedule the UI load based on normal interval
+    // var self = this
+    setInterval(function () {
+      self.rotateChannels()
+    }, this.config.channelRotateInterval)
   },
 
   makeTeamList: function (inst, league, teams, groups) {
@@ -758,16 +782,16 @@ Module.register('MMM-MyScoreboard', {
   },
 
   getScores: function () {
-    var gameDate = moment() // get today's date
+    var gameDate = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes') // get today's date
     var whichDay = { today: false, yesterday: 'no' }
 
-    if (gameDate.hour() < this.config.rolloverHours && (!this.ydLoaded.loaded || this.ydLoaded.date !== gameDate.format('YYYY-MM-DD'))) {
-      whichDay.yesterday = 'yes'
+    if (gameDate.hour() < this.config.rolloverHours) {
+      var tempYesterday = 'yes'
     }
 
     if (gameDate.hour() >= this.config.rolloverHours) {
       var tempToday = true
-      whichDay.yesterday = 'erase'
+      tempYesterday = 'erase'
     }
     else if (this.config.alwaysShowToday) {
       tempToday = true
@@ -786,6 +810,12 @@ Module.register('MMM-MyScoreboard', {
       else {
         whichDay.today = tempToday
       }
+      if (self.ydLoaded[sport.league] && self.ydLoaded[sport.league].loaded && self.ydLoaded.date === gameDate.format('YYYY-MM-DD')) {
+        whichDay.yesterday = false
+      }
+      else {
+        whichDay.yesterday = tempYesterday
+      }
       var payload = {
         instanceId: self.identifier,
         index: index,
@@ -799,10 +829,38 @@ Module.register('MMM-MyScoreboard', {
         showLocalBroadcasts: self.config.showLocalBroadcasts,
         displayLocalChannels: self.config.displayLocalChannels,
         localMarkets: self.config.localMarkets,
+        debugHours: self.config.debugHours,
+        debugMinutes: self.config.debugMinutes,
       }
 
       self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
     })
+  },
+
+  rotateChannels: function () {
+    // Log.debug(`${this.logoIndex} <- logoIndex1`)
+    let broadcastDivs = document.getElementsByClassName('broadcast')
+    for (let j = 0; j < broadcastDivs.length; j++) {
+      let logos = document.getElementsByClassName('broadcast')[j].getElementsByClassName('broadcastIconDiv')
+
+      for (let i = 0; i < logos.length; i++) {
+        logos[i].style.display = 'none'
+      }
+      if (logos.length > 0) {
+        // Log.debug(`${this.logoIndex} <- logoIndex2`)
+        logos[(this.logoIndex) % logos.length].style.display = 'flex'
+        // logos[0].style.display = "block"
+        // logos[moment().unix() % logos.length].style.display = "block"
+      }
+    }
+    // Log.debug(`${this.logoIndex} <- logoIndex3`)
+    this.logoIndex++
+    // Log.debug(`${this.logoIndex} <- logoIndex4`)
+    if (this.logoIndex === 17280) {
+      this.logoIndex = 0
+    }
+    // Log.debug(`${this.logoIndex} <- logoIndex5`)
+    /* setTimeout(self.rotateChannels, 5000); // Change image every 5 seconds */
   },
 
   /*
