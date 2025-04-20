@@ -113,6 +113,7 @@ Module.register('MMM-MyScoreboard', {
     FIFA_WORLD_U17: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     FIFA_WORLD_U20: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    UEFA_WOMENS_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_EUROPEAN_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_EUROPEAN_CHAMPIONSHIP_Q: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     UEFA_EUROPEAN_CHAMPIONSHIP_U19: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },

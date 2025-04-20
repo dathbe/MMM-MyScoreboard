@@ -182,6 +182,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 * **FIFA_WORLD_U17** - FIFA Under-17 World Cup
 * **FIFA_WORLD_U20** - FIFA Under-20 World Cup
 * **UEFA_CHAMPIONS** - UEFA Champions League
+* **UEFA_WOMENS_CHAMPIONS** - UEFA Women's Champions League
 * **UEFA_EUROPEAN_CHAMPIONSHIP** - UEFA European Championship
 * **UEFA_EUROPEAN_CHAMPIONSHIP_Q** - UEFA European Championship Qualifying
 * **UEFA_EUROPEAN_CHAMPIONSHIP_U19** - UEFA Under-19 Championship
