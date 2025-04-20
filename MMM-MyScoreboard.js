@@ -27,7 +27,8 @@ Module.register('MMM-MyScoreboard', {
     skipChannels: [],
     localMarkets: [],
     displayLocalChannels: [],
-    limitBroadcasts: 1,
+    channelRotateInterval: 7000,
+    //limitBroadcasts: 1,
     sports: [
       {
         league: 'NHL',
@@ -283,6 +284,7 @@ Module.register('MMM-MyScoreboard', {
   localLogosCustom: {},
   ydLoaded: { loaded: false, date: '' },
   noGamesToday: {},
+  logoIndex: 0,
 
   viewStyleHasLogos: function (v) {
     switch (v) {
@@ -502,25 +504,30 @@ Module.register('MMM-MyScoreboard', {
     else if (['largeLogos', 'stacked', 'stackedWithLogos'].includes(this.config.viewStyle)) {
       maxBroadcasts = Math.min(2, gameObj.broadcast.length, this.config.limitBroadcasts)
     }
-    else { */
+    else {
       maxBroadcasts = Math.min(gameObj.broadcast.length, this.config.limitBroadcasts)
-/*     } */
+     } */
+    //maxBroadcasts = gameObj.broadcast.length
     var broadcastPart = document.createElement('div')
     broadcastPart.classList.add('broadcast')
-    if (gameObj.broadcast.length === 1) {
+/*     if (gameObj.broadcast.length === 1) {
       broadcastPart.innerHTML += gameObj.broadcast[0]
-    }
-    else if (maxBroadcasts === 1) {
+    } */
+/*     else if (maxBroadcasts === 1) {
       broadcastPart.innerHTML += gameObj.broadcast[Math.floor(Math.random() * gameObj.broadcast.length)]
+    } */
+    //else {
+    for (var i = 0; i < gameObj.broadcast.length; i++) {
+      //broadcastPart.innerHTML += gameObj.broadcast[i]
+      var broadcastPartDiv = document.createElement('div')
+      broadcastPartDiv.classList.add('broadcastIconDiv')
+      broadcastPartDiv.innerHTML += gameObj.broadcast[i]
+      broadcastPart.appendChild(broadcastPartDiv)
     }
-    else {
-      for (var i = 0; i < maxBroadcasts; i++) {
-        broadcastPart.innerHTML += gameObj.broadcast[i]
-      }
-    }
-    if (maxBroadcasts < gameObj.broadcast.length) {
-      broadcastPart.innerHTML += `<span class="moreBroadcasts">+${gameObj.broadcast.length - maxBroadcasts}</span>`
-    }
+    //}
+    /* if (gameObj.broadcast.length > 1) {
+      broadcastPart.innerHTML += `<span class="moreBroadcasts">+${gameObj.broadcast.length - 1}</span>`
+    } */
     status.appendChild(broadcastPart)
     boxScore.appendChild(status)
 
@@ -730,7 +737,16 @@ Module.register('MMM-MyScoreboard', {
       Once this returns the list, we'll start polling for data
     */
 
-    self.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: self.identifier })
+    this.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: this.identifier })
+    
+    // Schedule the first logo rotation
+    this.rotateChannels()
+
+    // Schedule the UI load based on normal interval
+    var self = this
+    setInterval(function () {
+      self.rotateChannels()
+    }, this.config.channelRotateInterval)
   },
 
   makeTeamList: function (inst, league, teams, groups) {
@@ -803,6 +819,32 @@ Module.register('MMM-MyScoreboard', {
 
       self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
     })
+  },
+  
+  rotateChannels: function () {
+    //Log.debug(`${this.logoIndex} <- logoIndex1`)
+    let broadcastDivs = document.getElementsByClassName("broadcast")
+    for (let j = 0; j < broadcastDivs.length; j++) {
+      let logos = document.getElementsByClassName("broadcast")[j].getElementsByClassName("broadcastIconDiv")
+      
+      for (let i = 0; i < logos.length; i++) {
+        logos[i].style.display = "none";  
+      }
+      if (logos.length > 0) {
+        //Log.debug(`${this.logoIndex} <- logoIndex2`)
+        logos[(this.logoIndex) % logos.length].style.display = "flex"
+        //logos[0].style.display = "block"
+        //logos[moment().unix() % logos.length].style.display = "block"
+      }
+    }
+    //Log.debug(`${this.logoIndex} <- logoIndex3`)
+    this.logoIndex++
+    //Log.debug(`${this.logoIndex} <- logoIndex4`)
+    if (this.logoIndex === 17280) {
+      this.logoIndex = 0
+    }
+    //Log.debug(`${this.logoIndex} <- logoIndex5`)
+    /* setTimeout(self.rotateChannels, 5000); // Change image every 5 seconds */
   },
 
   /*

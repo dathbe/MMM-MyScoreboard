@@ -1,11 +1,11 @@
 .MMM-MyScoreboard {
-  min-width: 300px;
+  min-width: 325px;
   max-width: 400px;
 }
 
-.MMM-MyScoreboard:has(.smallLogos) {
+/* .MMM-MyScoreboard:has(.smallLogos) {
   min-width: 325px;
-}
+} */
 
 .MMM-MyScoreboard:has(.oneLine),
 .MMM-MyScoreboard:has(.oneLineWithLogos) {
@@ -938,6 +938,8 @@
   color: #AAA;
 }
 
+
+/* Broadcast Logos */
 .MMM-MyScoreboard .broadcast {
 	font-size: 14px;
   color: white;
@@ -951,17 +953,14 @@
   align-items: center;
 }
 
-.MMM-MyScoreboard .box-score.smallLogos .broadcast,
+/* .MMM-MyScoreboard .box-score.smallLogos .broadcast,
 .MMM-MyScoreboard .box-score.oneLine .broadcast,
 .MMM-MyScoreboard .box-score.oneLineWithLogos .broadcast {
-  /* width: unset; */
   animation: unset;
-}
+} */
 
 .MMM-MyScoreboard .box-score.stacked .broadcast,
-.MMM-MyScoreboard .box-score.stackedWithLogos .broadcast,
-.MMM-MyScoreboard .box-score.oneLine .broadcast,
-.MMM-MyScoreboard .box-score.oneLineWithLogos .broadcast {
+.MMM-MyScoreboard .box-score.stackedWithLogos .broadcast {
   justify-content: right;
   padding-right: 0;
 }
@@ -982,6 +981,20 @@
   margin: 0px 2px 0px 2px;
 }
 
+.MMM-MyScoreboard .broadcastIconDiv {
+  margin: 0;
+  padding: 0;
+  display: none;
+  animation-name: fade;
+  animation-duration: .5s;
+  white-space: nowrap;
+  align-items: center;
+}
+
+.MMM-MyScoreboard .broadcastIconDiv:first-of-type {
+    display: flex;
+}
+
 .MMM-MyScoreboard .outline {
   -webkit-filter: drop-shadow(0px 0px 2px white)
                   drop-shadow(-1px -1px 0px white)
@@ -996,20 +1009,6 @@
 .MMM-MyScoreboard .broadcastIconInvert {
   filter: invert(100%);
 }
-
-/* @keyframes marquee {
-    0%, 33% {
-        transform: translateX(42px);
-    }
-    67%, 100% {
-        transform: translateX(-42px);
-    }
-}
-
-.broadcast {
-    animation: marquee 10s linear infinite;
-    background-color: #ccc;
-} */
 
 .MMM-MyScoreboard .statusPart {
   width: 100%;
@@ -1030,14 +1029,14 @@
   width: unset;
 }
 
-.MMM-MyScoreboard .moreBroadcasts {
+/* .MMM-MyScoreboard .moreBroadcasts {
   padding-left: 2px;
 }
 
 .MMM-MyScoreboard .oneLine .moreBroadcasts,
 .MMM-MyScoreboard .oneLineWithLogos .moreBroadcasts {
   padding-right: 5px;
-}
+} */
 
 .MMM-MyScoreboard .oneLine .broadcast,
 .MMM-MyScoreboard .oneLineWithLogos .broadcast {
@@ -1071,4 +1070,9 @@
 .MMM-MyScoreboard .broadcast .MSG {
   font-size: 14x;
   line-height: 14px;
+}
+
+@keyframes fade {
+  from {opacity: .1} 
+  to {opacity: 1}
 }
