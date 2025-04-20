@@ -557,7 +557,7 @@ module.exports = {
     }
     url += moment(gameDate).format('YYYYMMDD') + '&limit=200'
     var MLBurl = 'https://mastapi.mobile.mlbinfra.com/api/epg/v3/search?date='
-      + moment().format('YYYY-MM-DD') + '&exp=MLB'
+      + moment().add(payload.debugHours, 'hours').add(payload.debugMinutes, 'minutes').format('YYYY-MM-DD') + '&exp=MLB'
     /*
       by default, ESPN returns only the Top 25 ranked teams for NCAAF
       and NCAAM. By appending the group parameter (80 for NCAAF and 50
@@ -588,9 +588,8 @@ module.exports = {
         const freeGameBody = await freeGameResponse.json()
         if (freeGameBody['results']) {
           freeGameBody['results'].forEach ((game) => {
-            //Log.debug(game['videoFeeds'][0])
             if (game['videoFeeds'].length > 0 && game['videoFeeds'][0]['freeGame']) {
-              this.freeGameOfTheDay['day'] = moment().format('YYYY-MM-DD')
+              this.freeGameOfTheDay['day'] = moment().add(payload.debugHours, 'hours').add(payload.debugMinutes, 'minutes').format('YYYY-MM-DD')
               this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
               this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
               if (this.freeGameOfTheDay['teams'].includes('AZ')) {
@@ -800,9 +799,9 @@ module.exports = {
             }
           })
         })
-        //if (localGamesList.length > 0) {
-        //  Log.info(`The local channels available for ${game.shortName} are: ${localGamesList.join(', ')}`)
-        //}
+        /* if (localGamesList.length > 0) {
+          Log.info(`The local channels available for ${game.shortName} are: ${localGamesList.join(', ')}`)
+        } */
       }
       if (this.freeGameOfTheDay['day'] === moment(game.competitions[0].date).format('YYYY-MM-DD') && payload.league === 'MLB' && this.freeGameOfTheDay['teams'].includes(hTeamData.team.abbreviation)) {
         channels.push(`<img src="${this.broadcastIcons['MLB.TV Free Game']}" class="broadcastIcon">`)
