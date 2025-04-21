@@ -447,6 +447,7 @@ module.exports = {
     'Universo': './modules/MMM-MyScoreboard/logos/channels/Universo.svg',
     'Victory+': './modules/MMM-MyScoreboard/logos/channels/Victory+.svg',
 
+    'Altitude 2 Sports': './modules/MMM-MyScoreboard/logos/channels/Altitude2Sports.png',
     'Arizona\'s Family 3TV': 'https://upload.wikimedia.org/wikipedia/commons/0/00/KTVK_logo.svg',
     'BlazerVision': './modules/MMM-MyScoreboard/logos/channels/BlazerVision.png',
     'CHSN': 'https://upload.wikimedia.org/wikipedia/en/6/68/Chicago_Sports_Network_Logo.png',
