@@ -1803,6 +1803,12 @@ Teams:
 
 You can add your own custom personal logos into the `logos_custom` folder, and they will not be disturbed when you update the module.  [Specific guidance can be found here](https://github.com/dathbe/MMM-MyScoreboard/tree/4.7.2/logos_custom).  (But if you have a logo that you think should be added for all users, please [share it by opening an issue](https://github.com/dathbe/MMM-MyScoreboard/issues).)
 
+## Displaying Different Standings in Different Seasons
+
+There are several ways to display standings for a given league only at certain times of year (e.g., hiding it when the league is not in season).  You could use a separate module such as [MMM-ModuleScheduler](https://github.com/ianperrin/MMM-ModuleScheduler), which can display or hide an entire module instance based on your schedule.
+
+Another way to do it is to dynamically create a module with the desired leagues based on the date by adding some javascript to your config.js file, as offered by user [mikeyounge](https://github.com/mikeyounge) in [this discussion thread](https://github.com/dathbe/MMM-MyScoreboard/issues/56).
+
 ## Contributing
 
 If you find any problems, bugs or have questions, please [open a GitHub issue](https://github.com/dathbe/MMM-MyScoreboard/issues) in this repository.
