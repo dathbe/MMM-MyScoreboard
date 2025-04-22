@@ -22,7 +22,7 @@ Intended to match the design aesthetic of, and pair nicely with, [MMM-MyStanding
 cd ~/MagicMirror/modules
 git clone https://github.com/dathbe/MMM-MyScoreboard
 cd MMM-MyScoreboard
-npm install --omit=dev
+npm ci --omit=dev
 ```
 
 Dependencies:
@@ -33,7 +33,7 @@ Dependencies:
 ```sh
 cd ~/MagicMirror/modules/MMM-MyScoreboard
 git pull
-npm install --omit=dev
+npm ci --omit=dev
 ```
 
 ## Configuration
