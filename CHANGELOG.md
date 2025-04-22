@@ -4,6 +4,13 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.10.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.10.0...v4.10.1) - 2025-04-XX
+
+- Change install and update instructions to `npm ci` to avoid recreating `package-lock.json` on user installs
+- Update README to include instructions on dymanically creating config options
+- Upgrade devDependcies versions
+- Some new channel logos
+
 ## [4.10.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.9.0...v4.10.0) - 2025-04-20
 
 - **NEW FEATURE**: Added UEFA Women's Champions League
