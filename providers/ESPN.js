@@ -59,8 +59,6 @@ module.exports = {
     NHL: 'hockey/nhl',
     MLS: 'soccer/usa.1',
     RUGBY: 'rugby/scorepanel',
-    ALL_SOCCER: 'soccer/scorepanel',
-    SOCCER_ON_TV: 'soccer/scorepanel',
 
     // International Soccer
     AFC_ASIAN_CUP: 'soccer/afc.cup',
@@ -243,6 +241,7 @@ module.exports = {
     INTERNATIONAL_TEST_MATCH: 'rugby/289234',
     URBA_TOP_12: 'rugby/289279',
     MITRE_10_CUP: 'rugby/270563',
+    'Major League Rugby': 'rugby/289262',
 
   },
 

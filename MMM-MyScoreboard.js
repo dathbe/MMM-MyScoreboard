@@ -72,7 +72,7 @@ Module.register('MMM-MyScoreboard', {
     CFL: { provider: 'SNET', logoFormat: 'svg' },
     MLB: { provider: 'ESPN', logoFormat: 'svg' },
     WBC: { provider: 'SNET', logoFormat: 'svg' },
-    MLS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    
     NCAAF: { provider: 'ESPN', logoFormat: 'url' },
     NCAAM: { provider: 'ESPN', logoFormat: 'url' },
     NCAAM_MM: { provider: 'ESPN', logoFormat: 'url' },
@@ -81,11 +81,10 @@ Module.register('MMM-MyScoreboard', {
     NBAG: { provider: 'ESPN', logoFormat: 'url' },
     NLL: { provider: 'ESPN', logoFormat: 'url' },
     PLL: { provider: 'ESPN', logoFormat: 'url' },
-    RUGBY: { provider: 'ESPN', logoFormat: 'url' },
-    ALL_SOCCER: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SOCCER_ON_TV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // International Soccer
+    ALL_SOCCER: { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
+    SOCCER_ON_TV: { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
     AFC_ASIAN_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     AFC_ASIAN_CUP_Q: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     AFF_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -207,6 +206,7 @@ Module.register('MMM-MyScoreboard', {
     VEN_PRIMERA_PRO: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // North American Soccer
+    MLS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     CONCACAF_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     CONCACAF_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     CRC_PRIMERA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -252,8 +252,24 @@ Module.register('MMM-MyScoreboard', {
     ZAM_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     ZIM_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
+    // Rugby
+    RUGBY: { provider: 'Scorepanel', logoFormat: 'url' },
+    PREMIERSHIP_RUGBY: { provider: 'ESPN', logoFormat: 'url' },
+    RUGBY_WORLD_CUP: { provider: 'ESPN', logoFormat: 'url' },
+    SIX_NATIONS: { provider: 'ESPN', logoFormat: 'url' },
+    THE_RUGBY_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url' },
+    EUROPEAN_RUGBY_CHAMPIONS_CUP: { provider: 'ESPN', logoFormat: 'url' },
+    UNITED_RUGBY_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url' },
+    SUPER_RUGBY_PACIFIC: { provider: 'ESPN', logoFormat: 'url' },
+    OLYMPIC_MENS_7S: { provider: 'ESPN', logoFormat: 'url' },
+    OLYMPIC_WOMENS_RUGBY_SEVENS: { provider: 'ESPN', logoFormat: 'url' },
+    INTERNATIONAL_TEST_MATCH: { provider: 'ESPN', logoFormat: 'url' },
+    URBA_TOP_12: { provider: 'ESPN', logoFormat: 'url' },
+    MITRE_10_CUP: { provider: 'ESPN', logoFormat: 'url' },
+    'Major League Rugby': { provider: 'ESPN', logoFormat: 'url' },
+
     // Other
-    AFL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: false },
+    AFL: { provider: 'ESPN', logoFormat: 'url' },
 
   },
 
@@ -360,7 +376,7 @@ Module.register('MMM-MyScoreboard', {
     var viewStyle = this.config.viewStyle
 
     var boxScore = document.createElement('div')
-    boxScore.classList.add('box-score', league)
+    boxScore.classList.add('box-score', league.replaceAll(' ',''))
     boxScore.classList.add(viewStyle)
     if (gameObj.gameMode == this.gameModes.IN_PROGRESS) {
       boxScore.classList.add('in-progress')
@@ -602,7 +618,8 @@ Module.register('MMM-MyScoreboard', {
     */
     // var anyGames = false
     var self = this
-    this.config.sports.forEach(function (sport) {
+
+    /* this.config.sports.forEach(function (sport) {
       var leagueSeparator = []
       if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
         // anyGames = true
@@ -642,7 +659,56 @@ Module.register('MMM-MyScoreboard', {
           wrapper.appendChild(boxScore)
         })
       }
-    })
+    }) */
+    //this.config.sports.forEach(function (sport) {
+    for (const [sport, scores] of Object.entries(self.sportsData)) {
+      var leagueSeparator = []
+      if (scores['scores'].length > 0) {
+        // anyGames = true
+        if (self.config.showLeagueSeparators) {
+          leagueSeparator = document.createElement('div')
+          leagueSeparator.classList.add('league-separator')
+          leagueSeparator.innerHTML = '<span>' + sport + '</span>'
+          wrapper.appendChild(leagueSeparator)
+        }
+        scores['scores'].forEach(function (game, gidx) {
+          var boxScore = self.boxScoreFactory(scores['league'], game)
+          boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
+          wrapper.appendChild(boxScore)
+        })
+      }
+      if (self.sportsDataYd[sport] && self.sportsDataYd[sport]['scores'].length > 0) {
+        // anyGames = true
+        if (self.config.showLeagueSeparators) {
+          leagueSeparator = document.createElement('div')
+          leagueSeparator.classList.add('league-separator')
+          leagueSeparator.innerHTML = '<span>' + sport + ' - Yesterday</span>'
+          wrapper.appendChild(leagueSeparator)
+        }
+        self.sportsDataYd[sport]['scores'].forEach(function (game, gidx) {
+          var boxScore = self.boxScoreFactory(scores['league'], game)
+          boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
+          wrapper.appendChild(boxScore)
+        })
+      }
+    }
+    for (const [sport, scores] of Object.entries(self.sportsDataYd)) {
+      var leagueSeparator = []
+      if (scores['scores'].length > 0 && !self.sportsData[sport]) {
+        // anyGames = true
+        if (self.config.showLeagueSeparators) {
+          leagueSeparator = document.createElement('div')
+          leagueSeparator.classList.add('league-separator')
+          leagueSeparator.innerHTML = '<span>' + sport + ' - Yesterday</span>'
+          wrapper.appendChild(leagueSeparator)
+        }
+        scores['scores'].forEach(function (game, gidx) {
+          var boxScore = self.boxScoreFactory(scores['league'], game)
+          boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
+          wrapper.appendChild(boxScore)
+        })
+      }
+    }
 
     /*
       We're using the lockString parameter to play nicely with
@@ -665,7 +731,9 @@ Module.register('MMM-MyScoreboard', {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Scores')
       this.loaded = true
-      this.sportsData[payload.index] = payload.scores
+      this.sportsData[payload.label] = {}
+      this.sportsData[payload.label]['scores'] = payload.scores
+      this.sportsData[payload.label]['league'] = payload.index
       this.updateDom()
       if (payload.scores.length === 0 && payload.notRun != true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
@@ -674,7 +742,9 @@ Module.register('MMM-MyScoreboard', {
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
-      this.sportsDataYd[payload.index] = payload.scores
+      this.sportsDataYd[payload.label] = {}
+      this.sportsDataYd[payload.label]['scores'] = payload.scores
+      this.sportsDataYd[payload.label]['league'] = payload.index
       this.updateDom()
       var stopGrabbingYD = true
       for (let i = 0; i < payload.scores.length; i++) {
@@ -817,12 +887,19 @@ Module.register('MMM-MyScoreboard', {
       else {
         whichDay.yesterday = tempYesterday
       }
+      if (sport.label) {
+        var thisLabel = sport.label
+      }
+      else {
+        thisLabel = sport.league
+      }
       var payload = {
         instanceId: self.identifier,
         index: index,
         league: sport.league,
         teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
         provider: self.supportedLeagues[sport.league].provider,
+        label: thisLabel,
         gameDate: gameDate,
         whichDay: whichDay,
         hideBroadcasts: self.config.hideBroadcasts,

@@ -14,6 +14,7 @@ module.exports = NodeHelper.create({
     this.providers.SNET = require('./providers/SNET.js')
     this.providers.SNET_YD = require('./providers/SNET_YD.js')
     this.providers.ESPN = require('./providers/ESPN.js')
+    this.providers.Scorepanel = require('./providers/ESPN_Scorepanel.js')
 
     this.localLogos = {}
     var fsTree = this.getDirectoryTree('./modules/MMM-MyScoreboard/logos')
@@ -81,7 +82,7 @@ module.exports = NodeHelper.create({
 
       if (payload.whichDay.today) {
         provider.getScores(payload, moment(payload.gameDate), function (scores) {
-          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: scores })
+          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label })
         })
       }
       else {
@@ -89,7 +90,7 @@ module.exports = NodeHelper.create({
       }
       if (payload.whichDay.yesterday === 'yes') {
         provider2.getScores(payload, moment(payload.gameDate).subtract(1, 'day'), function (scores) {
-          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: scores })
+          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label })
         })
       }
       else if (payload.whichDay.yesterday === 'erase') {

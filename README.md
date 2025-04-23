@@ -326,6 +326,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 <details>
   <summary><b>Available Rugby Leagues</b> (click to expand)</summary>
  
+* `RUGBY` - All Rugby games
 * **PREMIERSHIP_RUGBY**
 * **RUGBY_WORLD_CUP**
 * **SIX_NATIONS**
@@ -338,6 +339,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 * **INTERNATIONAL_TEST_MATCH**
 * **URBA_TOP_12**
 * **MITRE_10_CUP**
+* `Major League Rugby`
 
 </details>
 
