@@ -1,4 +1,4 @@
-/*********************************
+ /*********************************
 
  MagicMirror² Module:
  MMM-MyScoreboard
@@ -10,7 +10,7 @@
 
  *********************************/
 
-Module.register('MMM-MyScoreboard', {
+ Module.register('MMM-MyScoreboard', {
 
   // Default module config.
   defaults: {
@@ -28,9 +28,9 @@ Module.register('MMM-MyScoreboard', {
     localMarkets: [],
     displayLocalChannels: [],
     channelRotateInterval: 7000,
-    animation: { 
+    scrollAnimation: {
       scroll: false,
-      scrollSpeed: 6, 
+      scrollSpeed: 6,
       height: 10000
     },
     // limitBroadcasts: 1,
@@ -366,19 +366,21 @@ Module.register('MMM-MyScoreboard', {
    </div>
    ******************************************************************/
 
-   // New Scroll Animation Function 
-   setupScrollAnimation: function(wrapper, lines) {
-    // Pull the wrapper height as it is built. If it is greater than animation.height, trigger animation
-    domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight; 
-    const shouldAnimate = this.config.animation.scroll && this.config.animation.height < domHeight + 10; // Add 10px for margin-top
-    let [container, clone] = [null, null];
+   // New Scroll Animation Function
+   setupScrollAnimation: function (wrapper, lines) {
+    // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
+    const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
+      shouldAnimate = this.config.scrollAnimation.scroll && this.config.scrollAnimation.height < domHeight + 10; // Add 10px for margin-top
+    let container = null,
+      clone = null;
+
     wrapper.classList.remove('running', 'paused'); // Remove animation classes temporarily
     if (!shouldAnimate) {
       wrapper.classList.add('paused');
       return;
     }
     // Create new containers if they don't exist
-    if (!container) { 
+    if (!container) {
       container = document.createElement('div');
       container.className = 'scroll-container';
       wrapper.appendChild(container);
@@ -393,7 +395,7 @@ Module.register('MMM-MyScoreboard', {
       container.appendChild(node);
       clone.appendChild(node.cloneNode(true));
     }
-    const animationDuration = this.config.animation.scrollSpeed * lines; // Calculate dynamic duration based on content height
+    const animationDuration = this.config.scrollAnimation.scrollSpeed * lines; // Calculate dynamic duration based on content height
     wrapper.style.setProperty('--animation-duration', `${animationDuration}s`);
     wrapper.classList.add('running'); // Start animation
   },
@@ -628,8 +630,8 @@ Module.register('MMM-MyScoreboard', {
     }
 
     // New property to set wrapper height
-    if (this.config.animation.height) {
-      wrapper.style.setProperty('--max-height', `${this.config.animation.height}px`);
+    if (this.config.scrollAnimation.height) {
+      wrapper.style.setProperty('--max-height', `${this.config.scrollAnimation.height}px`);
     }
     /*
       Show "Loading" when there's no data initially.
@@ -648,7 +650,7 @@ Module.register('MMM-MyScoreboard', {
     */
     // var anyGames = false
     var self = this
-    var lines = 0; // Calculate number of lines for animation duration
+    let lines = 0; // Calculate number of lines for animation duration
     this.config.sports.forEach(function (sport) {
       var leagueSeparator = []
       if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
@@ -729,22 +731,22 @@ Module.register('MMM-MyScoreboard', {
     });
     return lines;
   },
-  
-  // New setInterval Logic to match the animation speed. Minimum 2 minutes. 
+
+  // New setInterval Logic to match the animation speed. Minimum 2 minutes.
   // Calculates a multiple of the animationDuration so it updates when animation has completed the lap.
-  // Unfortunately, there is no other way to have a smooth transition because it always rebuilds the DOM and starts at 0. 
+  // Unfortunately, there is no other way to have a smooth transition because it always rebuilds the DOM and starts at 0.
   // If we could update the innerHTML only, then it wouldn't have a harsh reset.
-  updateRefreshInterval: function() {
+  updateRefreshInterval: function () {
   let refreshInterval;
   const minRefresh = 2 * 60 * 1000; // 2 minutes in milliseconds
   refreshInterval = minRefresh;
 
-  if (this.config.animation.scroll) {
-    const lines = this.calculateTotalLines();
+  if (this.config.scrollAnimation.scroll) {
+    var lines = this.calculateTotalLines();
     if (lines > 0) {
-      const animationDuration = this.config.animation.scrollSpeed * lines;
-      const animationDurationMs = animationDuration * 1000;
-      const calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs;
+      const animationDuration = this.config.scrollAnimation.scrollSpeed * lines,
+        animationDurationMs = animationDuration * 1000,
+        calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs;
       refreshInterval = Math.max(minRefresh, calculatedInterval);
     }
   }

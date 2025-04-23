@@ -90,6 +90,15 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `localMarkets`         | A list of your local markets so that you can display only broadcast stations from your local market.  Use the team abbreviations for any teams in your local broadcast market.  For example, if you live in Los Angeles, you may want to use `['ANA', 'LA', 'LAA', 'LAD', 'LAC', 'LAL', 'LAR', 'LAFC', 'UCLA', 'USC']` (note: 'LAC' will pick up both the Chargers and the Clippers). If you live in Miami, you may only need `['MIA']`.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
 | `skipChannels`         | A list of channels that you would never like to see displayed (e.g., if you do not subscribe to that channel).  You can find the abbreviation for a channel that displays as a logo by checking `MMM-MyScoreboard/providers/ESPN.js`.  I.e., start with all the channels and remove the ones you don't want.  `skipChannels` will override any other option to display certain channels.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
 | `displayLocalChannels` | A list of local channels you would like to display, even if `showLocalBroadcasts` is set to `false`.  This allows you to manually set the local broadcast channels you receive.  I.e., start with no channels and add the ones you want.  `displayLocalChannels` will override any other option to turn off channels.<br><br>**Type** `Array` or `Strings`<br>**Default** `[]`
+| `scrollAnimation`      | Control the scrolling ticker animation. See below for configuration.<br><br>**Type** `Object`
+
+### Configuring "scrollAnimation"
+
+| Property      | Description
+|---------------|------------
+| `scroll`      | Enable animation for ticker effect.<br><br>**Type** `Boolean`<br>**Default** `false`
+| `height`      | Limit the height of the container.<br><br>**Type** `Number`<br>**Default** `10000` ensures all items are shown unless restricted
+| `scrollSpeed` | Number of seconds each line should take to traverse to the next line. `1` = very fast. `10` = very slow. For example, your `height` might be `300` and display `10` box scores. `scrollSpeed` of `6` will take 60 seconds for the bottom score to reach the top.<br><br>**Type** `Number`<br>**Defualt** `6`
 
 
 ### Configuring Your "Sports" List
