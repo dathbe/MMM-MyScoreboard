@@ -98,7 +98,7 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 |---------------|------------
 | `scroll`      | Enable animation for ticker effect.<br><br>**Type** `Boolean`<br>**Default** `false`
 | `height`      | Limit the height of the container.<br><br>**Type** `Number`<br>**Default** `10000` ensures all items are shown unless restricted
-| `scrollSpeed` | Number of seconds each line should take to traverse to the next line. `1` = very fast. `10` = very slow. For example, your `height` might be `300` and display `10` box scores. `scrollSpeed` of `6` will take 60 seconds for the bottom score to reach the top.<br><br>**Type** `Number`<br>**Defualt** `6`
+| `scrollSpeed` | Number of seconds each line should take to traverse to the next line. `1` = very fast. `10` = very slow. For example, your `height` might be `300` and display 10 box scores. `scrollSpeed` of `6` will take 60 seconds for the bottom score to reach the top.<br><br>**Type** `Number`<br>**Default** `6`
 
 
 ### Configuring Your "Sports" List
