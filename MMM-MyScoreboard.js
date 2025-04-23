@@ -370,7 +370,7 @@
    setupScrollAnimation: function (wrapper, lines) {
     // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
     const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
-      shouldAnimate = this.config.scrollAnimation.scroll && this.config.scrollAnimation.height < domHeight + 10; // Add 10px for margin-top
+      shouldAnimate = this.config.scrollAnimation.scroll && this.config.scrollAnimation.height < domHeight;
     let container = null,
       clone = null;
 

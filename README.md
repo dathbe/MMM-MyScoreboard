@@ -92,13 +92,13 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `displayLocalChannels` | A list of local channels you would like to display, even if `showLocalBroadcasts` is set to `false`.  This allows you to manually set the local broadcast channels you receive.  I.e., start with no channels and add the ones you want.  `displayLocalChannels` will override any other option to turn off channels.<br><br>**Type** `Array` or `Strings`<br>**Default** `[]`
 | `scrollAnimation`      | Control the scrolling ticker animation. See below for configuration.<br><br>**Type** `Object`
 
-### Configuring "scrollAnimation"
+### Configuring "Scrolling Animation"
 
 | Property      | Description
 |---------------|------------
 | `scroll`      | Enable animation for ticker effect.<br><br>**Type** `Boolean`<br>**Default** `false`
-| `height`      | Limit the height of the container.<br><br>**Type** `Number`<br>**Default** `10000` ensures all items are shown unless restricted
-| `scrollSpeed` | Number of seconds each line should take to traverse to the next line. `1` = very fast. `10` = very slow. For example, your `height` might be `300` and display 10 box scores. `scrollSpeed` of `6` will take 60 seconds for the bottom score to reach the top.<br><br>**Type** `Number`<br>**Default** `6`
+| `height`      | Limit the height of the container. For best results, set the limit to show exactly the number of games you want when static. This ensures that any extra games will be fully hidden and force the animation to start. No animation will occur if there are fewer games than fill the container.<br><br>**Type** `Number`<br>**Default** `10000` ensures all games are shown unless restricted
+| `scrollSpeed` | Number of seconds each line should take to traverse to the next one. `1` = very fast. `10` = very slow. For example, your `height` might be `300` and display 10 games & league-separators. `scrollSpeed` of `6` will take 60 seconds for the last visible game/separator to reach the top.<br><br>**Type** `Number`<br>**Default** `6`
 
 
 ### Configuring Your "Sports" List
