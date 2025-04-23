@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.11.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.10.0...v4.11.0) - 2025-04-XX
 
 - **NEW FEATURE**: Added Major League Rugby
+- **NEW FEATURE**: `ALL_SOCCER`, `SOCCER_ON_TV`, and `RUGBY` will now display with the specific league header
 - BUG FIX: Fixed rugby leagues
 - Change install and update instructions to `npm ci` to avoid recreating `package-lock.json` on user installs
 - Update README to include instructions on dymanically creating config options

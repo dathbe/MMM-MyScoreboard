@@ -132,7 +132,7 @@ Module.register('MMM-MyScoreboard', {
     ENG_LEAGUE_1: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     ENG_LEAGUE_2: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     ENG_NATIONAL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_PREMIERE_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'English Premier League': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     IRL_PREM: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     NIR_PREM: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     SCO_CHALLENGE_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -221,7 +221,7 @@ Module.register('MMM-MyScoreboard', {
     USA_NCAA_SL_M: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     USA_NCAA_SL_W: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     USA_NASL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    USA_NWSL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    NWSL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     USA_OPEN: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     USA_USL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
@@ -372,7 +372,7 @@ Module.register('MMM-MyScoreboard', {
    <span class='score visitor'>vScore</span>
    </div>
    ******************************************************************/
-  boxScoreFactory: function (league, gameObj) {
+  boxScoreFactory: function (league, gameObj, label) {
     var viewStyle = this.config.viewStyle
 
     var boxScore = document.createElement('div')
@@ -395,6 +395,9 @@ Module.register('MMM-MyScoreboard', {
     var leagueForLogoPath = league
     if (league.startsWith('NCAA')) {
       leagueForLogoPath = 'NCAA'
+    }
+    else if (this.supportedLeagues[label]) {
+      leagueForLogoPath = label
     }
 
     // add team logos if applicable
@@ -672,7 +675,7 @@ Module.register('MMM-MyScoreboard', {
           wrapper.appendChild(leagueSeparator)
         }
         scores['scores'].forEach(function (game, gidx) {
-          var boxScore = self.boxScoreFactory(scores['league'], game)
+          var boxScore = self.boxScoreFactory(scores['league'], game, sport)
           boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
           wrapper.appendChild(boxScore)
         })
@@ -686,7 +689,7 @@ Module.register('MMM-MyScoreboard', {
           wrapper.appendChild(leagueSeparator)
         }
         self.sportsDataYd[sport]['scores'].forEach(function (game, gidx) {
-          var boxScore = self.boxScoreFactory(scores['league'], game)
+          var boxScore = self.boxScoreFactory(scores['league'], game, sport)
           boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
           wrapper.appendChild(boxScore)
         })
@@ -703,7 +706,7 @@ Module.register('MMM-MyScoreboard', {
           wrapper.appendChild(leagueSeparator)
         }
         scores['scores'].forEach(function (game, gidx) {
-          var boxScore = self.boxScoreFactory(scores['league'], game)
+          var boxScore = self.boxScoreFactory(scores['league'], game, sport)
           boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
           wrapper.appendChild(boxScore)
         })
@@ -793,6 +796,15 @@ Module.register('MMM-MyScoreboard', {
     this.config.sports.forEach(function (sport) {
       if (self.supportedLeagues[sport.league]) {
         scrubbedSports.push(sport)
+      }
+      else if (self.legacySoccer[sport.league]) {
+        Log.debug(self.legacySoccer[sport.league])
+        sport.league = self.legacySoccer[sport.league]
+        scrubbedSports.push(sport)
+        Log.debug(sport)
+      }
+      else {
+        Log.warn(`League ${sport.league} is not a valid league name`)
       }
     })
     this.config.sports = scrubbedSports
@@ -1154,4 +1166,9 @@ Module.register('MMM-MyScoreboard', {
 
   },
 
+  legacySoccer: {
+    USA_NWSL: 'NWSL',
+    USA_MLS: 'MLS',
+    ENG_PREMIERE_LEAGUE: 'English Premier League',
+  },
 })

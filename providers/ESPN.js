@@ -196,7 +196,7 @@ module.exports = {
     USA_NCAA_SL_M: 'soccer/usa.ncaa.m.1',
     USA_NCAA_SL_W: 'soccer/usa.ncaa.w.1',
     USA_NASL: 'soccer/usa.nasl',
-    USA_NWSL: 'soccer/usa.nwsl',
+    NWSL: 'soccer/usa.nwsl',
     USA_OPEN: 'soccer/usa.open',
     USA_USL: 'soccer/usa.usl.1',
 
