@@ -28,6 +28,11 @@ Module.register('MMM-MyScoreboard', {
     localMarkets: [],
     displayLocalChannels: [],
     channelRotateInterval: 7000,
+    animation: { 
+      scroll: false,
+      scrollSpeed: 6, 
+      height: 10000
+    },
     // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
@@ -57,7 +62,7 @@ Module.register('MMM-MyScoreboard', {
 
       logoFormat is no longer used.  The module makes a catalog of what
       logos are present locally and uses them when available.
-      Otherewise the log image URL provided by the data feed is used.
+      Otherwise the log image URL provided by the data feed is used.
 
       In the spirit of "if it ain't broke, don't  fix it," I'll leave
       the logoFormat parameter in place.  Who knows... I might use it
@@ -283,6 +288,10 @@ Module.register('MMM-MyScoreboard', {
     'stackedWithLogos',
   ],
 
+  // New for updateRefreshInterval()
+  refreshIntervalId: null,
+  currentIntervalDuration: 0,
+
   localLogos: {},
   localLogosCustom: {},
   ydLoaded: {},
@@ -356,6 +365,39 @@ Module.register('MMM-MyScoreboard', {
    <span class='score visitor'>vScore</span>
    </div>
    ******************************************************************/
+
+   // New Scroll Animation Function 
+   setupScrollAnimation: function(wrapper, lines) {
+    // Pull the wrapper height as it is built. If it is greater than animation.height, trigger animation
+    domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight; 
+    const shouldAnimate = this.config.animation.scroll && this.config.animation.height < domHeight + 10; // Add 10px for margin-top
+    let [container, clone] = [null, null];
+    wrapper.classList.remove('running', 'paused'); // Remove animation classes temporarily
+    if (!shouldAnimate) {
+      wrapper.classList.add('paused');
+      return;
+    }
+    // Create new containers if they don't exist
+    if (!container) { 
+      container = document.createElement('div');
+      container.className = 'scroll-container';
+      wrapper.appendChild(container);
+    }
+    if (!clone) {
+      clone = container.cloneNode(true);
+      wrapper.appendChild(clone);
+    }
+    // Move wrapper contents to a new container to scroll within the wrapper container. Create a clone so it looks like an endless loop
+    while (wrapper.firstChild && !wrapper.firstChild.classList.contains('scroll-container')) {
+      const node = wrapper.firstChild;
+      container.appendChild(node);
+      clone.appendChild(node.cloneNode(true));
+    }
+    const animationDuration = this.config.animation.scrollSpeed * lines; // Calculate dynamic duration based on content height
+    wrapper.style.setProperty('--animation-duration', `${animationDuration}s`);
+    wrapper.classList.add('running'); // Start animation
+  },
+
   boxScoreFactory: function (league, gameObj) {
     var viewStyle = this.config.viewStyle
 
@@ -585,6 +627,10 @@ Module.register('MMM-MyScoreboard', {
       wrapper.classList.add('highlight-winners')
     }
 
+    // New property to set wrapper height
+    if (this.config.animation.height) {
+      wrapper.style.setProperty('--max-height', `${this.config.animation.height}px`);
+    }
     /*
       Show "Loading" when there's no data initially.
     */
@@ -602,11 +648,14 @@ Module.register('MMM-MyScoreboard', {
     */
     // var anyGames = false
     var self = this
+    var lines = 0; // Calculate number of lines for animation duration
     this.config.sports.forEach(function (sport) {
       var leagueSeparator = []
       if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
         // anyGames = true
+        lines += self.sportsData[sport.league].length;
         if (self.config.showLeagueSeparators) {
+          lines++;
           leagueSeparator = document.createElement('div')
           leagueSeparator.classList.add('league-separator')
           if (sport.label) {
@@ -625,7 +674,9 @@ Module.register('MMM-MyScoreboard', {
       }
       if (self.sportsDataYd[sport.league] != null && self.sportsDataYd[sport.league].length > 0) {
         // anyGames = true
+        lines += self.sportsDataYd[sport.league].length;
         if (self.config.showLeagueSeparators) {
+          lines++;
           leagueSeparator = document.createElement('div')
           leagueSeparator.classList.add('league-separator')
           if (sport.label) {
@@ -657,16 +708,64 @@ Module.register('MMM-MyScoreboard', {
     // } else {
     //  this.show(1000, {lockString: this.identifier});
     // }
+    
+    this.setupScrollAnimation(wrapper, lines); // Trigger animation check
 
     return wrapper
   },
+
+  // Function to calculateTotallines for updateRefresh interval. Could also be used for getDom, but there are only 5 lines of code added there.
+  calculateTotalLines: function() {
+    let lines = 0;
+    this.config.sports.forEach(sport => {
+      if (this.sportsData[sport.league] != null && this.sportsData[sport.league].length > 0) {
+        lines += this.sportsData[sport.league].length;
+        if (this.config.showLeagueSeparators) lines++;
+      };
+      if (this.sportsDataYd[sport.league] != null && this.sportsDataYd[sport.league].length > 0) {
+        lines += this.sportsDataYd[sport.league].length;
+        if (this.config.showLeagueSeparators) lines++;
+      };
+    });
+    return lines;
+  },
+  
+  // New setInterval Logic to match the animation speed. Minimum 2 minutes. 
+  // Calculates a multiple of the animationDuration so it updates when animation has completed the lap.
+  // Unfortunately, there is no other way to have a smooth transition because it always rebuilds the DOM and starts at 0. 
+  // If we could update the innerHTML only, then it wouldn't have a harsh reset.
+  updateRefreshInterval: function() {
+  let refreshInterval;
+  const minRefresh = 2 * 60 * 1000; // 2 minutes in milliseconds
+  refreshInterval = minRefresh;
+
+  if (this.config.animation.scroll) {
+    const lines = this.calculateTotalLines();
+    if (lines > 0) {
+      const animationDuration = this.config.animation.scrollSpeed * lines;
+      const animationDurationMs = animationDuration * 1000;
+      const calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs;
+      refreshInterval = Math.max(minRefresh, calculatedInterval);
+    }
+  }
+  // currentIntervalDuration starts as 0 so it always runs the first time (0 !== 120000)
+  if (refreshInterval !== this.currentIntervalDuration) {
+    if (this.refreshIntervalId) clearInterval(this.refreshIntervalId);
+    var self = this
+    this.refreshIntervalId = setInterval(() => {
+      self.getScores();
+      }, refreshInterval);
+    this.currentIntervalDuration = refreshInterval;
+  }
+},
 
   socketNotificationReceived: function (notification, payload) {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Scores')
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
-      this.updateDom()
+      this.updateDom();
+      this.updateRefreshInterval();
       if (payload.scores.length === 0 && payload.notRun != true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
@@ -675,7 +774,8 @@ Module.register('MMM-MyScoreboard', {
       // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
-      this.updateDom()
+      this.updateDom();
+      this.updateRefreshInterval();
       var stopGrabbingYD = true
       for (let i = 0; i < payload.scores.length; i++) {
         if (payload.scores[i].gameMode < 2) {
@@ -704,10 +804,7 @@ Module.register('MMM-MyScoreboard', {
         respective feed owners to lock down the APIs. Updating
         every two minutes should be more than fine for our purposes.
       */
-      var self = this
-      setInterval(() => {
-        self.getScores()
-      }, 2 * 60 * 1000)
+      this.updateRefreshInterval();
     }
   },
 
