@@ -34,7 +34,8 @@
   "author": "Jeff Clarke",
   "contributors": [
     "Jeff Clarke",
-    "dathbe"
+    "dathbe",
+    "mikeyounge"
   ],  
   "scripts": {
     "lint": "eslint",
