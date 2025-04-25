@@ -16,6 +16,9 @@ Intended to match the design aesthetic of, and pair nicely with, [MMM-MyStanding
 
 ![Screenshot](example2.png)
 
+[![Platform](https://img.shields.io/badge/platform-MagicMirror²-informational)](https://MagicMirror.builders)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.md)
+
 ## Installing the Module
 
 ```sh
