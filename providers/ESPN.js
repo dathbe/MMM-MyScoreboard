@@ -470,6 +470,7 @@ module.exports = {
     'KMSP-TV': 'https://static.foxtv.com/static/orion/img/core/s/logos/fts-minneapolis-a.svg',
     'KNTV': './modules/MMM-MyScoreboard/logos/channels/KNTV.svg',
     'KONG': 'https://upload.wikimedia.org/wikipedia/commons/6/6a/KONG_%28TV%29_logo_2016.svg',
+    'KPNX': 'https://upload.wikimedia.org/wikipedia/commons/5/5f/KPNX_12_logo.svg',
     'KTVD-TV (My20)': 'https://my20denver.azurewebsites.net/graphics/logo-top.png',
     'KUNP 16': './modules/MMM-MyScoreboard/logos/channels/KUNP16.svg',
     'KUSA-TV (9NEWS)': 'https://www.9news.com/assets/shared-images/logos/kusa.png',
@@ -851,8 +852,13 @@ module.exports = {
           status.push(game.status.type.description)
           broadcast = channels
           break
-        case '7': // delayed
         case '17': // rain delay
+          gameState = 1
+          classes.push['delay']
+          status.push(game.status.type.description) // shortDetail is too long for baseball ("Rain Delay, Top 1st")
+          broadcast = channels
+          break
+        case '7': // delayed
           gameState = 1
           classes.push['delay']
           status.push('Delay')
