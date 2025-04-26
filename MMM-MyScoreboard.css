@@ -1076,3 +1076,26 @@
   from {opacity: .1} 
   to {opacity: 1}
 }
+
+/* Scroll Animation */
+
+.MMM-MyScoreboard .wrapper.scroll {
+  overflow: hidden;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.MMM-MyScoreboard .wrapper.scroll .scroll-container {
+  animation: scroll linear infinite;
+  will-change: transform;
+  animation-play-state: running !important;
+}
+
+@keyframes scroll {
+  from { 
+    transform: translateY(10px);
+  }
+  to {
+    transform: translateY(-100%);
+  };
+}
