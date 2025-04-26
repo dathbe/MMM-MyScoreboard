@@ -10,7 +10,7 @@
 
  *********************************/
 
- Module.register('MMM-MyScoreboard', {
+Module.register('MMM-MyScoreboard', {
 
   // Default module config.
   defaults: {
@@ -77,7 +77,7 @@
     CFL: { provider: 'SNET', logoFormat: 'svg' },
     MLB: { provider: 'ESPN', logoFormat: 'svg' },
     WBC: { provider: 'SNET', logoFormat: 'svg' },
-    MLS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    
     NCAAF: { provider: 'ESPN', logoFormat: 'url' },
     NCAAM: { provider: 'ESPN', logoFormat: 'url' },
     NCAAM_MM: { provider: 'ESPN', logoFormat: 'url' },
@@ -86,11 +86,10 @@
     NBAG: { provider: 'ESPN', logoFormat: 'url' },
     NLL: { provider: 'ESPN', logoFormat: 'url' },
     PLL: { provider: 'ESPN', logoFormat: 'url' },
-    RUGBY: { provider: 'ESPN', logoFormat: 'url' },
-    ALL_SOCCER: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SOCCER_ON_TV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // International Soccer
+    ALL_SOCCER: { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
+    SOCCER_ON_TV: { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
     AFC_ASIAN_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     AFC_ASIAN_CUP_Q: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     AFF_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -138,7 +137,7 @@
     ENG_LEAGUE_1: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     ENG_LEAGUE_2: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     ENG_NATIONAL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_PREMIERE_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'English Premier League': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     IRL_PREM: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     NIR_PREM: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     SCO_CHALLENGE_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -212,6 +211,7 @@
     VEN_PRIMERA_PRO: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // North American Soccer
+    MLS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     CONCACAF_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     CONCACAF_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     CRC_PRIMERA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
@@ -226,7 +226,7 @@
     USA_NCAA_SL_M: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     USA_NCAA_SL_W: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     USA_NASL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    USA_NWSL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    NWSL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     USA_OPEN: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     USA_USL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
@@ -257,8 +257,24 @@
     ZAM_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     ZIM_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
+    // Rugby
+    RUGBY: { provider: 'Scorepanel', logoFormat: 'url' },
+    PREMIERSHIP_RUGBY: { provider: 'ESPN', logoFormat: 'url' },
+    RUGBY_WORLD_CUP: { provider: 'ESPN', logoFormat: 'url' },
+    SIX_NATIONS: { provider: 'ESPN', logoFormat: 'url' },
+    THE_RUGBY_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url' },
+    EUROPEAN_RUGBY_CHAMPIONS_CUP: { provider: 'ESPN', logoFormat: 'url' },
+    UNITED_RUGBY_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url' },
+    SUPER_RUGBY_PACIFIC: { provider: 'ESPN', logoFormat: 'url' },
+    OLYMPIC_MENS_7S: { provider: 'ESPN', logoFormat: 'url' },
+    OLYMPIC_WOMENS_RUGBY_SEVENS: { provider: 'ESPN', logoFormat: 'url' },
+    INTERNATIONAL_TEST_MATCH: { provider: 'ESPN', logoFormat: 'url' },
+    URBA_TOP_12: { provider: 'ESPN', logoFormat: 'url' },
+    MITRE_10_CUP: { provider: 'ESPN', logoFormat: 'url' },
+    'Major League Rugby': { provider: 'ESPN', logoFormat: 'url' },
+
     // Other
-    AFL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: false },
+    AFL: { provider: 'ESPN', logoFormat: 'url' },
 
   },
 
@@ -287,7 +303,7 @@
     'stacked',
     'stackedWithLogos',
   ],
-
+  
   // New for updateRefreshInterval()
   refreshIntervalId: null,
   refreshInterval: 0,
@@ -343,31 +359,7 @@
     }
   },
 
-  /******************************************************************
-
-   Function boxScoreFactory()
-
-   Parameters:
-   gameObj: Object of a single game's data
-
-   Generates an HTML snippet representing one game in the list.
-   Scores are ommitted if gameObj.gameMode == FUTURE
-
-   <div class='box-score league [extra classes]'>
-   <img class='logo home' src='logos/league/hTeamShortcode.svg' alt='hTeam' />
-   <img class='logo visitor' src='logos/league/vTeamShortcode.svg' alt='vTeam' />
-   <span class="team-shortcode home">XXX</span>
-   <span class="team-shortcode visitor">XXX</span>
-   <span class='status'>
-   <span>status1</span>
-   <span>status2</span>
-   </span>
-   <span class='score home'>hScore</span>
-   <span class='score visitor'>vScore</span>
-   </div>
-   ******************************************************************/
-
-   // New Scroll Animation Function
+  // New Scroll Animation Function
    setupScrollAnimation: function (wrapper) {
     // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
     const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
@@ -375,7 +367,7 @@
       animationDuration = this.config.scrollAnimation.scrollSpeed * this.totalDivs;
     let container = null,
       clone = null;
-    
+
     wrapper.classList.remove('scroll');
     if (!shouldAnimate) {
       return;
@@ -400,11 +392,34 @@
     wrapper.classList.add('scroll'); // Start animation
   },
 
-  boxScoreFactory: function (league, gameObj) {
+  /******************************************************************
+
+   Function boxScoreFactory()
+
+   Parameters:
+   gameObj: Object of a single game's data
+
+   Generates an HTML snippet representing one game in the list.
+   Scores are ommitted if gameObj.gameMode == FUTURE
+
+   <div class='box-score league [extra classes]'>
+   <img class='logo home' src='logos/league/hTeamShortcode.svg' alt='hTeam' />
+   <img class='logo visitor' src='logos/league/vTeamShortcode.svg' alt='vTeam' />
+   <span class="team-shortcode home">XXX</span>
+   <span class="team-shortcode visitor">XXX</span>
+   <span class='status'>
+   <span>status1</span>
+   <span>status2</span>
+   </span>
+   <span class='score home'>hScore</span>
+   <span class='score visitor'>vScore</span>
+   </div>
+   ******************************************************************/
+  boxScoreFactory: function (league, gameObj, label) {
     var viewStyle = this.config.viewStyle
 
     var boxScore = document.createElement('div')
-    boxScore.classList.add('box-score', league)
+    boxScore.classList.add('box-score', league.replaceAll(' ',''))
     boxScore.classList.add(viewStyle)
     if (gameObj.gameMode == this.gameModes.IN_PROGRESS) {
       boxScore.classList.add('in-progress')
@@ -423,6 +438,9 @@
     var leagueForLogoPath = league
     if (league.startsWith('NCAA')) {
       leagueForLogoPath = 'NCAA'
+    }
+    else if (this.supportedLeagues[label]) {
+      leagueForLogoPath = label
     }
 
     // add team logos if applicable
@@ -652,7 +670,7 @@
     // var anyGames = false
     var self = this
 
-    this.config.sports.forEach(function (sport) {
+    /* this.config.sports.forEach(function (sport) {
       var leagueSeparator = []
       if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
         // anyGames = true
@@ -692,7 +710,56 @@
           wrapper.appendChild(boxScore)
         })
       }
-    })
+    }) */
+    //this.config.sports.forEach(function (sport) {
+    for (const [sport, scores] of Object.entries(self.sportsData)) {
+      var leagueSeparator = []
+      if (scores['scores'].length > 0) {
+        // anyGames = true
+        if (self.config.showLeagueSeparators) {
+          leagueSeparator = document.createElement('div')
+          leagueSeparator.classList.add('league-separator')
+          leagueSeparator.innerHTML = '<span>' + sport + '</span>'
+          wrapper.appendChild(leagueSeparator)
+        }
+        scores['scores'].forEach(function (game, gidx) {
+          var boxScore = self.boxScoreFactory(scores['league'], game, sport)
+          boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
+          wrapper.appendChild(boxScore)
+        })
+      }
+      if (self.sportsDataYd[sport] && self.sportsDataYd[sport]['scores'].length > 0) {
+        // anyGames = true
+        if (self.config.showLeagueSeparators) {
+          leagueSeparator = document.createElement('div')
+          leagueSeparator.classList.add('league-separator')
+          leagueSeparator.innerHTML = '<span>' + sport + ' - Yesterday</span>'
+          wrapper.appendChild(leagueSeparator)
+        }
+        self.sportsDataYd[sport]['scores'].forEach(function (game, gidx) {
+          var boxScore = self.boxScoreFactory(scores['league'], game, sport)
+          boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
+          wrapper.appendChild(boxScore)
+        })
+      }
+    }
+    for (const [sport, scores] of Object.entries(self.sportsDataYd)) {
+      var leagueSeparator = []
+      if (scores['scores'].length > 0 && !self.sportsData[sport]) {
+        // anyGames = true
+        if (self.config.showLeagueSeparators) {
+          leagueSeparator = document.createElement('div')
+          leagueSeparator.classList.add('league-separator')
+          leagueSeparator.innerHTML = '<span>' + sport + ' - Yesterday</span>'
+          wrapper.appendChild(leagueSeparator)
+        }
+        scores['scores'].forEach(function (game, gidx) {
+          var boxScore = self.boxScoreFactory(scores['league'], game, sport)
+          boxScore.classList.add(gidx % 2 == 0 ? 'odd' : 'even')
+          wrapper.appendChild(boxScore)
+        })
+      }
+    }
 
     /*
       We're using the lockString parameter to play nicely with
@@ -712,8 +779,8 @@
 
     return wrapper
   },
-
-    // Function to Calculate the Total number of Divs for scoll and update interval.
+  
+  // Function to Calculate the Total number of Divs for scoll and update interval.
     calculateTotalDivs: function() {
     // separatorDivs can be used to slow animation down when active if desired.
     let gameDivs = 0;
@@ -764,7 +831,9 @@
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Scores')
       this.loaded = true
-      this.sportsData[payload.index] = payload.scores
+      this.sportsData[payload.label] = {}
+      this.sportsData[payload.label]['scores'] = payload.scores
+      this.sportsData[payload.label]['league'] = payload.index
       this.totalDivs = this.calculateTotalDivs()
       this.updateDom();
       this.updateRefreshInterval();
@@ -775,7 +844,9 @@
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
-      this.sportsDataYd[payload.index] = payload.scores
+      this.sportsDataYd[payload.label] = {}
+      this.sportsDataYd[payload.label]['scores'] = payload.scores
+      this.sportsDataYd[payload.label]['league'] = payload.index
       this.totalDivs = this.calculateTotalDivs()
       this.updateDom();
       this.updateRefreshInterval();
@@ -824,6 +895,15 @@
     this.config.sports.forEach(function (sport) {
       if (self.supportedLeagues[sport.league]) {
         scrubbedSports.push(sport)
+      }
+      else if (self.legacySoccer[sport.league]) {
+        Log.debug(self.legacySoccer[sport.league])
+        sport.league = self.legacySoccer[sport.league]
+        scrubbedSports.push(sport)
+        Log.debug(sport)
+      }
+      else {
+        Log.warn(`League ${sport.league} is not a valid league name`)
       }
     })
     this.config.sports = scrubbedSports
@@ -918,12 +998,19 @@
       else {
         whichDay.yesterday = tempYesterday
       }
+      if (sport.label) {
+        var thisLabel = sport.label
+      }
+      else {
+        thisLabel = sport.league
+      }
       var payload = {
         instanceId: self.identifier,
         index: index,
         league: sport.league,
         teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
         provider: self.supportedLeagues[sport.league].provider,
+        label: thisLabel,
         gameDate: gameDate,
         whichDay: whichDay,
         hideBroadcasts: self.config.hideBroadcasts,
@@ -1178,4 +1265,9 @@
 
   },
 
+  legacySoccer: {
+    USA_NWSL: 'NWSL',
+    USA_MLS: 'MLS',
+    ENG_PREMIERE_LEAGUE: 'English Premier League',
+  },
 })
