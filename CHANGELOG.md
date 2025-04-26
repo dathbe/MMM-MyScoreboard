@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [4.11.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.10.0...v4.11.0) - 2025-04-XX
 
-- **NEW FEATURE**: Added the ability to set a module height and scroll through scores when they don't fit within that height.
+- **NEW FEATURE**: Added the config options to set a module height and scroll through scores when they don't fit within that height.  (Thank you to @mikeyounge)
 - **NEW FEATURE**: Added Major League Rugby
 - **NEW FEATURE**: `ALL_SOCCER`, `SOCCER_ON_TV`, and `RUGBY` will now display with the specific league header
 - BUG FIX: Fixed rugby leagues
