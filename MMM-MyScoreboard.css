@@ -3,10 +3,6 @@
   max-width: 400px;
 }
 
-/* .MMM-MyScoreboard:has(.smallLogos) {
-  min-width: 325px;
-} */
-
 .MMM-MyScoreboard:has(.oneLine),
 .MMM-MyScoreboard:has(.oneLineWithLogos) {
   min-width: 375px;
@@ -40,6 +36,7 @@
   position: relative;
   white-space: nowrap;
 }
+
 .MMM-MyScoreboard .league-separator > span:after {
   content: "";
   width: 0;
@@ -80,8 +77,6 @@
   filter: grayscale(100%);
 }
 
-
-
 .MMM-MyScoreboard .box-score .logo img {
   max-width: 100%;
   max-height: 100%;
@@ -96,6 +91,7 @@
 .MMM-MyScoreboard .box-score .logo.visitor {
   left: 0px;
 }
+
 .MMM-MyScoreboard .box-score .logo.home {
   right: 0px;
 }
@@ -104,6 +100,7 @@
   right: 0px;
   left: auto;
 }
+
 .MMM-MyScoreboard .box-score.home-team-first .logo.home {
   left: 0px;
   right: auto;
@@ -124,13 +121,16 @@
 .MMM-MyScoreboard .box-score .score.visitor {
   left: 62px;
 }
+
 .MMM-MyScoreboard .box-score .score.home {
   right: 62px;
 }
+
 .MMM-MyScoreboard .box-score.home-team-first .score.visitor {
   right: 62px;
   left: auto;
 }
+
 .MMM-MyScoreboard .box-score.home-team-first .score.home {
   left: 62px;
   right: auto;

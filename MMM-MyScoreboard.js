@@ -28,7 +28,6 @@ Module.register('MMM-MyScoreboard', {
     localMarkets: [],
     displayLocalChannels: [],
     channelRotateInterval: 7000,
-    scrollAnimation: false,
     scrollSpeed: 6,
     scrollHeight: 10000,
     // limitBroadcasts: 1,
@@ -361,7 +360,7 @@ Module.register('MMM-MyScoreboard', {
   setupScrollAnimation: function (wrapper) {
     // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
     const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
-      shouldAnimate = this.config.scrollAnimation && this.config.scrollHeight < domHeight,
+      shouldAnimate = this.config.maxHeight < domHeight,
       animationDuration = this.config.scrollSpeed * this.totalDivs
     let container = null,
       clone = null
@@ -657,8 +656,8 @@ Module.register('MMM-MyScoreboard', {
     }
 
     // New property to set wrapper height for animations
-    if (this.config.scrollAnimation) {
-      wrapper.style.setProperty('max-height', `${this.config.scrollHeight}px`)
+    if (this.config.maxHeight < 10000) {
+      wrapper.style.setProperty('max-height', `${this.config.maxHeight}px`)
     }
 
     /*
@@ -773,7 +772,7 @@ Module.register('MMM-MyScoreboard', {
     //  this.show(1000, {lockString: this.identifier});
     // }
 
-    if (this.config.scrollAnimation) {
+    if (this.config.maxHeight < 10000) {
       this.setupScrollAnimation(wrapper)
     }; // Trigger animation check
 
@@ -807,7 +806,7 @@ Module.register('MMM-MyScoreboard', {
     const minRefresh = 2 * 60 * 1000 // 2 minutes in milliseconds
     currentRefresh = minRefresh
 
-    if (this.config.scrollAnimation) {
+    if (this.config.maxHeight < 10000) {
       if (this.totalDivs > 0) {
         const animationDuration = this.config.scrollSpeed * this.totalDivs,
           animationDurationMs = animationDuration * 1000,
