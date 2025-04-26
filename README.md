@@ -16,13 +16,16 @@ Intended to match the design aesthetic of, and pair nicely with, [MMM-MyStanding
 
 ![Screenshot](example2.png)
 
+[![Platform](https://img.shields.io/badge/platform-MagicMirror²-informational)](https://MagicMirror.builders)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.md)
+
 ## Installing the Module
 
 ```sh
 cd ~/MagicMirror/modules
 git clone https://github.com/dathbe/MMM-MyScoreboard
 cd MMM-MyScoreboard
-npm install --omit=dev
+npm ci --omit=dev
 ```
 
 Dependencies:
@@ -33,7 +36,7 @@ Dependencies:
 ```sh
 cd ~/MagicMirror/modules/MMM-MyScoreboard
 git pull
-npm install --omit=dev
+npm ci --omit=dev
 ```
 
 ## Configuration
@@ -90,6 +93,8 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `localMarkets`         | A list of your local markets so that you can display only broadcast stations from your local market.  Use the team abbreviations for any teams in your local broadcast market.  For example, if you live in Los Angeles, you may want to use `['ANA', 'LA', 'LAA', 'LAD', 'LAC', 'LAL', 'LAR', 'LAFC', 'UCLA', 'USC']` (note: 'LAC' will pick up both the Chargers and the Clippers). If you live in Miami, you may only need `['MIA']`.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
 | `skipChannels`         | A list of channels that you would never like to see displayed (e.g., if you do not subscribe to that channel).  You can find the abbreviation for a channel that displays as a logo by checking `MMM-MyScoreboard/providers/ESPN.js`.  I.e., start with all the channels and remove the ones you don't want.  `skipChannels` will override any other option to display certain channels.<br><br>**Type** `Array` of `Strings`<br>**Default** `[]`
 | `displayLocalChannels` | A list of local channels you would like to display, even if `showLocalBroadcasts` is set to `false`.  This allows you to manually set the local broadcast channels you receive.  I.e., start with no channels and add the ones you want.  `displayLocalChannels` will override any other option to turn off channels.<br><br>**Type** `Array` or `Strings`<br>**Default** `[]`
+| `maxHeight`            | Limit of the height of the container (in pixels). If there are more games than will fit within this height, a scroll animation will start.  For best results, set the limit to show exactly the number of games you want when static. This ensures that any extra games will be fully hidden.  No animation will occur if there are fewer games than fill the container.<br><br>**Type** `Int`<br>**Default** `10000` (will not set a height limit)
+| `scrollSpeed`          | Speed for scrolling. _lower_ numbers are _faster_.<br><br>**Type** `Int`<br>**Default** `6`
 
 
 ### Configuring Your "Sports" List
@@ -111,213 +116,213 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 
 ### Canadian and American Leagues
 
-* **NHL** - National Hockey League
-* **MLB** - Major League Baseball
-* **WBC** - World Baseball Classic
-* **NBA** - National Basketball Association
-* **WNBA** - Womens' Basketball Association
-* **NBAG** - NBA G League
-* **NFL** - National Football League
-* **CFL** - Canadian Football League
-* **MLS** - Major League Soccer
-* **NCAAF** - NCAA College Football (FBS Division only)
-* **NCAAM** - NCAA College Basketball (Division I)
-* **NCAAM_MM** - NCAA College Basketball (March Madness Tournament)
-* **NCAAW** - NCAA Women's College Basketball
-* **NLL** - National Lacrosse League
-* **PLL** - Premier Lacrosse League
+* `NHL` - National Hockey League
+* `MLB` - Major League Baseball
+* `WBC` - World Baseball Classic
+* `NBA` - National Basketball Association
+* `WNBA` - Womens' Basketball Association
+* `NBAG` - NBA G League
+* `NFL` - National Football League
+* `CFL` - Canadian Football League
+* `MLS` - Major League Soccer
+* `NCAAF` - NCAA College Football (FBS Division only)
+* `NCAAM` - NCAA College Basketball (Division I)
+* `NCAAM_MM` - NCAA College Basketball (March Madness Tournament)
+* `NCAAW` - NCAA Women's College Basketball
+* `NLL` - National Lacrosse League
+* `PLL` - Premier Lacrosse League
 
 ### Other Leagues
 
-* **AFL** - Australian Football League
-* **RUGBY** - All Rugby leagues (team abbreviations not maintained here)
+* `AFL` - Australian Football League
+* `RUGBY` - All Rugby leagues (team abbreviations not maintained here)
 
 **Note:** You can probably guess the team abbreviations based on the city, but team abbreviation code lists for the leagues above are later in this README.  If you notice an error, open an issue and let me know.
 
 ### Soccer Leagues & Competitions
 
 #### Most Popular
-* **ALL_SOCCER** - Will return all soccer matches.  The list gets very long, so pair this with a `teams` list.  Useful if your team plays in various cups and competitions.  Note that team abbreviations are not necessarily unique, so your mileage may vary with this "league."
-* **SOCCER_ON_TV** - Will return all soccer matches that have a broadcast option.  Handy if you just want to know what soccer you can watch today.  It will respect your `skipChannels` list and not display games that are only broadcast on one of those channels.
-* **ENG_PREMIERE_LEAGUE** - English Premier League
-* **UEFA_CHAMPIONS** - UEFA Champions League
-* **UEFA_EUROPA** - UEFA Europa League
-* **UEFA_NATIONS** - UEFA Nations League
-* **FIFA_WORLD_CUP** - FIFA World Cup
-* **BRA_SERIE_A** - Brazilian Serie A
-* **GER_BUNDESLIGA** - German Bundesliga
-* **FRA_LIGUE_1** - French Ligue 1
-* **CONMEBOL_COPA_LIBERTADORES** - CONMEBOL Copa Libertadores
-* **ITA_SERIE_A** - Italian Serie A
-* **ESP_LALIGA** - Spanish La Liga
-* **MEX_LIGA_BANCOMER** - Mexican Liga BBVA Bancomer
+* `ALL_SOCCER` - Will return all soccer matches.  The list gets very long, so pair this with a `teams` list.  Useful if your team plays in various cups and competitions.  Note that team abbreviations are not necessarily unique, so your mileage may vary with this "league."
+* `SOCCER_ON_TV` - Will return all soccer matches that have a broadcast option.  Handy if you just want to know what soccer you can watch today.  It will respect your `skipChannels` list and not display games that are only broadcast on one of those channels.
+* `English Premier League`
+* `UEFA_CHAMPIONS` - UEFA Champions League
+* `UEFA_EUROPA` - UEFA Europa League
+* `UEFA_NATIONS` - UEFA Nations League
+* `FIFA_WORLD_CUP` - FIFA World Cup
+* `BRA_SERIE_A` - Brazilian Serie A
+* `GER_BUNDESLIGA` - German Bundesliga
+* `FRA_LIGUE_1` - French Ligue 1
+* `CONMEBOL_COPA_LIBERTADORES` - CONMEBOL Copa Libertadores
+* `ITA_SERIE_A` - Italian Serie A
+* `ESP_LALIGA` - Spanish La Liga
+* `MEX_LIGA_BANCOMER` - Mexican Liga BBVA Bancomer
 
 <details>
   <summary><b>Available Soccer Leagues</b> (click to expand)</summary>
  
 #### International
-* **AFC_ASIAN_CUP** - AFC Asian Cup
-* **AFC_ASIAN_CUP_Q** - AFC Asian Cup Qualifying
-* **AFF_CUP** - AFF Cup
-* **AFR_NATIONS_CUP** - African Nations Cup
-* **AFR_NATIONS_CUP_Q** - African Nations Cup Qualifying
-* **CONCACAF_GOLD_CUP** - CONCACAF Gold Cup
-* **CONCACAF_NATIONS_Q** - CONCACAF Nations League Qualifying
-* **CONCACAF_WOMENS_CHAMPIONSHIP** CONCACAF Women's Championship
-* **CONMEBOL_COPA_AMERICA** - CONMEBOL Copa America
-* **FIFA_CLUB_WORLD_CUP** - FIFA Club World Cup
-* **FIFA_CONFEDERATIONS_CUP** - FIFA Confederations Cup
-* **FIFA_MENS_FRIENDLIES** - FIFA Men's Friendlies
-* **FIFA_MENS_OLYMPICS** - FIFA Men's Olympic Games
-* **FIFA_WOMENS_FRIENDLIES** - FIFA Women's Friendlies
-* **FIFA_WOMENS_OLYMPICS** - FIFA Women's Olympic Games
-* **FIFA_WOMENS_WORLD_CUP** - FIFA Women's World Cup
-* **FIFA_WORLD_CUP** - FIFA World Cup
-* **FIFA_WORLD_CUP_Q_AFC** - FIFA World Cup Qualifying: AFC
-* **FIFA_WORLD_CUP_Q_CAF** - FIFA World Cup Qualifying: CAF
-* **FIFA_WORLD_CUP_Q_CONCACAF** - FIFA World Cup Qualifying: CONCACAF
-* **FIFA_WORLD_CUP_Q_CONMEBOL** - FIFA World Cup Qualifying: CONMEBOL
-* **FIFA_WORLD_CUP_Q_OFC** - FIFA World Cup Qualifying: Oceana
-* **FIFA_WORLD_CUP_Q_UEFA** - FIFA World Cup Qualifying: UEFA
-* **FIFA_WORLD_U17** - FIFA Under-17 World Cup
-* **FIFA_WORLD_U20** - FIFA Under-20 World Cup
-* **UEFA_CHAMPIONS** - UEFA Champions League
-* **UEFA_WOMENS_CHAMPIONS** - UEFA Women's Champions League
-* **UEFA_EUROPEAN_CHAMPIONSHIP** - UEFA European Championship
-* **UEFA_EUROPEAN_CHAMPIONSHIP_Q** - UEFA European Championship Qualifying
-* **UEFA_EUROPEAN_CHAMPIONSHIP_U19** - UEFA Under-19 Championship
-* **UEFA_EUROPEAN_CHAMPIONSHIP_U21** - UEFA Under-21 Championship
-* **UEFA_EUROPA** - UEFA Europa League
-* **UEFA_EUROPA_CONF** - UEFA Conference League
-* **UEFA_NATIONS** - UEFA Nations League
-* **SAFF_CHAMPIONSHIP** - SAFF Championship
-* **WOMENS_EUROPEAN_CHAMPIONSHIP** - Women's European Championship
+* `AFC_ASIAN_CUP` - AFC Asian Cup
+* `AFC_ASIAN_CUP_Q` - AFC Asian Cup Qualifying
+* `AFF_CUP` - AFF Cup
+* `AFR_NATIONS_CUP` - African Nations Cup
+* `AFR_NATIONS_CUP_Q` - African Nations Cup Qualifying
+* `CONCACAF_GOLD_CUP` - CONCACAF Gold Cup
+* `CONCACAF_NATIONS_Q` - CONCACAF Nations League Qualifying
+* `CONCACAF_WOMENS_CHAMPIONSHIP` CONCACAF Women's Championship
+* `CONMEBOL_COPA_AMERICA` - CONMEBOL Copa America
+* `FIFA_CLUB_WORLD_CUP` - FIFA Club World Cup
+* `FIFA_CONFEDERATIONS_CUP` - FIFA Confederations Cup
+* `FIFA_MENS_FRIENDLIES` - FIFA Men's Friendlies
+* `FIFA_MENS_OLYMPICS` - FIFA Men's Olympic Games
+* `FIFA_WOMENS_FRIENDLIES` - FIFA Women's Friendlies
+* `FIFA_WOMENS_OLYMPICS` - FIFA Women's Olympic Games
+* `FIFA_WOMENS_WORLD_CUP` - FIFA Women's World Cup
+* `FIFA_WORLD_CUP` - FIFA World Cup
+* `FIFA_WORLD_CUP_Q_AFC` - FIFA World Cup Qualifying: AFC
+* `FIFA_WORLD_CUP_Q_CAF` - FIFA World Cup Qualifying: CAF
+* `FIFA_WORLD_CUP_Q_CONCACAF` - FIFA World Cup Qualifying: CONCACAF
+* `FIFA_WORLD_CUP_Q_CONMEBOL` - FIFA World Cup Qualifying: CONMEBOL
+* `FIFA_WORLD_CUP_Q_OFC` - FIFA World Cup Qualifying: Oceana
+* `FIFA_WORLD_CUP_Q_UEFA` - FIFA World Cup Qualifying: UEFA
+* `FIFA_WORLD_U17` - FIFA Under-17 World Cup
+* `FIFA_WORLD_U20` - FIFA Under-20 World Cup
+* `UEFA_CHAMPIONS` - UEFA Champions League
+* `UEFA_WOMENS_CHAMPIONS` - UEFA Women's Champions League
+* `UEFA_EUROPEAN_CHAMPIONSHIP` - UEFA European Championship
+* `UEFA_EUROPEAN_CHAMPIONSHIP_Q` - UEFA European Championship Qualifying
+* `UEFA_EUROPEAN_CHAMPIONSHIP_U19` - UEFA Under-19 Championship
+* `UEFA_EUROPEAN_CHAMPIONSHIP_U21` - UEFA Under-21 Championship
+* `UEFA_EUROPA` - UEFA Europa League
+* `UEFA_EUROPA_CONF` - UEFA Conference League
+* `UEFA_NATIONS` - UEFA Nations League
+* `SAFF_CHAMPIONSHIP` - SAFF Championship
+* `WOMENS_EUROPEAN_CHAMPIONSHIP` - Women's European Championship
 
 #### UK / Ireland
-* **ENG_CARABAO_CUP** - English Carabao Cup
-* **ENG_CHAMPIONSHIP** - English Championship
-* **ENG_EFL** - English EFL Trophy
-* **ENG_FA_CUP** - English FA Cup
-* **ENG_LEAGUE_1** - English League One
-* **ENG_LEAGUE_2** - English League Two
-* **ENG_NATIONAL** - English National League
-* **ENG_PREMIERE_LEAGUE** - English Premier League
-* **IRL_PREM** - League of Ireland Premier Divison
-* **NIR_PREM** - Northern Irish Premier League
-* **SCO_CHALLENGE_CUP** - Scottish League Challenge Cup
-* **SCO_CHAMPIONSHIP** - Scottish Championship
-* **SCO_CIS** - Scottish Communities League Cup
-* **SCO_CUP** - Scottish Cup
-* **SCO_LEAGUE_1** - Scottish League One
-* **SCO_LEAGUE_2** - Scottish League Two
-* **SCO_PREM** - Scottish Premiership
-* **WAL_PREM** - Welsh Premier League
-* **ENG_WSL** - English Women's Super League
+* `ENG_CARABAO_CUP` - English Carabao Cup
+* `ENG_CHAMPIONSHIP` - English Championship
+* `ENG_EFL` - English EFL Trophy
+* `ENG_FA_CUP` - English FA Cup
+* `ENG_LEAGUE_1` - English League One
+* `ENG_LEAGUE_2` - English League Two
+* `ENG_NATIONAL` - English National League
+* `ENG_PREMIERE_LEAGUE` - English Premier League
+* `IRL_PREM` - League of Ireland Premier Divison
+* `NIR_PREM` - Northern Irish Premier League
+* `SCO_CHALLENGE_CUP` - Scottish League Challenge Cup
+* `SCO_CHAMPIONSHIP` - Scottish Championship
+* `SCO_CIS` - Scottish Communities League Cup
+* `SCO_CUP` - Scottish Cup
+* `SCO_LEAGUE_1` - Scottish League One
+* `SCO_LEAGUE_2` - Scottish League Two
+* `SCO_PREM` - Scottish Premiership
+* `WAL_PREM` - Welsh Premier League
+* `ENG_WSL` - English Women's Super League
 
 #### Europe
-* **AUT_BUNDESLIGA** - Austrian Bundesliga
-* **BEL_DIV_A** - Belgian First Division A
-* **DEN_SAS_LIGAEN** - Danish SAS-Ligaen
-* **ESP_COPA_DEL_REY** - Spanish Copa del Rey
-* **ESP_LALIGA** - Spanish La Liga
-* **ESP_SEGUNDA_DIV** - Spanish Segunda Division
-* **FRA_COUPE_DE_FRANCE** - French Coupe de France
-* **FRA_COUPE_DE_LA_LIGUE** - French Coupe de la Ligue
-* **FRA_LIGUE_1** - French Ligue 1
-* **FRA_LIGUE_2** - French Ligue 2
-* **GER_2_BUNDESLIGA** - German 2. Bundesliga
-* **GER_BUNDESLIGA** - German Bundesliga
-* **GER_DFB_POKAL** - German DFB Pokal
-* **GRE_SUPER_LEAGUE** - Greek Super League
-* **ISR_PREMIER_LEAGUE** - Israeli Premier League
-* **MLT_PREMIER_LEAGUE** - Maltese Premier League
-* **ITA_COPPA_ITALIA** - Italian Coppa Italia
-* **ITA_SERIE_A** - Italian Serie A
-* **ITA_SERIE_B** - Italian Serie B
-* **NED_EERSTE_DIVISIE** - Dutch Eerste Divisie
-* **NED_EREDIVISIE** - Dutch Eredivisie
-* **NED_KNVB_BEKER** - Dutch KNVB Beker
-* **NOR_ELITESERIEN** - Norwegian Eliteserien
-* **POR_LIGA** - Portuguese Liga
-* **ROU_FIRST_DIV** - Romanian First Divison
-* **RUS_PREMIER_LEAGUE** - Russian Premier League
-* **SUI_SUPER_LEAGUE** - Swiss Super League
-* **SWE_ALLSVENSKANLIGA** - Swedish Allsvenskanliga
-* **TUR_SUPER_LIG** - Turkish Super Lig
+* `AUT_BUNDESLIGA` - Austrian Bundesliga
+* `BEL_DIV_A` - Belgian First Division A
+* `DEN_SAS_LIGAEN` - Danish SAS-Ligaen
+* `ESP_COPA_DEL_REY` - Spanish Copa del Rey
+* `ESP_LALIGA` - Spanish La Liga
+* `ESP_SEGUNDA_DIV` - Spanish Segunda Division
+* `FRA_COUPE_DE_FRANCE` - French Coupe de France
+* `FRA_COUPE_DE_LA_LIGUE` - French Coupe de la Ligue
+* `FRA_LIGUE_1` - French Ligue 1
+* `FRA_LIGUE_2` - French Ligue 2
+* `GER_2_BUNDESLIGA` - German 2. Bundesliga
+* `GER_BUNDESLIGA` - German Bundesliga
+* `GER_DFB_POKAL` - German DFB Pokal
+* `GRE_SUPER_LEAGUE` - Greek Super League
+* `ISR_PREMIER_LEAGUE` - Israeli Premier League
+* `MLT_PREMIER_LEAGUE` - Maltese Premier League
+* `ITA_COPPA_ITALIA` - Italian Coppa Italia
+* `ITA_SERIE_A` - Italian Serie A
+* `ITA_SERIE_B` - Italian Serie B
+* `NED_EERSTE_DIVISIE` - Dutch Eerste Divisie
+* `NED_EREDIVISIE` - Dutch Eredivisie
+* `NED_KNVB_BEKER` - Dutch KNVB Beker
+* `NOR_ELITESERIEN` - Norwegian Eliteserien
+* `POR_LIGA` - Portuguese Liga
+* `ROU_FIRST_DIV` - Romanian First Divison
+* `RUS_PREMIER_LEAGUE` - Russian Premier League
+* `SUI_SUPER_LEAGUE` - Swiss Super League
+* `SWE_ALLSVENSKANLIGA` - Swedish Allsvenskanliga
+* `TUR_SUPER_LIG` - Turkish Super Lig
 
 #### South America
-* **ARG_COPA** - Copa Argentina
-* **ARG_NACIONAL_B** - Argentine Nacional B
-* **ARG_PRIMERA_DIV_B** - Argentine Primera Division B
-* **ARG_PRIMERA_DIV_C** - Argentine Primera Division C
-* **ARG_PRIMERA_DIV_D** - Argentine Primera Division D
-* **ARG_SUPERLIGA** - Argentine Superliga
-* **BOL_LIGA_PRO** - Bolivian Liga Profesional
-* **BRA_CAMP_CARIOCA** - Brazilian Campeonato Carioca
-* **BRA_CAMP_GAUCHO** - Brazilian Campeonato Gaucho
-* **BRA_CAMP_MINEIRO** - Brazilian Campeonato Mineiro
-* **BRA_CAMP_PAULISTA** - Brazilian Campeonato Paulista
-* **BRA_COPA** - Copa Do Brazil
-* **BRA_SERIE_A** - Brazilian Serie A
-* **BRA_SERIE_B** - Brazilian Serie B
-* **BRA_SERIE_C** - Brazilian Serie C
-* **CHI_COPA** - Copa Chile
-* **CHI_PRIMERA_DIV** - Chilean Primera Division
-* **COL_COPA** - Copa Colombia
-* **COL_PRIMERA_A** - Colombian Primera A
-* **COL_PRIMERA_B** - Colombian Primera B
-* **CONMEBOL_COPA_LIBERTADORES** - CONMEBOL Copa Libertadores
-* **CONMEBOL_COPA_SUDAMERICANA** - CONMEBOL Copa Sudamericana
-* **ECU_PRIMERA_A** - Ecuadoran Primera A
-* **PAR_PRIMERA_DIV** - Paraguayan Primera Division
-* **PER_PRIMERA_PRO** - Peruvian Primera Profesional
-* **URU_PRIMERA_DIV** - Uruguayan Primera Division
-* **VEN_PRIMERA_PRO** - Venezuelan Primera Profesional
+* `ARG_COPA` - Copa Argentina
+* `ARG_NACIONAL_B` - Argentine Nacional B
+* `ARG_PRIMERA_DIV_B` - Argentine Primera Division B
+* `ARG_PRIMERA_DIV_C` - Argentine Primera Division C
+* `ARG_PRIMERA_DIV_D` - Argentine Primera Division D
+* `ARG_SUPERLIGA` - Argentine Superliga
+* `BOL_LIGA_PRO` - Bolivian Liga Profesional
+* `BRA_CAMP_CARIOCA` - Brazilian Campeonato Carioca
+* `BRA_CAMP_GAUCHO` - Brazilian Campeonato Gaucho
+* `BRA_CAMP_MINEIRO` - Brazilian Campeonato Mineiro
+* `BRA_CAMP_PAULISTA` - Brazilian Campeonato Paulista
+* `BRA_COPA` - Copa Do Brazil
+* `BRA_SERIE_A` - Brazilian Serie A
+* `BRA_SERIE_B` - Brazilian Serie B
+* `BRA_SERIE_C` - Brazilian Serie C
+* `CHI_COPA` - Copa Chile
+* `CHI_PRIMERA_DIV` - Chilean Primera Division
+* `COL_COPA` - Copa Colombia
+* `COL_PRIMERA_A` - Colombian Primera A
+* `COL_PRIMERA_B` - Colombian Primera B
+* `CONMEBOL_COPA_LIBERTADORES` - CONMEBOL Copa Libertadores
+* `CONMEBOL_COPA_SUDAMERICANA` - CONMEBOL Copa Sudamericana
+* `ECU_PRIMERA_A` - Ecuadoran Primera A
+* `PAR_PRIMERA_DIV` - Paraguayan Primera Division
+* `PER_PRIMERA_PRO` - Peruvian Primera Profesional
+* `URU_PRIMERA_DIV` - Uruguayan Primera Division
+* `VEN_PRIMERA_PRO` - Venezuelan Primera Profesional
 
 #### North America
-* **CONCACAF_CHAMPIONS** - CONCACAF Champions League
-* **CONCACAF_LEAGUE** - CONCACAF League
-* **CRC_PRIMERA_DIV** - Costa Rican Primera Division
-* **GUA_LIGA_NACIONAL** - Guatemalan Liga Nacional
-* **HON_PRIMERA_DIV** - Honduran Primera Division
-* **JAM_PREMIER_LEAGUE** - Jamaican Premier League
-* **MEX_ASCENSO_MX** - Mexican Ascenso MX
-* **MEX_COPA_MX** - Mexican Copa MX
-* **MEX_LIGA_BANCOMER** - Mexican Liga BBVA Bancomer
-* **SLV_PRIMERA_DIV** - Salvadoran Primera Division
-* **USA_MLS** - Major League Soccer
-* **USA_NCAA_SL_M** - United States NCAA Men's 1
-* **USA_NCAA_SL_W** - United States NCAA Women's 1
-* **USA_NASL** - United States North American Soccer League
-* **USA_NWSL** - United States NWSL Women's League
-* **USA_OPEN** - United States Open Cup 
-* **USA_USL** - United States USL Championship
+* `CONCACAF_CHAMPIONS` - CONCACAF Champions League
+* `CONCACAF_LEAGUE` - CONCACAF League
+* `CRC_PRIMERA_DIV` - Costa Rican Primera Division
+* `GUA_LIGA_NACIONAL` - Guatemalan Liga Nacional
+* `HON_PRIMERA_DIV` - Honduran Primera Division
+* `JAM_PREMIER_LEAGUE` - Jamaican Premier League
+* `MEX_ASCENSO_MX` - Mexican Ascenso MX
+* `MEX_COPA_MX` - Mexican Copa MX
+* `MEX_LIGA_BANCOMER` - Mexican Liga BBVA Bancomer
+* `SLV_PRIMERA_DIV` - Salvadoran Primera Division
+* `MLS` - Major League Soccer
+* `USA_NCAA_SL_M` - United States NCAA Men's 1
+* `USA_NCAA_SL_W` - United States NCAA Women's 1
+* `USA_NASL` - United States North American Soccer League
+* `NWSL` - United States NWSL Women's League
+* `USA_OPEN` - United States Open Cup 
+* `USA_USL` - United States USL Championship
 
 #### Asia
-* **AFC_CHAMPIONS** - AFC Champions League
-* **AUS_A_LEAGUE** - Australian A-League
-* **CHN_SUPER_LEAGUE** - Chinese Super League
-* **IDN_SUPER_LEAGUE** - Indonesian Super League
-* **IND_I_LEAGUE** - Indian I-League
-* **IND_SUPER_LEAGUE** - Indian Super League
-* **JPN_J_LEAGUE** - Japanese J League
-* **MYS_SUPER_LEAGUE** - Malaysian Super League
-* **SGP_PREMIER_LEAGUE** - Singaporean S-League 
-* **THA_PREMIER_LEAGUE** - Thai Premier League
+* `AFC_CHAMPIONS` - AFC Champions League
+* `AUS_A_LEAGUE` - Australian A-League
+* `CHN_SUPER_LEAGUE` - Chinese Super League
+* `IDN_SUPER_LEAGUE` - Indonesian Super League
+* `IND_I_LEAGUE` - Indian I-League
+* `IND_SUPER_LEAGUE` - Indian Super League
+* `JPN_J_LEAGUE` - Japanese J League
+* `MYS_SUPER_LEAGUE` - Malaysian Super League
+* `SGP_PREMIER_LEAGUE` - Singaporean S-League 
+* `THA_PREMIER_LEAGUE` - Thai Premier League
 
 #### Africa
-* **CAF_CHAMPIONS** - CAF Champions League
-* **CAF_CONFED_CUP** - CAF Confederation Cup
-* **GHA_PREMIERE_LEAGUE** - Ghanaian Premier League
-* **KEN_PREMIERE_LEAGUE** - Kenyan Premier League
-* **NGA_PRO_LEAGUE** - Nigerian Professional League
-* **RSA_FIRST_DIV** - South African First Division
-* **RSA_NEDBANK_CUP** - South African Nedbank Cup
-* **RSA_PREMIERSHIP** - South African Premiership
-* **RSA_TELKOM_KNOCKOUT** - South African Telkom Knockout
-* **UGA_SUPER_LEAGUE** - Ugandan Super League
-* **ZAM_SUPER_LEAGUE** - Zambian Super League
-* **ZIM_PREMIER_LEAGUE** - Zimbabwe Super League
+* `CAF_CHAMPIONS` - CAF Champions League
+* `CAF_CONFED_CUP` - CAF Confederation Cup
+* `GHA_PREMIERE_LEAGUE` - Ghanaian Premier League
+* `KEN_PREMIERE_LEAGUE` - Kenyan Premier League
+* `NGA_PRO_LEAGUE` - Nigerian Professional League
+* `RSA_FIRST_DIV` - South African First Division
+* `RSA_NEDBANK_CUP` - South African Nedbank Cup
+* `RSA_PREMIERSHIP` - South African Premiership
+* `RSA_TELKOM_KNOCKOUT` - South African Telkom Knockout
+* `UGA_SUPER_LEAGUE` - Ugandan Super League
+* `ZAM_SUPER_LEAGUE` - Zambian Super League
+* `ZIM_PREMIER_LEAGUE` - Zimbabwe Super League
 
 </details>
 
@@ -326,18 +331,20 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 <details>
   <summary><b>Available Rugby Leagues</b> (click to expand)</summary>
  
-* **PREMIERSHIP_RUGBY**
-* **RUGBY_WORLD_CUP**
-* **SIX_NATIONS**
-* **THE_RUGBY_CHAMPIONSHIP**
-* **EUROPEAN_RUGBY_CHAMPIONS_CUP**
-* **UNITED_RUGBY_CHAMPIONSHIP**
-* **SUPER_RUGBY_PACIFIC**
-* **OLYMPIC_MENS_7S**
-* **OLYMPIC_WOMENS_RUGBY_SEVENS**
-* **INTERNATIONAL_TEST_MATCH**
-* **URBA_TOP_12**
-* **MITRE_10_CUP**
+* `RUGBY` - All Rugby games
+* `PREMIERSHIP_RUGBY`
+* `RUGBY_WORLD_CUP`
+* `SIX_NATIONS`
+* `THE_RUGBY_CHAMPIONSHIP`
+* `EUROPEAN_RUGBY_CHAMPIONS_CUP`
+* `UNITED_RUGBY_CHAMPIONSHIP`
+* `SUPER_RUGBY_PACIFIC`
+* `OLYMPIC_MENS_7S`
+* `OLYMPIC_WOMENS_RUGBY_SEVENS`
+* `INTERNATIONAL_TEST_MATCH`
+* `URBA_TOP_12`
+* `MITRE_10_CUP`
+* `Major League Rugby`
 
 </details>
 
@@ -1802,6 +1809,12 @@ Teams:
 ## Logos
 
 You can add your own custom personal logos into the `logos_custom` folder, and they will not be disturbed when you update the module.  [Specific guidance can be found here](https://github.com/dathbe/MMM-MyScoreboard/tree/4.7.2/logos_custom).  (But if you have a logo that you think should be added for all users, please [share it by opening an issue](https://github.com/dathbe/MMM-MyScoreboard/issues).)
+
+## Displaying Different Standings in Different Seasons
+
+There are several ways to display standings for a given league only at certain times of year (e.g., hiding it when the league is not in season).  You could use a separate module such as [MMM-ModuleScheduler](https://github.com/ianperrin/MMM-ModuleScheduler), which can display or hide an entire module instance based on your schedule.
+
+Another way to do it is to dynamically create a module with the desired leagues based on the date by adding some javascript to your config.js file, as offered by user [mikeyounge](https://github.com/mikeyounge) in [this discussion thread](https://github.com/dathbe/MMM-MyScoreboard/issues/56).
 
 ## Contributing
 

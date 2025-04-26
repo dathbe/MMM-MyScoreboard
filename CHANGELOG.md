@@ -4,6 +4,17 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.11.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.10.0...v4.11.0) - 2025-04-XX
+
+- **NEW FEATURE**: Added the config options to set a module height and scroll through scores when they don't fit within that height.  (Thank you to @mikeyounge)
+- **NEW FEATURE**: Added Major League Rugby
+- **NEW FEATURE**: `ALL_SOCCER`, `SOCCER_ON_TV`, and `RUGBY` will now display with the specific league header
+- BUG FIX: Fixed rugby leagues
+- Change install and update instructions to `npm ci` to avoid recreating `package-lock.json` on user installs
+- Update README to include instructions on dymanically creating config options
+- Upgrade devDependcies versions
+- Some new channel logos
+
 ## [4.10.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.9.0...v4.10.0) - 2025-04-20
 
 - **NEW FEATURE**: Added UEFA Women's Champions League
