@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.11.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.0...v4.11.1) - 2025-04-26
 
 - BUG FIX:  English Premier League display was broken
+- Switch back to `npm install` (from `npm ci`) on recommendation from sdetweil
 - Some new channel logos
 
 ## [4.11.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.10.0...v4.11.0) - 2025-04-25
