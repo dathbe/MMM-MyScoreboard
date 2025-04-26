@@ -463,6 +463,7 @@ module.exports = {
     'KCOP': 'https://static.foxtv.com/static/orion/img/core/s/logos/fts-los-angeles-a.svg',
     'KENS 5': 'https://www.kens5.com/assets/shared-images/logos/kens.png',
     'KFAA-TV': './modules/MMM-MyScoreboard/logos/channels/KFAATV.webp',
+    'KFMB 8.1 (CBS)': 'https://www.cbs8.com/assets/shared-images/logos/kfmb.png',
     'KHN': './modules/MMM-MyScoreboard/logos/channels/KHN1.png',
     'KING 5': 'https://upload.wikimedia.org/wikipedia/commons/1/1c/KING-TV_Logo.svg',
     'KJZZ-TV': './modules/MMM-MyScoreboard/logos/channels/KJZZ-TV.png',
