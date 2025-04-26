@@ -29,7 +29,7 @@ Module.register('MMM-MyScoreboard', {
     displayLocalChannels: [],
     channelRotateInterval: 7000,
     scrollSpeed: 6,
-    scrollHeight: 10000,
+    maxHeight: 10000,
     // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
