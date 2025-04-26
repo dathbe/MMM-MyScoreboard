@@ -1,4 +1,4 @@
- /*********************************
+/*********************************
 
  MagicMirror² Module:
  MMM-MyScoreboard
@@ -28,11 +28,9 @@ Module.register('MMM-MyScoreboard', {
     localMarkets: [],
     displayLocalChannels: [],
     channelRotateInterval: 7000,
-    scrollAnimation: {
-      scroll: false,
-      scrollSpeed: 6,
-      height: 0
-    },
+    scrollAnimation: false,
+    scrollSpeed: 6,
+    scrollHeight: 10000,
     // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
@@ -71,210 +69,210 @@ Module.register('MMM-MyScoreboard', {
     */
 
     // North American Leagues
-    NBA: { provider: 'ESPN', logoFormat: 'svg' },
-    NHL: { provider: 'ESPN', logoFormat: 'svg' },
-    NFL: { provider: 'ESPN', logoFormat: 'svg' },
-    CFL: { provider: 'SNET', logoFormat: 'svg' },
-    MLB: { provider: 'ESPN', logoFormat: 'svg' },
-    WBC: { provider: 'SNET', logoFormat: 'svg' },
-    
-    NCAAF: { provider: 'ESPN', logoFormat: 'url' },
-    NCAAM: { provider: 'ESPN', logoFormat: 'url' },
-    NCAAM_MM: { provider: 'ESPN', logoFormat: 'url' },
-    NCAAW: { provider: 'ESPN', logoFormat: 'url' },
-    WNBA: { provider: 'ESPN', logoFormat: 'url' },
-    NBAG: { provider: 'ESPN', logoFormat: 'url' },
-    NLL: { provider: 'ESPN', logoFormat: 'url' },
-    PLL: { provider: 'ESPN', logoFormat: 'url' },
+    'NBA': { provider: 'ESPN', logoFormat: 'svg' },
+    'NHL': { provider: 'ESPN', logoFormat: 'svg' },
+    'NFL': { provider: 'ESPN', logoFormat: 'svg' },
+    'CFL': { provider: 'SNET', logoFormat: 'svg' },
+    'MLB': { provider: 'ESPN', logoFormat: 'svg' },
+    'WBC': { provider: 'SNET', logoFormat: 'svg' },
+
+    'NCAAF': { provider: 'ESPN', logoFormat: 'url' },
+    'NCAAM': { provider: 'ESPN', logoFormat: 'url' },
+    'NCAAM_MM': { provider: 'ESPN', logoFormat: 'url' },
+    'NCAAW': { provider: 'ESPN', logoFormat: 'url' },
+    'WNBA': { provider: 'ESPN', logoFormat: 'url' },
+    'NBAG': { provider: 'ESPN', logoFormat: 'url' },
+    'NLL': { provider: 'ESPN', logoFormat: 'url' },
+    'PLL': { provider: 'ESPN', logoFormat: 'url' },
 
     // International Soccer
-    ALL_SOCCER: { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
-    SOCCER_ON_TV: { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
-    AFC_ASIAN_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    AFC_ASIAN_CUP_Q: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    AFF_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    AFR_NATIONS_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    AFR_NATIONS_CUP_Q: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    AFR_NATIONS_Q: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CONCACAF_GOLD_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CONCACAF_NATIONS_Q: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CONCACAF_WOMENS_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CONMEBOL_COPA_AMERICA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_CLUB_WORLD_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_CONFEDERATIONS_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_MENS_FRIENDLIES: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_MENS_OLYMPICS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WOMENS_FRIENDLIES: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WOMENS_OLYMPICS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WOMENS_WORLD_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_CUP_Q_AFC: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_CUP_Q_CAF: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_CUP_Q_CONCACAF: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_CUP_Q_CONMEBOL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_CUP_Q_OFC: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_CUP_Q_UEFA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_U17: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FIFA_WORLD_U20: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_WOMENS_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_EUROPEAN_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_EUROPEAN_CHAMPIONSHIP_Q: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_EUROPEAN_CHAMPIONSHIP_U19: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_EUROPEAN_CHAMPIONSHIP_U21: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_EUROPA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_EUROPA_CONF: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_NATIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SAFF_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    WOMENS_EUROPEAN_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UEFA_WOMENS_NATIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ALL_SOCCER': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
+    'SOCCER_ON_TV': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
+    'AFC_ASIAN_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AFC_ASIAN_CUP_Q': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AFF_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AFR_NATIONS_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AFR_NATIONS_CUP_Q': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AFR_NATIONS_Q': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CONCACAF_GOLD_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CONCACAF_NATIONS_Q': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CONCACAF_WOMENS_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CONMEBOL_COPA_AMERICA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_CLUB_WORLD_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_CONFEDERATIONS_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_MENS_FRIENDLIES': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_MENS_OLYMPICS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WOMENS_FRIENDLIES': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WOMENS_OLYMPICS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WOMENS_WORLD_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_CUP_Q_AFC': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_CUP_Q_CAF': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_CUP_Q_CONCACAF': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_CUP_Q_CONMEBOL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_CUP_Q_OFC': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_CUP_Q_UEFA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_U17': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FIFA_WORLD_U20': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_CHAMPIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_WOMENS_CHAMPIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_EUROPEAN_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_EUROPEAN_CHAMPIONSHIP_Q': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_EUROPEAN_CHAMPIONSHIP_U19': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_EUROPEAN_CHAMPIONSHIP_U21': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_EUROPA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_EUROPA_CONF': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_NATIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SAFF_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'WOMENS_EUROPEAN_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UEFA_WOMENS_NATIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // UK / Ireland Soccer
-    ENG_CARABAO_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_EFL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_FA_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_LEAGUE_1: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_LEAGUE_2: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_NATIONAL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ENG_CARABAO_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ENG_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ENG_EFL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ENG_FA_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ENG_LEAGUE_1': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ENG_LEAGUE_2': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ENG_NATIONAL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     'English Premier League': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    IRL_PREM: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    NIR_PREM: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SCO_CHALLENGE_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SCO_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SCO_CIS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SCO_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SCO_LEAGUE_1: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SCO_LEAGUE_2: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SCO_PREM: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    WAL_PREM: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ENG_WSL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'IRL_PREM': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'NIR_PREM': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SCO_CHALLENGE_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SCO_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SCO_CIS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SCO_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SCO_LEAGUE_1': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SCO_LEAGUE_2': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SCO_PREM': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'WAL_PREM': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ENG_WSL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // European Soccer
-    AUT_BUNDESLIGA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BEL_DIV_A: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    DEN_SAS_LIGAEN: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ESP_COPA_DEL_REY: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ESP_LALIGA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ESP_SEGUNDA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FRA_COUPE_DE_FRANCE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FRA_COUPE_DE_LA_LIGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FRA_LIGUE_1: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    FRA_LIGUE_2: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    GER_2_BUNDESLIGA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    GER_BUNDESLIGA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    GER_DFB_POKAL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    GRE_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ISR_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    MLT_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ITA_COPPA_ITALIA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ITA_SERIE_A: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ITA_SERIE_B: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    NED_EERSTE_DIVISIE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    NED_EREDIVISIE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    NED_KNVB_BEKER: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    NOR_ELITESERIEN: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    POR_LIGA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ROU_FIRST_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    RUS_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SUI_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SWE_ALLSVENSKANLIGA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    TUR_SUPER_LIG: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AUT_BUNDESLIGA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BEL_DIV_A': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'DEN_SAS_LIGAEN': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ESP_COPA_DEL_REY': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ESP_LALIGA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ESP_SEGUNDA_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FRA_COUPE_DE_FRANCE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FRA_COUPE_DE_LA_LIGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FRA_LIGUE_1': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'FRA_LIGUE_2': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'GER_2_BUNDESLIGA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'GER_BUNDESLIGA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'GER_DFB_POKAL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'GRE_SUPER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ISR_PREMIER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'MLT_PREMIER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ITA_COPPA_ITALIA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ITA_SERIE_A': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ITA_SERIE_B': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'NED_EERSTE_DIVISIE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'NED_EREDIVISIE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'NED_KNVB_BEKER': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'NOR_ELITESERIEN': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'POR_LIGA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ROU_FIRST_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'RUS_PREMIER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SUI_SUPER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SWE_ALLSVENSKANLIGA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'TUR_SUPER_LIG': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // South American Soccer
-    ARG_COPA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ARG_NACIONAL_B: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ARG_PRIMERA_DIV_B: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ARG_PRIMERA_DIV_C: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ARG_PRIMERA_DIV_D: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ARG_SUPERLIGA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BOL_LIGA_PRO: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BRA_COPA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BRA_CAMP_CARIOCA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BRA_CAMP_GAUCHO: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BRA_CAMP_MINEIRO: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BRA_CAMP_PAULISTA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BRA_SERIE_A: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BRA_SERIE_B: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    BRA_SERIE_C: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CHI_COPA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CHI_PRIMERA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    COL_COPA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    COL_PRIMERA_A: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    COL_PRIMERA_B: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CONMEBOL_COPA_LIBERTADORES: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CONMEBOL_COPA_SUDAMERICANA: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ECU_PRIMERA_A: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    PAR_PRIMERA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    PER_PRIMERA_PRO: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    URU_PRIMERA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    VEN_PRIMERA_PRO: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ARG_COPA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ARG_NACIONAL_B': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ARG_PRIMERA_DIV_B': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ARG_PRIMERA_DIV_C': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ARG_PRIMERA_DIV_D': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ARG_SUPERLIGA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BOL_LIGA_PRO': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BRA_COPA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BRA_CAMP_CARIOCA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BRA_CAMP_GAUCHO': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BRA_CAMP_MINEIRO': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BRA_CAMP_PAULISTA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BRA_SERIE_A': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BRA_SERIE_B': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'BRA_SERIE_C': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CHI_COPA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CHI_PRIMERA_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'COL_COPA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'COL_PRIMERA_A': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'COL_PRIMERA_B': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CONMEBOL_COPA_LIBERTADORES': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CONMEBOL_COPA_SUDAMERICANA': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ECU_PRIMERA_A': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'PAR_PRIMERA_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'PER_PRIMERA_PRO': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'URU_PRIMERA_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'VEN_PRIMERA_PRO': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // North American Soccer
-    MLS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CONCACAF_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CONCACAF_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CRC_PRIMERA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    GUA_LIGA_NACIONAL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    HON_PRIMERA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    JAM_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    MEX_ASCENSO_MX: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    MEX_COPA_MX: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    MEX_LIGA_BANCOMER: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SLV_PRIMERA_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    USA_MLS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    USA_NCAA_SL_M: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    USA_NCAA_SL_W: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    USA_NASL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    NWSL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    USA_OPEN: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    USA_USL: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'MLS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CONCACAF_CHAMPIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CONCACAF_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CRC_PRIMERA_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'GUA_LIGA_NACIONAL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'HON_PRIMERA_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'JAM_PREMIER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'MEX_ASCENSO_MX': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'MEX_COPA_MX': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'MEX_LIGA_BANCOMER': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SLV_PRIMERA_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'USA_MLS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'USA_NCAA_SL_M': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'USA_NCAA_SL_W': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'USA_NASL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'NWSL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'USA_OPEN': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'USA_USL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // Asian Soccer
-    AFC_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    AUS_A_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    AUS_A_WOMEN: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CHN_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    IDN_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    IND_I_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    IND_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    JPN_J_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    MYS_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    SGP_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    THA_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AFC_CHAMPIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AUS_A_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'AUS_A_WOMEN': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CHN_SUPER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'IDN_SUPER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'IND_I_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'IND_SUPER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'JPN_J_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'MYS_SUPER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SGP_PREMIER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'THA_PREMIER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // African Soccer
-    CAF_CHAMPIONS: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    CAF_CONFED_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    GHA_PREMIERE_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    KEN_PREMIERE_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    NGA_PRO_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    RSA_FIRST_DIV: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    RSA_NEDBANK_CUP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    RSA_PREMIERSHIP: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    RSA_TELKOM_KNOCKOUT: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    UGA_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ZAM_SUPER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
-    ZIM_PREMIER_LEAGUE: { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CAF_CHAMPIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'CAF_CONFED_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'GHA_PREMIERE_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'KEN_PREMIERE_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'NGA_PRO_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'RSA_FIRST_DIV': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'RSA_NEDBANK_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'RSA_PREMIERSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'RSA_TELKOM_KNOCKOUT': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UGA_SUPER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ZAM_SUPER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'ZIM_PREMIER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // Rugby
-    RUGBY: { provider: 'Scorepanel', logoFormat: 'url' },
-    PREMIERSHIP_RUGBY: { provider: 'ESPN', logoFormat: 'url' },
-    RUGBY_WORLD_CUP: { provider: 'ESPN', logoFormat: 'url' },
-    SIX_NATIONS: { provider: 'ESPN', logoFormat: 'url' },
-    THE_RUGBY_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url' },
-    EUROPEAN_RUGBY_CHAMPIONS_CUP: { provider: 'ESPN', logoFormat: 'url' },
-    UNITED_RUGBY_CHAMPIONSHIP: { provider: 'ESPN', logoFormat: 'url' },
-    SUPER_RUGBY_PACIFIC: { provider: 'ESPN', logoFormat: 'url' },
-    OLYMPIC_MENS_7S: { provider: 'ESPN', logoFormat: 'url' },
-    OLYMPIC_WOMENS_RUGBY_SEVENS: { provider: 'ESPN', logoFormat: 'url' },
-    INTERNATIONAL_TEST_MATCH: { provider: 'ESPN', logoFormat: 'url' },
-    URBA_TOP_12: { provider: 'ESPN', logoFormat: 'url' },
-    MITRE_10_CUP: { provider: 'ESPN', logoFormat: 'url' },
+    'RUGBY': { provider: 'Scorepanel', logoFormat: 'url' },
+    'PREMIERSHIP_RUGBY': { provider: 'ESPN', logoFormat: 'url' },
+    'RUGBY_WORLD_CUP': { provider: 'ESPN', logoFormat: 'url' },
+    'SIX_NATIONS': { provider: 'ESPN', logoFormat: 'url' },
+    'THE_RUGBY_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url' },
+    'EUROPEAN_RUGBY_CHAMPIONS_CUP': { provider: 'ESPN', logoFormat: 'url' },
+    'UNITED_RUGBY_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url' },
+    'SUPER_RUGBY_PACIFIC': { provider: 'ESPN', logoFormat: 'url' },
+    'OLYMPIC_MENS_7S': { provider: 'ESPN', logoFormat: 'url' },
+    'OLYMPIC_WOMENS_RUGBY_SEVENS': { provider: 'ESPN', logoFormat: 'url' },
+    'INTERNATIONAL_TEST_MATCH': { provider: 'ESPN', logoFormat: 'url' },
+    'URBA_TOP_12': { provider: 'ESPN', logoFormat: 'url' },
+    'MITRE_10_CUP': { provider: 'ESPN', logoFormat: 'url' },
     'Major League Rugby': { provider: 'ESPN', logoFormat: 'url' },
 
     // Other
-    AFL: { provider: 'ESPN', logoFormat: 'url' },
+    'AFL': { provider: 'ESPN', logoFormat: 'url' },
 
   },
 
@@ -359,37 +357,37 @@ Module.register('MMM-MyScoreboard', {
     }
   },
 
-   // New Scroll Animation Function
-   setupScrollAnimation: function (wrapper) {
+  // New Scroll Animation Function
+  setupScrollAnimation: function (wrapper) {
     // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
     const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
-      shouldAnimate = this.config.scrollAnimation.scroll && this.config.scrollAnimation.height < domHeight,
-      animationDuration = this.config.scrollAnimation.scrollSpeed * this.totalDivs;
+      shouldAnimate = this.config.scrollAnimation && this.config.scrollHeight < domHeight,
+      animationDuration = this.config.scrollSpeed * this.totalDivs
     let container = null,
-      clone = null;
+      clone = null
 
-    wrapper.classList.remove('scroll');
+    wrapper.classList.remove('scroll')
     if (!shouldAnimate) {
-      return;
+      return
     }
     // Create new containers if they don't exist
     if (!container) {
-      container = document.createElement('div');
-      container.className = 'scroll-container';
-      container.style.setProperty('animation-duration', `${animationDuration}s`);
-      wrapper.appendChild(container);
+      container = document.createElement('div')
+      container.className = 'scroll-container'
+      container.style.setProperty('animation-duration', `${animationDuration}s`)
+      wrapper.appendChild(container)
     }
     if (!clone) {
-      clone = container.cloneNode(true);
-      wrapper.appendChild(clone);
+      clone = container.cloneNode(true)
+      wrapper.appendChild(clone)
     }
     // Move wrapper contents to a new container to scroll within the wrapper container. Create a clone so it looks like an endless loop
     while (wrapper.firstChild && !wrapper.firstChild.classList.contains('scroll-container')) {
-      const node = wrapper.firstChild;
-      container.appendChild(node);
-      clone.appendChild(node.cloneNode(true));
+      const node = wrapper.firstChild
+      container.appendChild(node)
+      clone.appendChild(node.cloneNode(true))
     }
-    wrapper.classList.add('scroll'); // Start animation
+    wrapper.classList.add('scroll') // Start animation
   },
 
   /******************************************************************
@@ -419,7 +417,7 @@ Module.register('MMM-MyScoreboard', {
     var viewStyle = this.config.viewStyle
 
     var boxScore = document.createElement('div')
-    boxScore.classList.add('box-score', league.replaceAll(' ',''))
+    boxScore.classList.add('box-score', league.replaceAll(' ', ''))
     boxScore.classList.add(viewStyle)
     if (gameObj.gameMode == this.gameModes.IN_PROGRESS) {
       boxScore.classList.add('in-progress')
@@ -659,8 +657,8 @@ Module.register('MMM-MyScoreboard', {
     }
 
     // New property to set wrapper height for animations
-    if (this.config.scrollAnimation.scroll) {
-      wrapper.style.setProperty('max-height', `${this.config.scrollAnimation.height}px`);
+    if (this.config.scrollAnimation) {
+      wrapper.style.setProperty('max-height', `${this.config.scrollHeight}px`)
     }
 
     /*
@@ -711,7 +709,7 @@ Module.register('MMM-MyScoreboard', {
         })
       }
     }) */
-    //this.config.sports.forEach(function (sport) {
+    // this.config.sports.forEach(function (sport) {
     for (const [sport, scores] of Object.entries(self.sportsData)) {
       var leagueSeparator = []
       if (scores['scores'].length > 0) {
@@ -744,7 +742,7 @@ Module.register('MMM-MyScoreboard', {
       }
     }
     for (const [sport, scores] of Object.entries(self.sportsDataYd)) {
-      var leagueSeparator = []
+      leagueSeparator = []
       if (scores['scores'].length > 0 && !self.sportsData[sport]) {
         // anyGames = true
         if (self.config.showLeagueSeparators) {
@@ -775,27 +773,29 @@ Module.register('MMM-MyScoreboard', {
     //  this.show(1000, {lockString: this.identifier});
     // }
 
-    if (this.config.scrollAnimation.scroll) {this.setupScrollAnimation(wrapper)}; // Trigger animation check
+    if (this.config.scrollAnimation) {
+      this.setupScrollAnimation(wrapper)
+    }; // Trigger animation check
 
     return wrapper
   },
 
-    // Function to Calculate the Total number of Divs for scoll and update interval.
-    calculateTotalDivs: function() {
+  // Function to Calculate the Total number of Divs for scoll and update interval.
+  calculateTotalDivs: function () {
     // separatorDivs can be used to slow animation down when active if desired.
-    let gameDivs = 0;
+    let gameDivs = 0
     // let separatorDivs = 0;
-    //Log.debug(Object.keys(this.sportsData))
-    Object.keys(this.sportsData).forEach(sport => {
-      gameDivs += this.sportsData[sport]['scores'].length;
+    // Log.debug(Object.keys(this.sportsData))
+    Object.keys(this.sportsData).forEach((sport) => {
+      gameDivs += this.sportsData[sport]['scores'].length
       // if (this.config.showLeagueSeparators) separatorDivs++;
-    });
-    Object.keys(this.sportsDataYd).forEach(sport => {
-      gameDivs += this.sportsDataYd[sport]['scores'].length;
+    })
+    Object.keys(this.sportsDataYd).forEach((sport) => {
+      gameDivs += this.sportsDataYd[sport]['scores'].length
       // if (this.config.showLeagueSeparators) separatorDivs++;
-    });
+    })
     // return (gameDivs + separatorDivs);
-    return gameDivs;
+    return gameDivs
   },
 
   // New setInterval Logic to match the animation speed. Minimum 2 minutes.
@@ -803,28 +803,28 @@ Module.register('MMM-MyScoreboard', {
   // Unfortunately, there is no other way to have a smooth transition because it always rebuilds the DOM and starts at 0.
   // If we could update the innerHTML only, then it wouldn't have a harsh reset.
   updateRefreshInterval: function () {
-  let currentRefresh;
-  const minRefresh = 2 * 60 * 1000; // 2 minutes in milliseconds
-  currentRefresh = minRefresh;
+    let currentRefresh
+    const minRefresh = 2 * 60 * 1000 // 2 minutes in milliseconds
+    currentRefresh = minRefresh
 
-  if (this.config.scrollAnimation.scroll) {
-    if (this.totalDivs > 0) {
-      const animationDuration = this.config.scrollAnimation.scrollSpeed * this.totalDivs,
-        animationDurationMs = animationDuration * 1000,
-        calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs;
-      currentRefresh = Math.max(minRefresh, calculatedInterval);
+    if (this.config.scrollAnimation) {
+      if (this.totalDivs > 0) {
+        const animationDuration = this.config.scrollSpeed * this.totalDivs,
+          animationDurationMs = animationDuration * 1000,
+          calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs
+        currentRefresh = Math.max(minRefresh, calculatedInterval)
+      }
     }
-  }
-  // currentIntervalDuration starts as 0 so it always runs the first time (0 !== 120000)
-  if (currentRefresh !== this.refreshInterval) {
-    if (this.refreshIntervalId) clearInterval(this.refreshIntervalId);
-    var self = this
-    this.refreshIntervalId = setInterval(() => {
-      self.getScores();
-      }, currentRefresh);
-    this.refreshInterval = currentRefresh;
-  }
-},
+    // currentIntervalDuration starts as 0 so it always runs the first time (0 !== 120000)
+    if (currentRefresh !== this.refreshInterval) {
+      if (this.refreshIntervalId) clearInterval(this.refreshIntervalId)
+      var self = this
+      this.refreshIntervalId = setInterval(() => {
+        self.getScores()
+      }, currentRefresh)
+      this.refreshInterval = currentRefresh
+    }
+  },
 
   socketNotificationReceived: function (notification, payload) {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
@@ -834,8 +834,8 @@ Module.register('MMM-MyScoreboard', {
       this.sportsData[payload.label]['scores'] = payload.scores
       this.sportsData[payload.label]['league'] = payload.index
       this.totalDivs = this.calculateTotalDivs()
-      this.updateDom();
-      this.updateRefreshInterval();
+      this.updateDom()
+      this.updateRefreshInterval()
       if (payload.scores.length === 0 && payload.notRun != true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
@@ -847,8 +847,8 @@ Module.register('MMM-MyScoreboard', {
       this.sportsDataYd[payload.label]['scores'] = payload.scores
       this.sportsDataYd[payload.label]['league'] = payload.index
       this.totalDivs = this.calculateTotalDivs()
-      this.updateDom();
-      this.updateRefreshInterval();
+      this.updateDom()
+      this.updateRefreshInterval()
       var stopGrabbingYD = true
       for (let i = 0; i < payload.scores.length; i++) {
         if (payload.scores[i].gameMode < 2) {
@@ -878,7 +878,7 @@ Module.register('MMM-MyScoreboard', {
         every two minutes should be more than fine for our purposes.
       */
       this.totalDivs = this.calculateTotalDivs()
-      this.updateRefreshInterval();
+      this.updateRefreshInterval()
     }
   },
 

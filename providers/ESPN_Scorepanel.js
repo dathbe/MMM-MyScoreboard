@@ -215,7 +215,7 @@ module.exports = {
   async getScores(payload, gameDate, callback) {
     var self = this
 
-    if (moment(gameDate).format('YYYYMMDD') === moment().format('YYYYMMDD')) {
+    /* if (moment(gameDate).format('YYYYMMDD') === moment().format('YYYYMMDD')) {
       var storedDay = 'today'
     }
     else if (moment(gameDate).format('YYYYMMDD') === moment().subtract(1, 'days').format('YYYYMMDD')) {
@@ -223,24 +223,24 @@ module.exports = {
     }
     else {
       storedDay = 'other'
-    }
+    } */
 
     if (Object.keys(this.rugbyLeagues).includes(payload.league) || Object.values(this.rugbyLeagues).includes(payload.league)) {
-      sport = 'rugby'
+      var sport = 'rugby'
     }
     else {
       sport = 'soccer'
     }
     var url = 'https://site.api.espn.com/apis/site/v2/sports/' + sport + '/scorepanel?dates=' + moment(gameDate).format('YYYYMMDD') + '&limit=200'
 
-    //if (!this.lastUpdate[sport] || this.lastUpdate[sport] < moment().subtract(300, 'seconds')) {
+    // if (!this.lastUpdate[sport] || this.lastUpdate[sport] < moment().subtract(300, 'seconds')) {
     try {
       const response = await fetch(url)
       Log.debug(url + ' fetched for ' + payload.league)
       var body = await response.json()
 
-      //if (this.getLeaguePath(payload.league).includes('scorepanel')) {
-      //}
+      // if (this.getLeaguePath(payload.league).includes('scorepanel')) {
+      // }
       /* if (!this.bodyStorage[sport]) {
         this.bodyStorage[sport] = {}
       } */
@@ -251,16 +251,15 @@ module.exports = {
     catch (error) {
       Log.error(error + ' ' + url)
     }
-    //}
-    //else {
+    // }
+    // else {
     //  body = this.bodyStorage[sport][storedDay]
     //  Log.debug('it worked')
-    //}
+    // }
     for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
       payload.label = body['scores'][leagueIdx]['leagues'][0]['name'] // `league${leagueIdx}`
       callback(self.formatScores(payload, body['scores'][leagueIdx], moment(gameDate).format('YYYYMMDD')))
     }
-      
   },
 
   formatScores: function (payload, data, gameDate) {
@@ -673,20 +672,20 @@ module.exports = {
   },
 
   rugbyLeagues: {
-    RUGBY: 'Rugby',
-    PREMIERSHIP_RUGBY: 'Premiership Rugby',
-    RUGBY_WORLD_CUP: 'Rugby World Cup',
-    SIX_NATIONS: 'Six Nations',
-    THE_RUGBY_CHAMPIONSHIP: 'The Rugby Championship',
-    EUROPEAN_RUGBY_CHAMPIONS_CUP: 'European Rugby Champions Cup',
-    UNITED_RUGBY_CHAMPIONSHIP: 'United Rugby Championship',
-    SUPER_RUGBY_PACIFIC: 'Super Rugby Pacific',
-    OLYMPIC_MENS_7S: 'Olympic Men\'s 7s',
-    OLYMPIC_WOMENS_RUGBY_SEVENS: 'Olympic Women\'s Rugby Sevens',
-    INTERNATIONAL_TEST_MATCH: 'International Test Match',
-    URBA_TOP_12: 'URBA Top 12',
-    MITRE_10_CUP: 'Mitre 10 Cup',
+    'RUGBY': 'Rugby',
+    'PREMIERSHIP_RUGBY': 'Premiership Rugby',
+    'RUGBY_WORLD_CUP': 'Rugby World Cup',
+    'SIX_NATIONS': 'Six Nations',
+    'THE_RUGBY_CHAMPIONSHIP': 'The Rugby Championship',
+    'EUROPEAN_RUGBY_CHAMPIONS_CUP': 'European Rugby Champions Cup',
+    'UNITED_RUGBY_CHAMPIONSHIP': 'United Rugby Championship',
+    'SUPER_RUGBY_PACIFIC': 'Super Rugby Pacific',
+    'OLYMPIC_MENS_7S': 'Olympic Men\'s 7s',
+    'OLYMPIC_WOMENS_RUGBY_SEVENS': 'Olympic Women\'s Rugby Sevens',
+    'INTERNATIONAL_TEST_MATCH': 'International Test Match',
+    'URBA_TOP_12': 'URBA Top 12',
+    'MITRE_10_CUP': 'Mitre 10 Cup',
     'Major League Rugby': 'Major League Rugby',
-  }
+  },
 
 }
