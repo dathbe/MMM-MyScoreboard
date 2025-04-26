@@ -737,26 +737,26 @@
   // Unfortunately, there is no other way to have a smooth transition because it always rebuilds the DOM and starts at 0.
   // If we could update the innerHTML only, then it wouldn't have a harsh reset.
   updateRefreshInterval: function () {
-  let refreshInterval;
+  let currentRefresh;
   const minRefresh = 2 * 60 * 1000; // 2 minutes in milliseconds
-  refreshInterval = minRefresh;
+  currentRefresh = minRefresh;
 
   if (this.config.scrollAnimation.scroll) {
     if (this.totalDivs > 0) {
       const animationDuration = this.config.scrollAnimation.scrollSpeed * this.totalDivs,
         animationDurationMs = animationDuration * 1000,
         calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs;
-      refreshInterval = Math.max(minRefresh, calculatedInterval);
+      currentRefresh = Math.max(minRefresh, calculatedInterval);
     }
   }
   // currentIntervalDuration starts as 0 so it always runs the first time (0 !== 120000)
-  if (refreshInterval !== this.currentIntervalDuration) {
+  if (currentRefresh !== this.refreshInterval) {
     if (this.refreshIntervalId) clearInterval(this.refreshIntervalId);
     var self = this
     this.refreshIntervalId = setInterval(() => {
       self.getScores();
-      }, refreshInterval);
-    this.currentIntervalDuration = refreshInterval;
+      }, currentRefresh);
+    this.refreshInterval = currentRefresh;
   }
 },
 
