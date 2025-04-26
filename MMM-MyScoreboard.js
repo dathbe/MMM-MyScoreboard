@@ -1,4 +1,4 @@
-/*********************************
+ /*********************************
 
  MagicMirror² Module:
  MMM-MyScoreboard
@@ -28,6 +28,11 @@ Module.register('MMM-MyScoreboard', {
     localMarkets: [],
     displayLocalChannels: [],
     channelRotateInterval: 7000,
+    scrollAnimation: {
+      scroll: false,
+      scrollSpeed: 6,
+      height: 0
+    },
     // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
@@ -57,7 +62,7 @@ Module.register('MMM-MyScoreboard', {
 
       logoFormat is no longer used.  The module makes a catalog of what
       logos are present locally and uses them when available.
-      Otherewise the log image URL provided by the data feed is used.
+      Otherwise the log image URL provided by the data feed is used.
 
       In the spirit of "if it ain't broke, don't  fix it," I'll leave
       the logoFormat parameter in place.  Who knows... I might use it
@@ -299,6 +304,11 @@ Module.register('MMM-MyScoreboard', {
     'stackedWithLogos',
   ],
 
+  // New for updateRefreshInterval()
+  refreshIntervalId: null,
+  refreshInterval: 0,
+  totalDivs: 0,
+
   localLogos: {},
   localLogosCustom: {},
   ydLoaded: {},
@@ -347,6 +357,39 @@ Module.register('MMM-MyScoreboard', {
       default:
         return false
     }
+  },
+
+   // New Scroll Animation Function
+   setupScrollAnimation: function (wrapper) {
+    // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
+    const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
+      shouldAnimate = this.config.scrollAnimation.scroll && this.config.scrollAnimation.height < domHeight,
+      animationDuration = this.config.scrollAnimation.scrollSpeed * this.totalDivs;
+    let container = null,
+      clone = null;
+
+    wrapper.classList.remove('scroll');
+    if (!shouldAnimate) {
+      return;
+    }
+    // Create new containers if they don't exist
+    if (!container) {
+      container = document.createElement('div');
+      container.className = 'scroll-container';
+      container.style.setProperty('animation-duration', `${animationDuration}s`);
+      wrapper.appendChild(container);
+    }
+    if (!clone) {
+      clone = container.cloneNode(true);
+      wrapper.appendChild(clone);
+    }
+    // Move wrapper contents to a new container to scroll within the wrapper container. Create a clone so it looks like an endless loop
+    while (wrapper.firstChild && !wrapper.firstChild.classList.contains('scroll-container')) {
+      const node = wrapper.firstChild;
+      container.appendChild(node);
+      clone.appendChild(node.cloneNode(true));
+    }
+    wrapper.classList.add('scroll'); // Start animation
   },
 
   /******************************************************************
@@ -615,6 +658,11 @@ Module.register('MMM-MyScoreboard', {
       return wrapper
     }
 
+    // New property to set wrapper height for animations
+    if (this.config.scrollAnimation.scroll) {
+      wrapper.style.setProperty('max-height', `${this.config.scrollAnimation.height}px`);
+    }
+
     /*
       Run through the leagues and generate box score displays for
       each game.
@@ -727,8 +775,58 @@ Module.register('MMM-MyScoreboard', {
     //  this.show(1000, {lockString: this.identifier});
     // }
 
+    if (this.config.scrollAnimation.scroll) {this.setupScrollAnimation(wrapper)}; // Trigger animation check
+
     return wrapper
   },
+
+    // Function to Calculate the Total number of Divs for scoll and update interval.
+    calculateTotalDivs: function() {
+    // separatorDivs can be used to slow animation down when active if desired.
+    let gameDivs = 0;
+    // let separatorDivs = 0;
+    this.config.sports.forEach(sport => {
+      if (this.sportsData[sport.league] != null && this.sportsData[sport.league].length > 0) {
+        gameDivs += this.sportsData[sport.league].length;
+        // if (this.config.showLeagueSeparators) separatorDivs++;
+      };
+      if (this.sportsDataYd[sport.league] != null && this.sportsDataYd[sport.league].length > 0) {
+        gameDivs += this.sportsDataYd[sport.league].length;
+        // if (this.config.showLeagueSeparators) separatorDivs++;
+      };
+    });
+    // return (gameDivs + separatorDivs);
+    Log.debug(gameDivs)
+    return gameDivs;
+  },
+
+  // New setInterval Logic to match the animation speed. Minimum 2 minutes.
+  // Calculates a multiple of the animationDuration so it updates when animation has completed the lap.
+  // Unfortunately, there is no other way to have a smooth transition because it always rebuilds the DOM and starts at 0.
+  // If we could update the innerHTML only, then it wouldn't have a harsh reset.
+  updateRefreshInterval: function () {
+  let currentRefresh;
+  const minRefresh = 2 * 60 * 1000; // 2 minutes in milliseconds
+  currentRefresh = minRefresh;
+
+  if (this.config.scrollAnimation.scroll) {
+    if (this.totalDivs > 0) {
+      const animationDuration = this.config.scrollAnimation.scrollSpeed * this.totalDivs,
+        animationDurationMs = animationDuration * 1000,
+        calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs;
+      currentRefresh = Math.max(minRefresh, calculatedInterval);
+    }
+  }
+  // currentIntervalDuration starts as 0 so it always runs the first time (0 !== 120000)
+  if (currentRefresh !== this.refreshInterval) {
+    if (this.refreshIntervalId) clearInterval(this.refreshIntervalId);
+    var self = this
+    this.refreshIntervalId = setInterval(() => {
+      self.getScores();
+      }, currentRefresh);
+    this.refreshInterval = currentRefresh;
+  }
+},
 
   socketNotificationReceived: function (notification, payload) {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
@@ -737,7 +835,9 @@ Module.register('MMM-MyScoreboard', {
       this.sportsData[payload.label] = {}
       this.sportsData[payload.label]['scores'] = payload.scores
       this.sportsData[payload.label]['league'] = payload.index
-      this.updateDom()
+      this.totalDivs = this.calculateTotalDivs()
+      this.updateDom();
+      this.updateRefreshInterval();
       if (payload.scores.length === 0 && payload.notRun != true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
@@ -748,7 +848,9 @@ Module.register('MMM-MyScoreboard', {
       this.sportsDataYd[payload.label] = {}
       this.sportsDataYd[payload.label]['scores'] = payload.scores
       this.sportsDataYd[payload.label]['league'] = payload.index
-      this.updateDom()
+      this.totalDivs = this.calculateTotalDivs()
+      this.updateDom();
+      this.updateRefreshInterval();
       var stopGrabbingYD = true
       for (let i = 0; i < payload.scores.length; i++) {
         if (payload.scores[i].gameMode < 2) {
@@ -777,10 +879,8 @@ Module.register('MMM-MyScoreboard', {
         respective feed owners to lock down the APIs. Updating
         every two minutes should be more than fine for our purposes.
       */
-      var self = this
-      setInterval(() => {
-        self.getScores()
-      }, 2 * 60 * 1000)
+      this.totalDivs = this.calculateTotalDivs()
+      this.updateRefreshInterval();
     }
   },
 
