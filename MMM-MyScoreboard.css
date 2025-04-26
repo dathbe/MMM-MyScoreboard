@@ -1077,14 +1077,13 @@
   to {opacity: 1}
 }
 
-}
-
 /* Scroll Animation */
 
 .MMM-MyScoreboard .wrapper.scroll {
   overflow: hidden;
   display: inline-block;
   white-space: nowrap;
+  width: 100%;
 }
 
 .MMM-MyScoreboard .wrapper.scroll .scroll-container {
@@ -1100,3 +1099,4 @@
   to {
     transform: translateY(-100%);
   };
+}
