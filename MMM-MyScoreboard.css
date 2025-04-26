@@ -1079,26 +1079,23 @@
 
 /* Scroll Animation */
 
-.MMM-MyScoreboard .wrapper {
-  max-height: var(--max-height);
+.MMM-MyScoreboard .wrapper.scroll {
   overflow: hidden;
   display: inline-block;
   white-space: nowrap;
 }
 
-.MMM-MyScoreboard .scroll-container {
-  animation: scroll var(--animation-duration) linear infinite;
-}
-
-.MMM-MyScoreboard .wrapper.running .scroll-container {
+.MMM-MyScoreboard .wrapper.scroll .scroll-container {
+  animation: scroll linear infinite;
+  will-change: transform;
   animation-play-state: running !important;
 }
 
-.MMM-MyScoreboard .wrapper.paused .scroll-container {
-  animation-play-state: paused !important;
-}
-
 @keyframes scroll {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(0, calc(-100% - 10px), 0); }
+  from { 
+    transform: translateY(10px);
+  }
+  to {
+    transform: translateY(-100%);
+  };
 }

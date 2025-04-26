@@ -98,8 +98,7 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 |---------------|------------
 | `scroll`      | Enable animation for ticker effect.<br><br>**Type** `Boolean`<br>**Default** `false`
 | `height`      | Limit the height of the container. For best results, set the limit to show exactly the number of games you want when static. This ensures that any extra games will be fully hidden and force the animation to start. No animation will occur if there are fewer games than fill the container.<br><br>**Type** `Number`<br>**Default** `10000` ensures all games are shown unless restricted
-| `scrollSpeed` | Number of seconds each line should take to traverse to the next one. `1` = very fast. `10` = very slow. For example, your `height` might be `300` and display 10 games & league-separators. `scrollSpeed` of `6` will take 60 seconds for the last visible game/separator to reach the top.<br><br>**Type** `Number`<br>**Default** `6`
-
+| `scrollSpeed` | Rate for scrolling. `3` = fast, `10` = slow.<br><br>**Type** `Number`<br>**Default** `6`
 
 ### Configuring Your "Sports" List
 

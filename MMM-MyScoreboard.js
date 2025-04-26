@@ -31,7 +31,7 @@
     scrollAnimation: {
       scroll: false,
       scrollSpeed: 6,
-      height: 10000
+      height: 0
     },
     // limitBroadcasts: 1,
     debugHours: 0,
@@ -290,7 +290,8 @@
 
   // New for updateRefreshInterval()
   refreshIntervalId: null,
-  currentIntervalDuration: 0,
+  refreshInterval: 0,
+  totalDivs: 0,
 
   localLogos: {},
   localLogosCustom: {},
@@ -367,22 +368,23 @@
    ******************************************************************/
 
    // New Scroll Animation Function
-   setupScrollAnimation: function (wrapper, lines) {
+   setupScrollAnimation: function (wrapper) {
     // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
     const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
-      shouldAnimate = this.config.scrollAnimation.scroll && this.config.scrollAnimation.height < domHeight;
+      shouldAnimate = this.config.scrollAnimation.scroll && this.config.scrollAnimation.height < domHeight,
+      animationDuration = this.config.scrollAnimation.scrollSpeed * this.totalDivs;
     let container = null,
       clone = null;
-
-    wrapper.classList.remove('running', 'paused'); // Remove animation classes temporarily
+    
+    wrapper.classList.remove('scroll');
     if (!shouldAnimate) {
-      wrapper.classList.add('paused');
       return;
     }
     // Create new containers if they don't exist
     if (!container) {
       container = document.createElement('div');
       container.className = 'scroll-container';
+      container.style.setProperty('animation-duration', `${animationDuration}s`);
       wrapper.appendChild(container);
     }
     if (!clone) {
@@ -395,9 +397,7 @@
       container.appendChild(node);
       clone.appendChild(node.cloneNode(true));
     }
-    const animationDuration = this.config.scrollAnimation.scrollSpeed * lines; // Calculate dynamic duration based on content height
-    wrapper.style.setProperty('--animation-duration', `${animationDuration}s`);
-    wrapper.classList.add('running'); // Start animation
+    wrapper.classList.add('scroll'); // Start animation
   },
 
   boxScoreFactory: function (league, gameObj) {
@@ -629,10 +629,6 @@
       wrapper.classList.add('highlight-winners')
     }
 
-    // New property to set wrapper height
-    if (this.config.scrollAnimation.height) {
-      wrapper.style.setProperty('--max-height', `${this.config.scrollAnimation.height}px`);
-    }
     /*
       Show "Loading" when there's no data initially.
     */
@@ -644,20 +640,23 @@
       return wrapper
     }
 
+    // New property to set wrapper height for animations
+    if (this.config.scrollAnimation.scroll) {
+      wrapper.style.setProperty('max-height', `${this.config.scrollAnimation.height}px`);
+    }
+
     /*
       Run through the leagues and generate box score displays for
       each game.
     */
     // var anyGames = false
     var self = this
-    let lines = 0; // Calculate number of lines for animation duration
+
     this.config.sports.forEach(function (sport) {
       var leagueSeparator = []
       if (self.sportsData[sport.league] != null && self.sportsData[sport.league].length > 0) {
         // anyGames = true
-        lines += self.sportsData[sport.league].length;
         if (self.config.showLeagueSeparators) {
-          lines++;
           leagueSeparator = document.createElement('div')
           leagueSeparator.classList.add('league-separator')
           if (sport.label) {
@@ -676,9 +675,7 @@
       }
       if (self.sportsDataYd[sport.league] != null && self.sportsDataYd[sport.league].length > 0) {
         // anyGames = true
-        lines += self.sportsDataYd[sport.league].length;
         if (self.config.showLeagueSeparators) {
-          lines++;
           leagueSeparator = document.createElement('div')
           leagueSeparator.classList.add('league-separator')
           if (sport.label) {
@@ -710,26 +707,29 @@
     // } else {
     //  this.show(1000, {lockString: this.identifier});
     // }
-    
-    this.setupScrollAnimation(wrapper, lines); // Trigger animation check
+
+    if (this.config.scrollAnimation.scroll) {this.setupScrollAnimation(wrapper)}; // Trigger animation check
 
     return wrapper
   },
 
-  // Function to calculateTotallines for updateRefresh interval. Could also be used for getDom, but there are only 5 lines of code added there.
-  calculateTotalLines: function() {
-    let lines = 0;
+    // Function to Calculate the Total number of Divs for scoll and update interval.
+    calculateTotalDivs: function() {
+    // separatorDivs can be used to slow animation down when active if desired.
+    let gameDivs = 0;
+    // let separatorDivs = 0;
     this.config.sports.forEach(sport => {
       if (this.sportsData[sport.league] != null && this.sportsData[sport.league].length > 0) {
-        lines += this.sportsData[sport.league].length;
-        if (this.config.showLeagueSeparators) lines++;
+        gameDivs += this.sportsData[sport.league].length;
+        // if (this.config.showLeagueSeparators) separatorDivs++;
       };
       if (this.sportsDataYd[sport.league] != null && this.sportsDataYd[sport.league].length > 0) {
-        lines += this.sportsDataYd[sport.league].length;
-        if (this.config.showLeagueSeparators) lines++;
+        gameDivs += this.sportsDataYd[sport.league].length;
+        // if (this.config.showLeagueSeparators) separatorDivs++;
       };
     });
-    return lines;
+    // return (gameDivs + separatorDivs);
+    return gameDivs;
   },
 
   // New setInterval Logic to match the animation speed. Minimum 2 minutes.
@@ -742,9 +742,8 @@
   refreshInterval = minRefresh;
 
   if (this.config.scrollAnimation.scroll) {
-    var lines = this.calculateTotalLines();
-    if (lines > 0) {
-      const animationDuration = this.config.scrollAnimation.scrollSpeed * lines,
+    if (this.totalDivs > 0) {
+      const animationDuration = this.config.scrollAnimation.scrollSpeed * this.totalDivs,
         animationDurationMs = animationDuration * 1000,
         calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs;
       refreshInterval = Math.max(minRefresh, calculatedInterval);
@@ -766,6 +765,7 @@
       // Log.info('[MMM-MyScoreboard] Updating Scores')
       this.loaded = true
       this.sportsData[payload.index] = payload.scores
+      this.totalDivs = this.calculateTotalDivs()
       this.updateDom();
       this.updateRefreshInterval();
       if (payload.scores.length === 0 && payload.notRun != true) {
@@ -776,6 +776,7 @@
       // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
       this.sportsDataYd[payload.index] = payload.scores
+      this.totalDivs = this.calculateTotalDivs()
       this.updateDom();
       this.updateRefreshInterval();
       var stopGrabbingYD = true
@@ -806,6 +807,7 @@
         respective feed owners to lock down the APIs. Updating
         every two minutes should be more than fine for our purposes.
       */
+      this.totalDivs = this.calculateTotalDivs()
       this.updateRefreshInterval();
     }
   },
