@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.11.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.0...v4.11.1) - 2025-04-26
+
+- BUG FIX:  English Premier League display was broken
+- Some new channel logos
+
 ## [4.11.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.10.0...v4.11.0) - 2025-04-25
 
 - **NEW FEATURE**: Added the config options to set a module height and scroll through scores when they don't fit within that height.  (Thank you to @mikeyounge)
