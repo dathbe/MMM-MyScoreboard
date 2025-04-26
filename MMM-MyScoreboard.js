@@ -785,18 +785,16 @@ Module.register('MMM-MyScoreboard', {
     // separatorDivs can be used to slow animation down when active if desired.
     let gameDivs = 0;
     // let separatorDivs = 0;
-    this.config.sports.forEach(sport => {
-      if (this.sportsData[sport.league] != null && this.sportsData[sport.league].length > 0) {
-        gameDivs += this.sportsData[sport.league].length;
-        // if (this.config.showLeagueSeparators) separatorDivs++;
-      };
-      if (this.sportsDataYd[sport.league] != null && this.sportsDataYd[sport.league].length > 0) {
-        gameDivs += this.sportsDataYd[sport.league].length;
-        // if (this.config.showLeagueSeparators) separatorDivs++;
-      };
+    //Log.debug(Object.keys(this.sportsData))
+    Object.keys(this.sportsData).forEach(sport => {
+      gameDivs += this.sportsData[sport]['scores'].length;
+      // if (this.config.showLeagueSeparators) separatorDivs++;
+    });
+    Object.keys(this.sportsDataYd).forEach(sport => {
+      gameDivs += this.sportsDataYd[sport]['scores'].length;
+      // if (this.config.showLeagueSeparators) separatorDivs++;
     });
     // return (gameDivs + separatorDivs);
-    Log.debug(gameDivs)
     return gameDivs;
   },
 
