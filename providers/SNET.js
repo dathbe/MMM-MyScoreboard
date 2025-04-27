@@ -103,6 +103,7 @@ module.exports = {
 
     try {
       const response = await fetch(url)
+      Log.debug(`${url} fetched`)
       self.scoresObj = await response.json()
     }
     catch (error) {
