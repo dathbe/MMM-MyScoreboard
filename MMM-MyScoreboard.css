@@ -1079,11 +1079,11 @@
 
 /* Scroll Animation */
 
-.MMM-MyScoreboard .wrapper.scroll {
+.MMM-MyScoreboard:has(.scroll) {
   overflow: hidden;
   display: inline-block;
   white-space: nowrap;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .MMM-MyScoreboard .wrapper.scroll .scroll-container {
