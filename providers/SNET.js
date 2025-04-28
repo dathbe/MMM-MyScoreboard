@@ -76,12 +76,12 @@ module.exports = {
           clearInterval(waitForDataTimer)
           waitForDataTimer = null
 
-          callback(self.getLeague(payload.league, payload.teams))
+          callback(self.getLeague(payload.league, payload.teams), payload.index)
         }
       }, 1000)
     }
     else {
-      callback(self.getLeague(payload.league, payload.teams))
+      callback(self.getLeague(payload.league, payload.teams), payload.index)
     }
   },
 
@@ -103,6 +103,7 @@ module.exports = {
 
     try {
       const response = await fetch(url)
+      Log.debug(`${url} fetched`)
       self.scoresObj = await response.json()
     }
     catch (error) {

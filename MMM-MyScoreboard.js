@@ -709,6 +709,9 @@ Module.register('MMM-MyScoreboard', {
       }
     }) */
     // this.config.sports.forEach(function (sport) {
+    //Log.debug(self.sportsData['NHL'])
+    
+    self.sportsData = this.sortDict(self.sportsData)
     for (const [sport, scores] of Object.entries(self.sportsData)) {
       var leagueSeparator = []
       if (scores['scores'].length > 0) {
@@ -740,6 +743,8 @@ Module.register('MMM-MyScoreboard', {
         })
       }
     }
+    
+    self.sportsDataYd = this.sortDict(self.sportsDataYd)
     for (const [sport, scores] of Object.entries(self.sportsDataYd)) {
       leagueSeparator = []
       if (scores['scores'].length > 0 && !self.sportsData[sport]) {
@@ -832,11 +837,15 @@ Module.register('MMM-MyScoreboard', {
       this.sportsData[payload.label] = {}
       this.sportsData[payload.label]['scores'] = payload.scores
       this.sportsData[payload.label]['league'] = payload.index
+      this.sportsData[payload.label]['sortIdx'] = payload.sortIdx
       this.totalDivs = this.calculateTotalDivs()
       this.updateDom()
       this.updateRefreshInterval()
       if (payload.scores.length === 0 && payload.notRun != true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
+      }
+      if (moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').hour() >= this.config.rolloverHours) {
+        this.sportsDataYd = {}
       }
     }
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
@@ -845,6 +854,7 @@ Module.register('MMM-MyScoreboard', {
       this.sportsDataYd[payload.label] = {}
       this.sportsDataYd[payload.label]['scores'] = payload.scores
       this.sportsDataYd[payload.label]['league'] = payload.index
+      this.sportsDataYd[payload.label]['sortIdx'] = payload.sortIdx
       this.totalDivs = this.calculateTotalDivs()
       this.updateDom()
       this.updateRefreshInterval()
@@ -895,10 +905,10 @@ Module.register('MMM-MyScoreboard', {
         scrubbedSports.push(sport)
       }
       else if (self.legacySoccer[sport.league]) {
-        Log.debug(self.legacySoccer[sport.league])
+        //Log.debug(self.legacySoccer[sport.league])
         sport.league = self.legacySoccer[sport.league]
         scrubbedSports.push(sport)
-        Log.debug(sport)
+        //Log.debug(sport)
       }
       else {
         Log.warn(`League ${sport.league} is not a valid league name`)
@@ -971,7 +981,7 @@ Module.register('MMM-MyScoreboard', {
 
     if (gameDate.hour() >= this.config.rolloverHours) {
       var tempToday = true
-      tempYesterday = 'erase'
+      // tempYesterday = 'erase'
     }
     else if (this.config.alwaysShowToday) {
       tempToday = true
@@ -983,6 +993,9 @@ Module.register('MMM-MyScoreboard', {
     }
 
     var self = this
+    if (self.config.debugHours > 0 || self.config.debugMinutes > 0) {
+      Log.debug(gameDate)
+    }
     this.config.sports.forEach(function (sport, index) {
       if (self.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
         whichDay.today = false
@@ -1048,6 +1061,23 @@ Module.register('MMM-MyScoreboard', {
     }
     // Log.debug(`${this.logoIndex} <- logoIndex5`)
     /* setTimeout(self.rotateChannels, 5000); // Change image every 5 seconds */
+  },
+
+  sortDict: function (dict) {
+    // Create items array
+    var items = Object.keys(dict).map(function(key) {
+      return [key, dict[key]];
+    });
+    // Sort the array based on the second element
+    items.sort(function(first, second) {
+      return first[1]['sortIdx'] - second[1]['sortIdx'];
+    });
+    
+    var sortedDict = {}
+    for (let i=0; i<items.length; i++) {
+      sortedDict[items[i][0]] = items[i][1]
+    }
+    return sortedDict
   },
 
   /*

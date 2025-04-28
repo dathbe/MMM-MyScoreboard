@@ -258,7 +258,7 @@ module.exports = {
     // }
     for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
       payload.label = body['scores'][leagueIdx]['leagues'][0]['name'] // `league${leagueIdx}`
-      callback(self.formatScores(payload, body['scores'][leagueIdx], moment(gameDate).format('YYYYMMDD')))
+      callback(self.formatScores(payload, body['scores'][leagueIdx], moment(gameDate).format('YYYYMMDD')), payload.index + (leagueIdx / 1000))
     }
   },
 

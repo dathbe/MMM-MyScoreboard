@@ -613,7 +613,7 @@ module.exports = {
         body = body2
       }
 
-      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')))
+      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index)
     }
     catch (error) {
       Log.error(error + ' ' + url)
