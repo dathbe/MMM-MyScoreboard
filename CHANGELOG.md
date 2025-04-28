@@ -6,7 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [4.11.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.1...v4.11.2) - 2025-04-27
 
-- BUG FIX:  Sort the array so that scores are displayed in the order requested in user's config
+- BUG FIX: Sort the array so that scores are displayed in the order requested in user's config
+- BUG FIX: Correct error where yesterday's scores would not erase at requested time
 
 ## [4.11.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.0...v4.11.1) - 2025-04-26
 
