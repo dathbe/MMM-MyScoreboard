@@ -86,16 +86,17 @@ module.exports = NodeHelper.create({
         })
       }
       else {
-        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [], notRun: true, sortIdx: 999 })
+        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [], notRun: true, label: payload.label, sortIdx: 999 })
       }
       if (payload.whichDay.yesterday === 'yes') {
         provider2.getScores(payload, moment(payload.gameDate).subtract(1, 'day'), function (scores, sortIdx) {
           self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx })
         })
       }
-      else if (payload.whichDay.yesterday === 'erase') {
-        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: [], sortIdx: 999 })
-      }
+      /* else if (payload.whichDay.yesterday === 'erase') {
+        Log.debug('it\'s suppsoed to erase')
+        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: [], label: payload.label, sortIdx: 999 })
+      } */
     }
     else if (notification == 'MMM-MYSCOREBOARD-GET-LOCAL-LOGOS') {
       this.sendSocketNotification('MMM-MYSCOREBOARD-LOCAL-LOGO-LIST', { instanceId: payload.instanceId, index: payload.league, logos: this.localLogos, logosCustom: this.localLogosCustom })
