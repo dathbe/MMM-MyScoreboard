@@ -709,6 +709,9 @@ Module.register('MMM-MyScoreboard', {
       }
     }) */
     // this.config.sports.forEach(function (sport) {
+    //Log.debug(self.sportsData['NHL'])
+    
+    self.sportsData = this.sortDict(self.sportsData)
     for (const [sport, scores] of Object.entries(self.sportsData)) {
       var leagueSeparator = []
       if (scores['scores'].length > 0) {
@@ -740,6 +743,8 @@ Module.register('MMM-MyScoreboard', {
         })
       }
     }
+    
+    self.sportsDataYd = this.sortDict(self.sportsDataYd)
     for (const [sport, scores] of Object.entries(self.sportsDataYd)) {
       leagueSeparator = []
       if (scores['scores'].length > 0 && !self.sportsData[sport]) {
@@ -832,6 +837,7 @@ Module.register('MMM-MyScoreboard', {
       this.sportsData[payload.label] = {}
       this.sportsData[payload.label]['scores'] = payload.scores
       this.sportsData[payload.label]['league'] = payload.index
+      this.sportsData[payload.label]['sortIdx'] = payload.sortIdx
       this.totalDivs = this.calculateTotalDivs()
       this.updateDom()
       this.updateRefreshInterval()
@@ -845,6 +851,7 @@ Module.register('MMM-MyScoreboard', {
       this.sportsDataYd[payload.label] = {}
       this.sportsDataYd[payload.label]['scores'] = payload.scores
       this.sportsDataYd[payload.label]['league'] = payload.index
+      this.sportsDataYd[payload.label]['sortIdx'] = payload.sortIdx
       this.totalDivs = this.calculateTotalDivs()
       this.updateDom()
       this.updateRefreshInterval()
@@ -1002,6 +1009,7 @@ Module.register('MMM-MyScoreboard', {
       else {
         thisLabel = sport.league
       }
+      Log.debug(index)
       var payload = {
         instanceId: self.identifier,
         index: index,
@@ -1048,6 +1056,23 @@ Module.register('MMM-MyScoreboard', {
     }
     // Log.debug(`${this.logoIndex} <- logoIndex5`)
     /* setTimeout(self.rotateChannels, 5000); // Change image every 5 seconds */
+  },
+
+  sortDict: function (dict) {
+    // Create items array
+    var items = Object.keys(dict).map(function(key) {
+      return [key, dict[key]];
+    });
+    // Sort the array based on the second element
+    items.sort(function(first, second) {
+      return first[1]['sortIdx'] - second[1]['sortIdx'];
+    });
+    
+    var sortedDict = {}
+    for (let i=0; i<items.length; i++) {
+      sortedDict[items[i][0]] = items[i][1]
+    }
+    return sortedDict
   },
 
   /*

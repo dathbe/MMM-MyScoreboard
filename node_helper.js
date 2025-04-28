@@ -81,20 +81,20 @@ module.exports = NodeHelper.create({
       }
 
       if (payload.whichDay.today) {
-        provider.getScores(payload, moment(payload.gameDate), function (scores) {
-          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label })
+        provider.getScores(payload, moment(payload.gameDate), function (scores, sortIdx) {
+          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx })
         })
       }
       else {
-        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [], notRun: true })
+        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [], notRun: true, sortIdx: 999 })
       }
       if (payload.whichDay.yesterday === 'yes') {
-        provider2.getScores(payload, moment(payload.gameDate).subtract(1, 'day'), function (scores) {
-          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label })
+        provider2.getScores(payload, moment(payload.gameDate).subtract(1, 'day'), function (scores, sortIdx) {
+          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx })
         })
       }
       else if (payload.whichDay.yesterday === 'erase') {
-        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: [] })
+        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: [], sortIdx: 999 })
       }
     }
     else if (notification == 'MMM-MYSCOREBOARD-GET-LOCAL-LOGOS') {

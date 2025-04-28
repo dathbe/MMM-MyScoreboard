@@ -76,12 +76,12 @@ module.exports = {
           clearInterval(waitForDataTimer)
           waitForDataTimer = null
 
-          callback(self.getLeague(payload.league, payload.teams))
+          callback(self.getLeague(payload.league, payload.teams), payload.index)
         }
       }, 1000)
     }
     else {
-      callback(self.getLeague(payload.league, payload.teams))
+      callback(self.getLeague(payload.league, payload.teams), payload.index)
     }
   },
 
