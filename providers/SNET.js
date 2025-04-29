@@ -96,7 +96,7 @@ module.exports = {
   },
 
   async getData() {
-    //Log.debug('[]Get SNET JSON')
+    // Log.debug('[]Get SNET JSON')
     var self = this
 
     var url = 'https://stats-api.sportsnet.ca/ticker?day=' + this.gameDate.format('YYYY-MM-DD')

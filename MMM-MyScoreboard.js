@@ -709,8 +709,8 @@ Module.register('MMM-MyScoreboard', {
       }
     }) */
     // this.config.sports.forEach(function (sport) {
-    //Log.debug(self.sportsData['NHL'])
-    
+    // Log.debug(self.sportsData['NHL'])
+
     self.sportsData = this.sortDict(self.sportsData)
     for (const [sport, scores] of Object.entries(self.sportsData)) {
       var leagueSeparator = []
@@ -743,7 +743,7 @@ Module.register('MMM-MyScoreboard', {
         })
       }
     }
-    
+
     self.sportsDataYd = this.sortDict(self.sportsDataYd)
     for (const [sport, scores] of Object.entries(self.sportsDataYd)) {
       leagueSeparator = []
@@ -905,10 +905,10 @@ Module.register('MMM-MyScoreboard', {
         scrubbedSports.push(sport)
       }
       else if (self.legacySoccer[sport.league]) {
-        //Log.debug(self.legacySoccer[sport.league])
+        // Log.debug(self.legacySoccer[sport.league])
         sport.league = self.legacySoccer[sport.league]
         scrubbedSports.push(sport)
-        //Log.debug(sport)
+        // Log.debug(sport)
       }
       else {
         Log.warn(`[MMM-MyScoreboard] League ${sport.league} is not a valid league name`)
@@ -994,7 +994,7 @@ Module.register('MMM-MyScoreboard', {
 
     var self = this
     if (self.config.debugHours > 0 || self.config.debugMinutes > 0) {
-    Log.debug(`[MMM-MyScoreboard] ${gameDate}`)
+      Log.debug(`[MMM-MyScoreboard] ${gameDate}`)
     }
     this.config.sports.forEach(function (sport, index) {
       if (self.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
@@ -1065,16 +1065,16 @@ Module.register('MMM-MyScoreboard', {
 
   sortDict: function (dict) {
     // Create items array
-    var items = Object.keys(dict).map(function(key) {
-      return [key, dict[key]];
-    });
+    var items = Object.keys(dict).map(function (key) {
+      return [key, dict[key]]
+    })
     // Sort the array based on the second element
-    items.sort(function(first, second) {
-      return first[1]['sortIdx'] - second[1]['sortIdx'];
-    });
-    
+    items.sort(function (first, second) {
+      return first[1]['sortIdx'] - second[1]['sortIdx']
+    })
+
     var sortedDict = {}
-    for (let i=0; i<items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       sortedDict[items[i][0]] = items[i][1]
     }
     return sortedDict

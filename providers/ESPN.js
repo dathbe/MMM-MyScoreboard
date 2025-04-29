@@ -585,7 +585,7 @@ module.exports = {
 
     try {
       const response = await fetch(url)
-    Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
+      Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
       var body = await response.json()
 
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
