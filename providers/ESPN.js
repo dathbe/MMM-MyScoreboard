@@ -460,6 +460,7 @@ module.exports = {
     'GCSEN': 'https://upload.wikimedia.org/wikipedia/en/7/70/GCSEN_Logo.png',
     'Jazz+': './modules/MMM-MyScoreboard/logos/channels/JazzPlus.svg',
     'KATU 2.2': './modules/MMM-MyScoreboard/logos/channels/KATU.svg',
+    'KCAL': './modules/MMM-MyScoreboard/logos/channels/KCAL.svg',
     'KCOP': 'https://static.foxtv.com/static/orion/img/core/s/logos/fts-los-angeles-a.svg',
     'KENS 5': 'https://www.kens5.com/assets/shared-images/logos/kens.png',
     'KFAA-TV': './modules/MMM-MyScoreboard/logos/channels/KFAATV.webp',
