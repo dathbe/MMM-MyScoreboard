@@ -974,7 +974,7 @@ Module.register('MMM-MyScoreboard', {
 
     var self = this
     if (self.config.debugHours > 0 || self.config.debugMinutes > 0) {
-      Log.debug(gameDate)
+    Log.debug(`[MMM-MyScoreboard] ${gameDate}`)
     }
     self.loadTime.start = Date.now()
     this.config.sports.forEach(function (sport, index) {
