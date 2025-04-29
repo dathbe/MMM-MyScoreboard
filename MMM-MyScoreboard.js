@@ -301,11 +301,6 @@ Module.register('MMM-MyScoreboard', {
     'stackedWithLogos',
   ],
 
-  // New for updateRefreshInterval()
-  refreshIntervalId: null,
-  refreshInterval: 0,
-  totalDivs: 0,
-
   localLogos: {},
   localLogosCustom: {},
   ydLoaded: {},
@@ -357,36 +352,54 @@ Module.register('MMM-MyScoreboard', {
   },
 
   // New Scroll Animation Function
+  lastScrollPosition: 0,  
+  prevScrollContainer: null,
+  startReloadTime: null,
+  lastReloadTime: null,
   setupScrollAnimation: function (wrapper) {
     // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
     const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
       shouldAnimate = this.config.maxHeight < domHeight,
-      animationDuration = this.config.scrollSpeed * this.totalDivs
-    let container = null,
-      clone = null
-
+      animationDuration = this.config.scrollSpeed * this.calculateTotalDivs(),
+      deltaTime = this.lastReloadTime ? this.startReloadTime - this.lastReloadTime : 0,
+      pixelsPerSecond = domHeight / animationDuration,
+      bouncePreventer = (pixelsPerSecond * deltaTime) / 1000
+    
     wrapper.classList.remove('scroll')
     if (!shouldAnimate) {
       return
     }
-    // Create new containers if they don't exist
-    if (!container) {
-      container = document.createElement('div')
-      container.className = 'scroll-container'
-      container.style.setProperty('animation-duration', `${animationDuration}s`)
-      wrapper.appendChild(container)
+
+    if (this.prevScrollContainer) {
+      const style = window.getComputedStyle(this.prevScrollContainer),
+        scrollContainerHeight = this.prevScrollContainer.scrollHeight,
+        transformValue = style.transform
+      if (transformValue && transformValue !== 'none') {
+        const matrix = new DOMMatrix(transformValue),
+          overrunReset = Math.abs(matrix.m42 + this.lastScrollPosition) > scrollContainerHeight,
+          lastTranslateY = overrunReset ? matrix.m42 + this.lastScrollPosition + scrollContainerHeight : matrix.m42 + this.lastScrollPosition - 10
+        if (matrix.m42 !== this.lastScrollPosition && matrix.m42 !== 10 ) {
+          this.lastScrollPosition = lastTranslateY
+        } else {
+          this.lastScrollPosition -= bouncePreventer
+        }
+      }
     }
-    if (!clone) {
-      clone = container.cloneNode(true)
-      wrapper.appendChild(clone)
+    let container = document.createElement('div')
+    container.className = 'scroll-container'
+    container.style.setProperty('animation-duration', `${animationDuration}s`)
+    while (wrapper.firstChild  && !wrapper.firstChild.classList.contains('scroll-container')) {
+      container.appendChild(wrapper.firstChild)
     }
-    // Move wrapper contents to a new container to scroll within the wrapper container. Create a clone so it looks like an endless loop
-    while (wrapper.firstChild && !wrapper.firstChild.classList.contains('scroll-container')) {
-      const node = wrapper.firstChild
-      container.appendChild(node)
-      clone.appendChild(node.cloneNode(true))
-    }
+    const clones = Array.from({ length: 2 }, () => {
+      const clone = container.cloneNode(true); // Deep clone with all content
+      return clone;
+    });
+    container.style.animationDuration = `${animationDuration}` 
+    wrapper.style.setProperty('transform', `translateY(${this.lastScrollPosition}px`)
     wrapper.classList.add('scroll') // Start animation
+    wrapper.append(container, ...clones)
+    this.lastReloadTime = this.startReloadTime
   },
 
   /******************************************************************
@@ -627,6 +640,8 @@ Module.register('MMM-MyScoreboard', {
   getDom: function () {
     var wrapper = document.createElement('div')
     wrapper.classList.add('wrapper')
+    this.prevScrollContainer = document.querySelector('.MMM-MyScoreboard .scroll-container') 
+    this.startReloadTime = Date.now()
 
     /*
       Set up basic classes
@@ -802,34 +817,6 @@ Module.register('MMM-MyScoreboard', {
     return gameDivs
   },
 
-  // New setInterval Logic to match the animation speed. Minimum 2 minutes.
-  // Calculates a multiple of the animationDuration so it updates when animation has completed the lap.
-  // Unfortunately, there is no other way to have a smooth transition because it always rebuilds the DOM and starts at 0.
-  // If we could update the innerHTML only, then it wouldn't have a harsh reset.
-  updateRefreshInterval: function () {
-    let currentRefresh
-    const minRefresh = 2 * 60 * 1000 // 2 minutes in milliseconds
-    currentRefresh = minRefresh
-
-    if (this.config.maxHeight < 10000) {
-      if (this.totalDivs > 0) {
-        const animationDuration = this.config.scrollSpeed * this.totalDivs,
-          animationDurationMs = animationDuration * 1000,
-          calculatedInterval = Math.ceil(minRefresh / animationDurationMs) * animationDurationMs
-        currentRefresh = Math.max(minRefresh, calculatedInterval)
-      }
-    }
-    // currentIntervalDuration starts as 0 so it always runs the first time (0 !== 120000)
-    if (currentRefresh !== this.refreshInterval) {
-      if (this.refreshIntervalId) clearInterval(this.refreshIntervalId)
-      var self = this
-      this.refreshIntervalId = setInterval(() => {
-        self.getScores()
-      }, currentRefresh)
-      this.refreshInterval = currentRefresh
-    }
-  },
-
   socketNotificationReceived: function (notification, payload) {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Scores')
@@ -838,9 +825,7 @@ Module.register('MMM-MyScoreboard', {
       this.sportsData[payload.label]['scores'] = payload.scores
       this.sportsData[payload.label]['league'] = payload.index
       this.sportsData[payload.label]['sortIdx'] = payload.sortIdx
-      this.totalDivs = this.calculateTotalDivs()
       this.updateDom()
-      this.updateRefreshInterval()
       if (payload.scores.length === 0 && payload.notRun != true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
@@ -855,9 +840,7 @@ Module.register('MMM-MyScoreboard', {
       this.sportsDataYd[payload.label]['scores'] = payload.scores
       this.sportsDataYd[payload.label]['league'] = payload.index
       this.sportsDataYd[payload.label]['sortIdx'] = payload.sortIdx
-      this.totalDivs = this.calculateTotalDivs()
       this.updateDom()
-      this.updateRefreshInterval()
       var stopGrabbingYD = true
       for (let i = 0; i < payload.scores.length; i++) {
         if (payload.scores[i].gameMode < 2) {
@@ -886,8 +869,10 @@ Module.register('MMM-MyScoreboard', {
         respective feed owners to lock down the APIs. Updating
         every two minutes should be more than fine for our purposes.
       */
-      this.totalDivs = this.calculateTotalDivs()
-      this.updateRefreshInterval()
+     var self = this
+      setInterval(function () {
+        self.getScores()
+      }, 2 * 60 * 1000)
     }
   },
 
@@ -996,6 +981,7 @@ Module.register('MMM-MyScoreboard', {
     if (self.config.debugHours > 0 || self.config.debugMinutes > 0) {
       Log.debug(gameDate)
     }
+    self.lastReloadTime = Date.now()
     this.config.sports.forEach(function (sport, index) {
       if (self.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
         whichDay.today = false
