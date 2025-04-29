@@ -752,7 +752,7 @@ Module.register('MMM-MyScoreboard', {
         })
       }
     }
-    
+
     self.sportsDataYd = this.sortDict(self.sportsDataYd)
     for (const [sport, scores] of Object.entries(self.sportsDataYd)) {
       leagueSeparator = []
@@ -974,7 +974,7 @@ Module.register('MMM-MyScoreboard', {
 
     var self = this
     if (self.config.debugHours > 0 || self.config.debugMinutes > 0) {
-    Log.debug(`[MMM-MyScoreboard] ${gameDate}`)
+      Log.debug(`[MMM-MyScoreboard] ${gameDate}`)
     }
     self.loadTime.start = Date.now()
     this.config.sports.forEach(function (sport, index) {
