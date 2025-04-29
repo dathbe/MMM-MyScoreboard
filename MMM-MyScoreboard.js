@@ -911,7 +911,7 @@ Module.register('MMM-MyScoreboard', {
         //Log.debug(sport)
       }
       else {
-        Log.warn(`League ${sport.league} is not a valid league name`)
+        Log.warn(`[MMM-MyScoreboard] League ${sport.league} is not a valid league name`)
       }
     })
     this.config.sports = scrubbedSports
@@ -994,7 +994,7 @@ Module.register('MMM-MyScoreboard', {
 
     var self = this
     if (self.config.debugHours > 0 || self.config.debugMinutes > 0) {
-      Log.debug(gameDate)
+    Log.debug(`[MMM-MyScoreboard] ${gameDate}`)
     }
     this.config.sports.forEach(function (sport, index) {
       if (self.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {

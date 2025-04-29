@@ -96,18 +96,18 @@ module.exports = {
   },
 
   async getData() {
-    Log.info('Get SNET JSON')
+    //Log.debug('[]Get SNET JSON')
     var self = this
 
     var url = 'https://stats-api.sportsnet.ca/ticker?day=' + this.gameDate.format('YYYY-MM-DD')
 
     try {
       const response = await fetch(url)
-      Log.debug(`${url} fetched`)
+      Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
       self.scoresObj = await response.json()
     }
     catch (error) {
-      Log.error(error + url)
+      Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
     }
   },
 

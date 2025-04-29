@@ -236,7 +236,7 @@ module.exports = {
     // if (!this.lastUpdate[sport] || this.lastUpdate[sport] < moment().subtract(300, 'seconds')) {
     try {
       const response = await fetch(url)
-      Log.debug(url + ' fetched for ' + payload.league)
+      Log.debug(`[MMM-MyScoreboard] ${url} fetched for ${payload.league}`)
       var body = await response.json()
 
       // if (this.getLeaguePath(payload.league).includes('scorepanel')) {
@@ -249,7 +249,7 @@ module.exports = {
       this.lastUpdate[sport] = moment() */
     }
     catch (error) {
-      Log.error(error + ' ' + url)
+      Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
     }
     // }
     // else {

@@ -585,7 +585,7 @@ module.exports = {
 
     try {
       const response = await fetch(url)
-      Log.debug(url + ' fetched')
+    Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
       var body = await response.json()
 
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
@@ -616,7 +616,7 @@ module.exports = {
       callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index)
     }
     catch (error) {
-      Log.error(error + ' ' + url)
+      Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
     }
   },
 
