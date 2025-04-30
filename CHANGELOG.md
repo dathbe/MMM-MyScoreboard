@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.11.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.2...v4.11.3) - 2025-04-XX
+
+- More channel logos
+- Refine logging
+
 ## [4.11.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.1...v4.11.2) - 2025-04-27
 
 - BUG FIX: Sort the array so that scores are displayed in the order requested in user's config
