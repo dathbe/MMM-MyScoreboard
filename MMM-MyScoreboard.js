@@ -627,6 +627,7 @@ Module.register('MMM-MyScoreboard', {
   getDom: function () {
     var wrapper = document.createElement('div')
     wrapper.classList.add('wrapper')
+
     /*
       Set up basic classes
     */
