@@ -353,53 +353,40 @@ Module.register('MMM-MyScoreboard', {
 
   // New Scroll Animation Function
   lastScrollPosition: 0,  
-  prevScrollContainer: null,
-  startReloadTime: null,
-  lastReloadTime: null,
+  loadTime: {start: 0, end: 0 },
+  separatorSpacer: 0,
   setupScrollAnimation: function (wrapper) {
-    // Pull the wrapper height as it is built. If it is greater than scrollAnimation.height, trigger animation
-    const domHeight = document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight,
-      shouldAnimate = this.config.maxHeight < domHeight,
-      animationDuration = this.config.scrollSpeed * this.calculateTotalDivs(),
-      deltaTime = this.lastReloadTime ? this.startReloadTime - this.lastReloadTime : 0,
-      pixelsPerSecond = domHeight / animationDuration,
-      bouncePreventer = (pixelsPerSecond * deltaTime) / 1000
-    
+    // Pull the wrapper height as it is built. If it is greater than maxHeight, trigger animation
+    const prevScrollContainer = document.querySelector('.MMM-MyScoreboard .scroll-container'),
+      domHeight = prevScrollContainer ? prevScrollContainer.scrollHeight : document.querySelector('.MMM-MyScoreboard .wrapper').scrollHeight
     wrapper.classList.remove('scroll')
-    if (!shouldAnimate) {
+    if (this.config.maxHeight >= domHeight) {
       return
+    }       
+    const animationDuration = this.config.scrollSpeed * this.calculateTotalDivs()
+    this.loadTime.end = Date.now()
+    if (prevScrollContainer) {
+      const lastTranslateY = (new DOMMatrix(window.getComputedStyle(prevScrollContainer).transform).m42) + this.lastScrollPosition - (domHeight / animationDuration * (this.loadTime.end - this.loadTime.start) / 1000)
+      this.lastScrollPosition = Math.abs(lastTranslateY - this.separatorSpacer) > domHeight
+        ? lastTranslateY + domHeight
+        : lastTranslateY - this.separatorSpacer
     }
-
-    if (this.prevScrollContainer) {
-      const style = window.getComputedStyle(this.prevScrollContainer),
-        scrollContainerHeight = this.prevScrollContainer.scrollHeight,
-        transformValue = style.transform
-      if (transformValue && transformValue !== 'none') {
-        const matrix = new DOMMatrix(transformValue),
-          overrunReset = Math.abs(matrix.m42 + this.lastScrollPosition) > scrollContainerHeight,
-          lastTranslateY = overrunReset ? matrix.m42 + this.lastScrollPosition + scrollContainerHeight : matrix.m42 + this.lastScrollPosition - 10
-        if (matrix.m42 !== this.lastScrollPosition && matrix.m42 !== 10 ) {
-          this.lastScrollPosition = lastTranslateY
-        } else {
-          this.lastScrollPosition -= bouncePreventer
-        }
-      }
-    }
-    let container = document.createElement('div')
+    let container = document.createElement('div'),
+      cloneCount = Math.abs(this.lastScrollPosition) > domHeight - this.config.maxHeight ? 2 : 1
     container.className = 'scroll-container'
     container.style.setProperty('animation-duration', `${animationDuration}s`)
     while (wrapper.firstChild  && !wrapper.firstChild.classList.contains('scroll-container')) {
       container.appendChild(wrapper.firstChild)
     }
-    const clones = Array.from({ length: 2 }, () => {
-      const clone = container.cloneNode(true); // Deep clone with all content
+    const clones = Array.from({ length: cloneCount }, () => {
+      const clone = container.cloneNode(true);
       return clone;
     });
     container.style.animationDuration = `${animationDuration}` 
     wrapper.style.setProperty('transform', `translateY(${this.lastScrollPosition}px`)
     wrapper.classList.add('scroll') // Start animation
     wrapper.append(container, ...clones)
-    this.lastReloadTime = this.startReloadTime
+    this.loadTime.start = this.loadTime.end
   },
 
   /******************************************************************
@@ -640,9 +627,6 @@ Module.register('MMM-MyScoreboard', {
   getDom: function () {
     var wrapper = document.createElement('div')
     wrapper.classList.add('wrapper')
-    this.prevScrollContainer = document.querySelector('.MMM-MyScoreboard .scroll-container') 
-    this.startReloadTime = Date.now()
-
     /*
       Set up basic classes
     */
@@ -792,8 +776,8 @@ Module.register('MMM-MyScoreboard', {
     //  this.show(1000, {lockString: this.identifier});
     // }
 
-    if (this.config.maxHeight < 10000) {
-      this.setupScrollAnimation(wrapper)
+    if (self.config.maxHeight < 10000) {
+      self.setupScrollAnimation(wrapper)
     }; // Trigger animation check
 
     return wrapper
@@ -900,6 +884,7 @@ Module.register('MMM-MyScoreboard', {
       }
     })
     this.config.sports = scrubbedSports
+    this.separatorSpacer = this.config.showLeagueSeparators ? 10 : 0
 
     /*
       initialize variables
@@ -981,7 +966,7 @@ Module.register('MMM-MyScoreboard', {
     if (self.config.debugHours > 0 || self.config.debugMinutes > 0) {
       Log.debug(gameDate)
     }
-    self.lastReloadTime = Date.now()
+    self.loadTime.start = Date.now()
     this.config.sports.forEach(function (sport, index) {
       if (self.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
         whichDay.today = false
