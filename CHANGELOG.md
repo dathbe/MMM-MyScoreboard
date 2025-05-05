@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - More channel logos
 - Refine logging
+- Add scroll delay to reduce judder
 
 ## [4.11.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.1...v4.11.2) - 2025-04-27
 
