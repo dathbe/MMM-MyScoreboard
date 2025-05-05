@@ -1088,6 +1088,7 @@
 
 .MMM-MyScoreboard .wrapper.scroll .scroll-container {
   animation: scroll linear infinite;
+  animation-delay: .3s;
   will-change: transform;
   animation-play-state: running !important;
 }
