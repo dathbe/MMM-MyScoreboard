@@ -575,7 +575,12 @@ module.exports = {
       } */
 
       if (game.competitions[0].series !== undefined) {
-        var playoffStatus = game.competitions[0].series.summary
+        if (game.competitions[0].series.summary === undefined) {
+          var playoffStatus = `${game.competitions[0].series.title} - ${game.competitions[0].notes[0].headline}`
+        }
+        else {
+          playoffStatus = `${game.competitions[0].notes[0].headline} - ${game.competitions[0].series.summary}`
+        }
       }
       else {
         playoffStatus = ''
