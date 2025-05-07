@@ -639,7 +639,9 @@
   height: 66px;
 }
 
-
+.MMM-MyScoreboard .box-score.stackedWithLogos.playoff {
+  height: 82px;
+}
 
 .MMM-MyScoreboard .box-score.stacked .team-name,
 .MMM-MyScoreboard .box-score.stacked .status,
@@ -1100,4 +1102,19 @@
   to {
     transform: translateY(-100%);
   };
+}
+
+.MMM-MyScoreboard .playoffStatus {
+  display: none;
+}
+
+.MMM-MyScoreboard .stackedWithLogos .playoffStatus {
+  display: block;
+  position: absolute;
+  top: 62px;
+  margin: 0;
+  padding: 0;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

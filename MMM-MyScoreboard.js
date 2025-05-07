@@ -33,6 +33,7 @@ Module.register('MMM-MyScoreboard', {
     // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
+    showPlayoffStatus: false,
     sports: [
       {
         league: 'NHL',
@@ -413,6 +414,7 @@ Module.register('MMM-MyScoreboard', {
    </div>
    ******************************************************************/
   boxScoreFactory: function (league, gameObj, label) {
+    // gameObj.playoffStatus includes information about the status of playoff series.  Find a way to include this at the bottom of box scores (at least in some views?)
     var viewStyle = this.config.viewStyle
 
     var boxScore = document.createElement('div')
@@ -618,6 +620,15 @@ Module.register('MMM-MyScoreboard', {
       else {
         boxScore.classList.add('tie')
       }
+    }
+
+
+    if (this.config.showPlayoffStatus && gameObj.playoffStatus !== '') {
+      playoffStatus = document.createElement('div')
+      playoffStatus.classList.add('xsmall', 'playoffStatus')
+      playoffStatus.innerHTML = gameObj.playoffStatus
+      boxScore.appendChild(playoffStatus)
+      boxScore.classList.add('playoff')
     }
 
     return boxScore
