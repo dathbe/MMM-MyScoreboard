@@ -953,7 +953,7 @@ module.exports = {
       else {
         playoffStatus = ''
       }
-      
+
       if (payload.league !== 'SOCCER_ON_TV' || (broadcast.length > 0)) {
         formattedGamesList.push({
           classes: classes,
