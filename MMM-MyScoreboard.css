@@ -1114,6 +1114,10 @@
   100% { transform: translateY(-100%); };
 }
 
+.MMM-MyScoreboard .playoffStatus {
+  display: none;
+}
+
 .MMM-MyScoreboard .stackedWithLogos .playoffStatus {
   display: block;
   position: absolute;
