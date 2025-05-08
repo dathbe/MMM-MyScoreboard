@@ -621,9 +621,8 @@ Module.register('MMM-MyScoreboard', {
       }
     }
 
-
     if (this.config.showPlayoffStatus && gameObj.playoffStatus !== '') {
-      playoffStatus = document.createElement('div')
+      var playoffStatus = document.createElement('div')
       playoffStatus.classList.add('xsmall', 'dimmed', 'playoffStatus')
       playoffStatus.innerHTML = gameObj.playoffStatus
       boxScore.appendChild(playoffStatus)
