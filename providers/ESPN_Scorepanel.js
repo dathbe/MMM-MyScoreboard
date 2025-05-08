@@ -573,6 +573,19 @@ module.exports = {
       /* if (payload.league === 'SOCCER_ON_TV') {
         broadcast = channels
       } */
+
+      if (game.competitions[0].series !== undefined) {
+        if (game.competitions[0].series.summary === undefined) {
+          var playoffStatus = `${game.competitions[0].series.title} - ${game.competitions[0].notes[0].headline}`
+        }
+        else {
+          playoffStatus = `${game.competitions[0].notes[0].headline} - ${game.competitions[0].series.summary}`
+        }
+      }
+      else {
+        playoffStatus = ''
+      }
+
       if (payload.league !== 'SOCCER_ON_TV' || (broadcast.length > 0)) {
         formattedGamesList.push({
           classes: classes,
@@ -589,6 +602,7 @@ module.exports = {
           broadcast: broadcast,
           hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
           vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
+          playoffStatus: playoffStatus,
         })
       }
     })

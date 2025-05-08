@@ -33,6 +33,7 @@ Module.register('MMM-MyScoreboard', {
     // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
+    showPlayoffStatus: false,
     sports: [
       {
         league: 'NHL',
@@ -618,6 +619,15 @@ Module.register('MMM-MyScoreboard', {
       else {
         boxScore.classList.add('tie')
       }
+    }
+
+
+    if (this.config.showPlayoffStatus && gameObj.playoffStatus !== '') {
+      playoffStatus = document.createElement('div')
+      playoffStatus.classList.add('xsmall', 'dimmed', 'playoffStatus')
+      playoffStatus.innerHTML = gameObj.playoffStatus
+      boxScore.appendChild(playoffStatus)
+      boxScore.classList.add('playoff')
     }
 
     return boxScore

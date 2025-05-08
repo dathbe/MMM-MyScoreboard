@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.12.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.3...v4.12.0) - 2025-05-08
+
+- **NEW FEATURE**: Added `showPlayoffStatus` config option to display playoff series information (only works with `stacked` and `stackedWithLogos` views)
+- Bump dev dependencies
+
 ## [4.11.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.2...v4.11.3) - 2025-05-06
 
 - More channel logos
