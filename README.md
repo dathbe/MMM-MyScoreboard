@@ -48,7 +48,8 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
   module: "MMM-MyScoreboard",
   position: "top_right",
   config: {
-    viewStyle: "mediumLogos",
+    viewStyle: "stackedWithLogos",
+    showPlayoffStatus: true,
     sports: [
       {
         league: "NHL",
