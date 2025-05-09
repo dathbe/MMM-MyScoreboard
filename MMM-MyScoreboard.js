@@ -33,6 +33,7 @@ Module.register('MMM-MyScoreboard', {
     // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
+    showPlayoffStatus: false,
     sports: [
       {
         league: 'NHL',
@@ -620,6 +621,14 @@ Module.register('MMM-MyScoreboard', {
       }
     }
 
+    if (this.config.showPlayoffStatus && gameObj.playoffStatus !== '') {
+      var playoffStatus = document.createElement('div')
+      playoffStatus.classList.add('xsmall', 'dimmed', 'playoffStatus')
+      playoffStatus.innerHTML = gameObj.playoffStatus
+      boxScore.appendChild(playoffStatus)
+      boxScore.classList.add('playoff')
+    }
+
     return boxScore
   },
 
@@ -709,7 +718,7 @@ Module.register('MMM-MyScoreboard', {
       }
     }) */
     // this.config.sports.forEach(function (sport) {
-    //Log.debug(self.sportsData['NHL'])
+    // Log.debug(self.sportsData['NHL'])
     
     self.sportsData = this.sortDict(self.sportsData)
     for (const [sport, scores] of Object.entries(self.sportsData)) {
@@ -875,13 +884,13 @@ Module.register('MMM-MyScoreboard', {
         scrubbedSports.push(sport)
       }
       else if (self.legacySoccer[sport.league]) {
-        //Log.debug(self.legacySoccer[sport.league])
+        // Log.debug(self.legacySoccer[sport.league])
         sport.league = self.legacySoccer[sport.league]
         scrubbedSports.push(sport)
-        //Log.debug(sport)
+        // Log.debug(sport)
       }
       else {
-        Log.warn(`League ${sport.league} is not a valid league name`)
+        Log.warn(`[MMM-MyScoreboard] League ${sport.league} is not a valid league name`)
       }
     })
     this.config.sports = scrubbedSports
@@ -1037,16 +1046,16 @@ Module.register('MMM-MyScoreboard', {
 
   sortDict: function (dict) {
     // Create items array
-    var items = Object.keys(dict).map(function(key) {
+    var items = Object.keys(dict).map(function (key) {
       return [key, dict[key]];
     });
     // Sort the array based on the second element
-    items.sort(function(first, second) {
+    items.sort(function (first, second) {
       return first[1]['sortIdx'] - second[1]['sortIdx'];
     });
     
     var sortedDict = {}
-    for (let i=0; i<items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       sortedDict[items[i][0]] = items[i][1]
     }
     return sortedDict

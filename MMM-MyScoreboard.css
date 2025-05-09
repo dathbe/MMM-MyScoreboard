@@ -635,11 +635,17 @@
   height: 60px;
 }
 
+.MMM-MyScoreboard .box-score.stacked.playoff {
+  height: 76px;
+}
+
 .MMM-MyScoreboard .box-score.stackedWithLogos {
   height: 66px;
 }
 
-
+.MMM-MyScoreboard .box-score.stackedWithLogos.playoff {
+  height: 82px;
+}
 
 .MMM-MyScoreboard .box-score.stacked .team-name,
 .MMM-MyScoreboard .box-score.stacked .status,
@@ -1107,3 +1113,40 @@
 @keyframes scrollNoSeparator {
   100% { transform: translateY(-100%); };
 }
+
+.MMM-MyScoreboard .stackedWithLogos .playoffStatus {
+  display: block;
+  position: absolute;
+  top: 62px;
+  margin: 0;
+  padding: 0;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.MMM-MyScoreboard .stacked .playoffStatus {
+  display: block;
+  position: absolute;
+  top: 56px;
+  margin: 0;
+  padding: 0;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* .MMM-MyScoreboard .largeLogos .playoffStatus {
+  text-align: center;
+  display: block;
+  position: absolute;
+  top: 66px;
+  margin: 0;
+  padding: 0;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+} */

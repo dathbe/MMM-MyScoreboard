@@ -236,7 +236,7 @@ module.exports = {
     // if (!this.lastUpdate[sport] || this.lastUpdate[sport] < moment().subtract(300, 'seconds')) {
     try {
       const response = await fetch(url)
-      Log.debug(url + ' fetched for ' + payload.league)
+      Log.debug(`[MMM-MyScoreboard] ${url} fetched for ${payload.league}`)
       var body = await response.json()
 
       // if (this.getLeaguePath(payload.league).includes('scorepanel')) {
@@ -249,7 +249,7 @@ module.exports = {
       this.lastUpdate[sport] = moment() */
     }
     catch (error) {
-      Log.error(error + ' ' + url)
+      Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
     }
     // }
     // else {
@@ -573,6 +573,19 @@ module.exports = {
       /* if (payload.league === 'SOCCER_ON_TV') {
         broadcast = channels
       } */
+
+      if (game.competitions[0].series !== undefined) {
+        if (game.competitions[0].series.summary === undefined) {
+          var playoffStatus = `${game.competitions[0].series.title} - ${game.competitions[0].notes[0].headline}`
+        }
+        else {
+          playoffStatus = `${game.competitions[0].notes[0].headline} - ${game.competitions[0].series.summary}`
+        }
+      }
+      else {
+        playoffStatus = ''
+      }
+
       if (payload.league !== 'SOCCER_ON_TV' || (broadcast.length > 0)) {
         formattedGamesList.push({
           classes: classes,
@@ -589,6 +602,7 @@ module.exports = {
           broadcast: broadcast,
           hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
           vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
+          playoffStatus: playoffStatus,
         })
       }
     })

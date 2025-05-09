@@ -460,6 +460,7 @@ module.exports = {
     'GCSEN': 'https://upload.wikimedia.org/wikipedia/en/7/70/GCSEN_Logo.png',
     'Jazz+': './modules/MMM-MyScoreboard/logos/channels/JazzPlus.svg',
     'KATU 2.2': './modules/MMM-MyScoreboard/logos/channels/KATU.svg',
+    'KCAL': './modules/MMM-MyScoreboard/logos/channels/KCAL.svg',
     'KCOP': 'https://static.foxtv.com/static/orion/img/core/s/logos/fts-los-angeles-a.svg',
     'KENS 5': 'https://www.kens5.com/assets/shared-images/logos/kens.png',
     'KFAA-TV': './modules/MMM-MyScoreboard/logos/channels/KFAATV.webp',
@@ -475,6 +476,7 @@ module.exports = {
     'KTVD-TV (My20)': 'https://my20denver.azurewebsites.net/graphics/logo-top.png',
     'KUNP 16': './modules/MMM-MyScoreboard/logos/channels/KUNP16.svg',
     'KUSA-TV (9NEWS)': 'https://www.9news.com/assets/shared-images/logos/kusa.png',
+    'KVVU': 'https://www.fox5vegas.com/pf/resources/images/mastheads/logos/kvvu.svg?d=489',
     'Marquee Sports Net': 'https://dupvhm5r1oaxt.cloudfront.net/uploads/2020/02/CUBS_MSN_Logo_white.png',
     'MASN': 'https://www.masnsports.com/images/masn.svg',
     'MASN2': 'https://video.masnsports.com/assets/images/masn2.svg',
@@ -585,7 +587,7 @@ module.exports = {
 
     try {
       const response = await fetch(url)
-      Log.debug(url + ' fetched')
+      Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
       var body = await response.json()
 
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
@@ -616,7 +618,7 @@ module.exports = {
       callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index)
     }
     catch (error) {
-      Log.error(error + ' ' + url)
+      Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
     }
   },
 
@@ -939,6 +941,19 @@ module.exports = {
       /* if (payload.league === 'SOCCER_ON_TV') {
         broadcast = channels
       } */
+
+      if (game.competitions[0].series !== undefined) {
+        if (game.competitions[0].series.summary === undefined) {
+          var playoffStatus = `${game.competitions[0].series.title} - ${game.competitions[0].notes[0].headline}`
+        }
+        else {
+          playoffStatus = `${game.competitions[0].notes[0].headline} - ${game.competitions[0].series.summary}`
+        }
+      }
+      else {
+        playoffStatus = ''
+      }
+      
       if (payload.league !== 'SOCCER_ON_TV' || (broadcast.length > 0)) {
         formattedGamesList.push({
           classes: classes,
@@ -955,6 +970,7 @@ module.exports = {
           broadcast: broadcast,
           hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
           vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
+          playoffStatus: playoffStatus,
         })
       }
     })
