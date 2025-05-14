@@ -943,7 +943,7 @@ module.exports = {
       } */
 
       if (game.competitions[0].series !== undefined) {
-        playoffStatus = []
+        var playoffStatus = []
         if (game.competitions[0].notes !== undefined && game.competitions[0].notes[0] !== undefined && game.competitions[0].notes[0].headline !== undefined) {
           playoffStatus.push(game.competitions[0].notes[0].headline)
         }
@@ -957,7 +957,7 @@ module.exports = {
           playoffStatus.unshift(game.competitions[0].series.title)
         }
         if (playoffStatus.length > 0) {
-          playoffStatus = playoffStatus.join(" - ")
+          playoffStatus = playoffStatus.join(' - ')
         }
         else {
           playoffStatus = ''
