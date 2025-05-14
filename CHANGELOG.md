@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [4.12.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.0...v4.12.1) - 2025-05-XX
 
+- BUG FIX: Update `playoffStatus` logic to avoid `undefined` errors
 - Lint style changes
 
 ## [4.12.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.3...v4.12.0) - 2025-05-08
