@@ -629,7 +629,6 @@ Module.register('MMM-MyScoreboard', {
       boxScore.classList.add('playoff')
     }
 
-
     if (this.config.showPlayoffStatus && gameObj.playoffStatus !== '') {
       var playoffStatus = document.createElement('div')
       playoffStatus.classList.add('xsmall', 'dimmed', 'playoffStatus')
@@ -637,7 +636,6 @@ Module.register('MMM-MyScoreboard', {
       boxScore.appendChild(playoffStatus)
       boxScore.classList.add('playoff')
     }
-
     return boxScore
   },
 
@@ -728,7 +726,7 @@ Module.register('MMM-MyScoreboard', {
     }) */
     // this.config.sports.forEach(function (sport) {
     // Log.debug(self.sportsData['NHL'])
-    
+ 
     self.sportsData = this.sortDict(self.sportsData)
     for (const [sport, scores] of Object.entries(self.sportsData)) {
       var leagueSeparator = []
@@ -1056,13 +1054,13 @@ Module.register('MMM-MyScoreboard', {
   sortDict: function (dict) {
     // Create items array
     var items = Object.keys(dict).map(function (key) {
-      return [key, dict[key]];
-    });
+      return [key, dict[key]]
+    })
     // Sort the array based on the second element
     items.sort(function (first, second) {
-      return first[1]['sortIdx'] - second[1]['sortIdx'];
-    });
-    
+      return first[1]['sortIdx'] - second[1]['sortIdx']
+    })
+
     var sortedDict = {}
     for (let i = 0; i < items.length; i++) {
       sortedDict[items[i][0]] = items[i][1]
