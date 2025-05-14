@@ -98,7 +98,6 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `scrollSpeed`          | Speed for scrolling. _lower_ numbers are _faster_.<br><br>**Type** `Int`<br>**Default** `6`
 | `showPlayoffStatus`    | Displays information about playoff series when set to `true`. (Currently only works with `stacked` and `stackedWithLogos` views without adding custom css.)<br><br>**Type** `Boolean`<br>**Default** `false`
 
-
 ### Configuring Your "Sports" List
 
 Each entry in your `sports` array is an object with the following properties:
