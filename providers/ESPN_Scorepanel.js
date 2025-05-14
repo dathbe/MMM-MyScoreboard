@@ -575,11 +575,27 @@ module.exports = {
       } */
 
       if (game.competitions[0].series !== undefined) {
-        if (game.competitions[0].series.summary === undefined) {
-          var playoffStatus = `${game.competitions[0].series.title} - ${game.competitions[0].notes[0].headline}`
+        var playoffStatus = []
+        if (game.competitions[0].notes !== undefined && game.competitions[0].notes[0] !== undefined && game.competitions[0].notes[0].headline !== undefined) {
+          playoffStatus.push(game.competitions[0].notes[0].headline)
+        }
+        else if (game.competitions[0].leg !== undefined && game.competitions[0].leg.displayValue !== undefined) {
+          playoffStatus.push(game.competitions[0].leg.displayValue)
+        }
+        if (game.competitions[0].series.summary !== undefined) {
+          playoffStatus.push(game.competitions[0].series.summary)
+        }
+        else if (game.competitions[0].series.title !== undefined) {
+          playoffStatus.unshift(game.competitions[0].series.title)
+        }
+        if (playoffStatus.length > 0) {
+          playoffStatus = playoffStatus.join(' - ')
         }
         else {
-          playoffStatus = `${game.competitions[0].notes[0].headline} - ${game.competitions[0].series.summary}`
+          playoffStatus = ''
+          Log.debug('There\'s a playoff series, but it\'s not standard type:')
+          Log.debug(game.competitions[0].notes)
+          Log.debug(game.competitions[0].series)
         }
       }
       else {

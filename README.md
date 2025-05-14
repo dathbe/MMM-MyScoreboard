@@ -48,7 +48,8 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
   module: "MMM-MyScoreboard",
   position: "top_right",
   config: {
-    viewStyle: "mediumLogos",
+    viewStyle: "stackedWithLogos",
+    showPlayoffStatus: true,
     sports: [
       {
         league: "NHL",
@@ -96,7 +97,6 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `maxHeight`            | Limit of the height of the container (in pixels). If there are more games than will fit within this height, a scroll animation will start.  For best results, set the limit to show exactly the number of games you want when static. This ensures that any extra games will be fully hidden.  No animation will occur if there are fewer games than fill the container.<br><br>**Type** `Int`<br>**Default** `10000` (will not set a height limit)
 | `scrollSpeed`          | Speed for scrolling. _lower_ numbers are _faster_.<br><br>**Type** `Int`<br>**Default** `6`
 | `showPlayoffStatus`    | Displays information about playoff series when set to `true`. (Currently only works with `stacked` and `stackedWithLogos` views without adding custom css.)<br><br>**Type** `Boolean`<br>**Default** `false`
-
 
 ### Configuring Your "Sports" List
 

@@ -1,8 +1,9 @@
 import eslintPluginJs from '@eslint/js'
 import eslintPluginStylistic from '@stylistic/eslint-plugin'
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 
-const config = [
+export default defineConfig([
   eslintPluginJs.configs.recommended,
   eslintPluginStylistic.configs.recommended,
   {
@@ -18,8 +19,7 @@ const config = [
       },
       sourceType: 'commonjs',
     },
-    rules: {
-    },
+    rules: {},
   },
   {
     files: ['**/*.mjs'],
@@ -30,9 +30,6 @@ const config = [
       },
       sourceType: 'module',
     },
-    rules: {
-    },
+    rules: {},
   },
-]
-
-export default config
+])

@@ -1093,19 +1093,27 @@
 }
 
 .MMM-MyScoreboard .wrapper.scroll .scroll-container {
-  animation: scroll linear infinite;
-  animation-delay: .3s;
+  animation: scrollNoSeparator linear infinite;
+  /* animation-delay: .3s; */
   will-change: transform;
   animation-play-state: running !important;
 }
 
-@keyframes scroll {
+.MMM-MyScoreboard:has(.league-separator) .wrapper.scroll .scroll-container {
+  animation: scrollSeparator linear infinite;
+}
+
+@keyframes scrollSeparator {
   from { 
     transform: translateY(10px);
   }
   to {
     transform: translateY(-100%);
   };
+}
+
+@keyframes scrollNoSeparator {
+  100% { transform: translateY(-100%); };
 }
 
 .MMM-MyScoreboard .playoffStatus {
