@@ -353,8 +353,8 @@ Module.register('MMM-MyScoreboard', {
   },
 
   // New Scroll Animation Function
-  lastScrollPosition: 0,  
-  loadTime: {start: 0, end: 0 },
+  lastScrollPosition: 0,
+  loadTime: { start: 0, end: 0 },
   separatorSpacer: 0,
   setupScrollAnimation: function (wrapper) {
     // Pull the wrapper height as it is built. If it is greater than maxHeight, trigger animation
@@ -363,7 +363,7 @@ Module.register('MMM-MyScoreboard', {
     wrapper.classList.remove('scroll')
     if (this.config.maxHeight >= domHeight) {
       return
-    }       
+    }
     const animationDuration = this.config.scrollSpeed * this.calculateTotalDivs()
     this.loadTime.end = Date.now()
     if (prevScrollContainer) {
@@ -376,14 +376,14 @@ Module.register('MMM-MyScoreboard', {
       cloneCount = Math.abs(this.lastScrollPosition) > domHeight - this.config.maxHeight ? 2 : 1
     container.className = 'scroll-container'
     container.style.setProperty('animation-duration', `${animationDuration}s`)
-    while (wrapper.firstChild  && !wrapper.firstChild.classList.contains('scroll-container')) {
+    while (wrapper.firstChild && !wrapper.firstChild.classList.contains('scroll-container')) {
       container.appendChild(wrapper.firstChild)
     }
     const clones = Array.from({ length: cloneCount }, () => {
-      const clone = container.cloneNode(true);
-      return clone;
-    });
-    container.style.animationDuration = `${animationDuration}` 
+      const clone = container.cloneNode(true)
+      return clone
+    })
+    container.style.animationDuration = `${animationDuration}`
     wrapper.style.setProperty('transform', `translateY(${this.lastScrollPosition}px`)
     wrapper.classList.add('scroll') // Start animation
     wrapper.append(container, ...clones)
@@ -629,13 +629,6 @@ Module.register('MMM-MyScoreboard', {
       boxScore.classList.add('playoff')
     }
 
-    if (this.config.showPlayoffStatus && gameObj.playoffStatus !== '') {
-      var playoffStatus = document.createElement('div')
-      playoffStatus.classList.add('xsmall', 'dimmed', 'playoffStatus')
-      playoffStatus.innerHTML = gameObj.playoffStatus
-      boxScore.appendChild(playoffStatus)
-      boxScore.classList.add('playoff')
-    }
     return boxScore
   },
 
@@ -726,7 +719,7 @@ Module.register('MMM-MyScoreboard', {
     }) */
     // this.config.sports.forEach(function (sport) {
     // Log.debug(self.sportsData['NHL'])
- 
+
     self.sportsData = this.sortDict(self.sportsData)
     for (const [sport, scores] of Object.entries(self.sportsData)) {
       var leagueSeparator = []
@@ -870,7 +863,7 @@ Module.register('MMM-MyScoreboard', {
         respective feed owners to lock down the APIs. Updating
         every two minutes should be more than fine for our purposes.
       */
-     var self = this
+      var self = this
       setInterval(function () {
         self.getScores()
       }, 2 * 60 * 1000)
