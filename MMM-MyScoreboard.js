@@ -658,7 +658,7 @@ Module.register('MMM-MyScoreboard', {
     */
     if (!this.loaded) {
       var loadingText = document.createElement('div')
-      loadingText.innerHTML = this.translate('Loading  MyScoreboard...')
+      loadingText.innerHTML = this.translate('Loading MMM-MyScoreboard...')
       loadingText.className = 'dimmed light small'
       wrapper.appendChild(loadingText)
       return wrapper

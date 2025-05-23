@@ -592,6 +592,7 @@ module.exports = {
 
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
         const freeGameResponse = await fetch(MLBurl)
+        Log.debug(`[MMM-MyScoreboard] ${MLBurl} fetched`)
         const freeGameBody = await freeGameResponse.json()
         if (freeGameBody['results']) {
           freeGameBody['results'].forEach ((game) => {

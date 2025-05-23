@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.12.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.1...v4.12.2) - 2025-05-22
+
+- Change the selection for description of games that are finished for more complete description
+- Update devDependencies
+
 ## [4.12.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.0...v4.12.1) - 2025-05-14
 
 - BUG FIX: Update `playoffStatus` logic to avoid `undefined` errors
@@ -13,14 +18,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.12.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.3...v4.12.0) - 2025-05-08
 
 - **NEW FEATURE**: Added `showPlayoffStatus` config option to display playoff series information (only works with `stacked` and `stackedWithLogos` views)
-- Bump dev dependencies
+- Update devDependencies
 
 ## [4.11.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.2...v4.11.3) - 2025-05-06
 
 - More channel logos
 - Refine logging
 - Add scroll delay to reduce judder
-- Bump dev dependencies
+- Update devDependencies
 
 ## [4.11.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.11.1...v4.11.2) - 2025-04-27
 
@@ -41,7 +46,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - BUG FIX: Fixed rugby leagues
 - Change install and update instructions to `npm ci` to avoid recreating `package-lock.json` on user installs
 - Update README to include instructions on dymanically creating config options
-- Upgrade devDependcies versions
+- Update devDependencies
 - Some new channel logos
 
 ## [4.10.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.9.0...v4.10.0) - 2025-04-20
@@ -113,7 +118,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [4.3.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.3.0...v4.3.1) - 2025-04-03
 
-- Bump version of `moment` dependency
+- Update `moment`
 - New CIN (NCAA) logo
 - Remove `directory-tree` from list of dependencies
 
@@ -143,7 +148,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Change colors of completed games for more visibility (if you want the old colors, you can put it in your `custom.css` file)
 - Removed code relating to lockString (resolved log error; hopefully does not have side effects)
 - Replaced `axios` dependency with built-in fetch function
-- Bump directory-tree
+- Update `directory-tree`
 - Remove dependency on json-parse-async (unused)
 
 ## [4.0.0](https://github.com/jclarke0000/MMM-MyScoreboard/compare/master...dathbe:MMM-MyScoreboard:v4.0.0) - 2025-03-28 - First fork version
