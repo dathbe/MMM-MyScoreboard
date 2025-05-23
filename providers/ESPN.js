@@ -877,7 +877,7 @@ module.exports = {
         case '3': // final
         case '28': // SOCCER Full Time
           gameState = 2
-          status.push(game.status.type.description)
+          status.push(game.status.type.shortDetail) // or .description?  hopefully this doesn't mess up other leagues
           // broadcast = channels
           break
         case '45': // SOCCER Final ET
