@@ -423,6 +423,7 @@ module.exports = {
     'ESPNEWS': 'https://upload.wikimedia.org/wikipedia/commons/1/1b/ESPNews.svg',
     'ESPNU': 'https://storage.googleapis.com/byucougars-prod/2023/08/15/FDU7FuMUvL1g21JvnaSPUSCWAvfZZXq11MRP7pKp.svg',
     'ESPN Deportes': './modules/MMM-MyScoreboard/logos/channels/ESPNDeportes.svg',
+    'FOX Deportes': 'https://upload.wikimedia.org/wikipedia/commons/3/3b/FOX_Deportes_logo.png',
     'FS1': 'https://upload.wikimedia.org/wikipedia/commons/3/37/2015_Fox_Sports_1_logo.svg',
     'FS2': 'https://upload.wikimedia.org/wikipedia/commons/3/38/FS2_logo_2015.svg',
     'Hulu': 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Hulu_logo_%282018%29.svg',
