@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.12.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.2...v4.12.4) - 2025-06-08
+
+- Update dependencies
+- Lint per https://modules.magicmirror.builders/result.html
+
 ## [4.12.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.1...v4.12.2) - 2025-05-22
 
 - Change the selection for description of games that are finished for more complete description
