@@ -4,7 +4,13 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.12.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.2...v4.12.4) - 2025-06-08
+## [4.12.4](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.3...v4.12.4) - 2025-06-19
+
+- Update dependencies
+- Add dependabot checks
+- `npm run` to `node --run`
+
+## [4.12.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.2...v4.12.3) - 2025-06-08
 
 - Update dependencies
 - Lint per https://modules.magicmirror.builders/result.html
