@@ -41,7 +41,7 @@
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "test": "npm run lint"
+    "test": "node --run lint"
   },
   "license": "MIT",
   "dependencies": {
