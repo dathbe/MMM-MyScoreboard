@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.12.5](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.4...v4.12.5) - 2025-06-XX
+
+- Update dependencies
+- Update dependabot file
+
 ## [4.12.4](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.3...v4.12.4) - 2025-06-19
 
 - Update dependencies
