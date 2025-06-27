@@ -820,7 +820,10 @@ Module.register('MMM-MyScoreboard', {
       this.sportsData[payload.label]['league'] = payload.index
       this.sportsData[payload.label]['sortIdx'] = payload.sortIdx
       this.updateDom()
-      if (payload.scores.length === 0 && payload.notRun != true) {
+      if (payload.scores.length === 0 && payload.notRun != true && payload.provider !== 'Scorepanel') {
+        this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
+      }
+      else if (payload.provider === 'Scorepanel' && payload.noGamesToday === true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
       if (moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').hour() >= this.config.rolloverHours) {

@@ -256,9 +256,14 @@ module.exports = {
     //  body = this.bodyStorage[sport][storedDay]
     //  Log.debug('it worked')
     // }
+    this.totalGames = 0
+    var noGamesToday = false
     for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
       payload.label = body['scores'][leagueIdx]['leagues'][0]['name'] // `league${leagueIdx}`
-      callback(self.formatScores(payload, body['scores'][leagueIdx], moment(gameDate).format('YYYYMMDD')), payload.index + (leagueIdx / 1000))
+      if (leagueIdx === body['scores'].length - 1 && this.totalGames === 0) {
+        noGamesToday = true
+      }
+      callback(self.formatScores(payload, body['scores'][leagueIdx], moment(gameDate).format('YYYYMMDD')), payload.index + (leagueIdx / 1000), noGamesToday)
     }
   },
 
@@ -623,6 +628,7 @@ module.exports = {
       }
     })
 
+    this.totalGames += formattedGamesList.length
     return formattedGamesList
   },
 

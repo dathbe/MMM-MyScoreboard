@@ -534,7 +534,6 @@ module.exports = {
     // CBS: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/CBS_Eyemark.svg',
     'CBS': 'https://upload.wikimedia.org/wikipedia/commons/e/ee/CBS_logo_%282020%29.svg',
     'CBSSN': 'https://upload.wikimedia.org/wikipedia/commons/0/04/CBS_Sports_Network_2021.svg',
-    'DAZN': 'https://upload.wikimedia.org/wikipedia/commons/0/06/DAZN_Logo_Master.svg',
     'FOX': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fox_Broadcasting_Company_logo_%282019%29.svg',
     'ION': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Ion_logo.svg',
     'MLS Season Pass': 'https://upload.wikimedia.org/wikipedia/commons/7/71/MLS_Season_Pass_logo_black.svg',
@@ -618,7 +617,7 @@ module.exports = {
         body = body2
       }
 
-      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index)
+      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index, false)
     }
     catch (error) {
       Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
