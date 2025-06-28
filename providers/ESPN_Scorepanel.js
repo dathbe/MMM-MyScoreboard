@@ -24,20 +24,6 @@ const ESPN = require('./ESPN.js')
 
 module.exports = {
 
-/*   PROVIDER_NAME: 'Scorepanel', */
-
-/*   LEAGUE_PATHS: {
-
-    ALL_SOCCER: 'soccer/scorepanel',
-    SOCCER_ON_TV: 'soccer/scorepanel',
-    
-    FIFA_CLUB_WORLD_CUP: 'soccer/scorepanel',
-    //RSA_FIRST_DIV: 'soccer/rsa.2',
-    
-    RUGBY: 'rugby/scorepanel',
-
-  }, */
-  
   LEAGUE_PATHS: ESPN.LEAGUE_PATHS,
 
   /*
@@ -46,27 +32,11 @@ module.exports = {
    */
   SOCCER_LEAGUES: ESPN.SOCCER_LEAGUES,
 
-  /* lastUpdate: {}, */
   broadcastIcons: ESPN.broadcastIcons,
   broadcastIconsInvert: ESPN.broadcastIconsInvert,
-  /* bodyStorage: {}, */
-
-/*   getLeaguePath: function (league) {
-    return this.LEAGUE_PATHS[league]
-  }, */
 
   async getScores(payload, gameDate, callback) {
     var self = this
-
-    /* if (moment(gameDate).format('YYYYMMDD') === moment().format('YYYYMMDD')) {
-      var storedDay = 'today'
-    }
-    else if (moment(gameDate).format('YYYYMMDD') === moment().subtract(1, 'days').format('YYYYMMDD')) {
-      storedDay = 'yesterday'
-    }
-    else {
-      storedDay = 'other'
-    } */
 
     if (Object.keys(this.rugbyLeagues).includes(payload.league) || Object.values(this.rugbyLeagues).includes(payload.league)) {
       var sport = 'rugby'
@@ -76,7 +46,6 @@ module.exports = {
     }
     var url = 'https://site.api.espn.com/apis/site/v2/sports/' + sport + '/scorepanel?dates=' + moment(gameDate).format('YYYYMMDD') + '&limit=200'
 
-    // if (!this.lastUpdate[sport] || this.lastUpdate[sport] < moment().subtract(300, 'seconds')) {
     try {
       const response = await fetch(url)
       Log.debug(`[MMM-MyScoreboard] ${url} fetched for ${payload.league}`)
@@ -90,8 +59,6 @@ module.exports = {
     var noGamesToday = false
     for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
       if (payload.league === 'ALL_SOCCER' || payload.league === 'SOCCER_ON_TV' || payload.league === 'RUGBY' || this.LEAGUE_PATHS[payload.league].endsWith(body['scores'][leagueIdx]['leagues'][0].slug)) {
-        //Log.debug(payload.league)
-        //Log.debug(body['scores'][leagueIdx]['leagues'][0].slug)
         payload.label = body['scores'][leagueIdx]['leagues'][0]['name']
         if (leagueIdx === body['scores'].length - 1 && this.totalGames === 0) {
           noGamesToday = true
@@ -284,9 +251,6 @@ module.exports = {
             }
           })
         })
-        /* if (localGamesList.length > 0) {
-          Log.info(`The local channels available for ${game.shortName} are: ${localGamesList.join(', ')}`)
-        } */
       }
       channels = [...new Set(channels)]
 
