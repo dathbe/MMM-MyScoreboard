@@ -50,7 +50,6 @@ module.exports = {
       const response = await fetch(url)
       Log.debug(`[MMM-MyScoreboard] ${url} fetched for ${payload.league}`)
       var body = await response.json()
-
     }
     catch (error) {
       Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
