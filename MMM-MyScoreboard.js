@@ -984,6 +984,7 @@ Module.register('MMM-MyScoreboard', {
       else {
         whichDay.today = tempToday
       }
+      Log.debug(self.ydLoaded)
       if (self.ydLoaded[sport.league] && self.ydLoaded[sport.league].loaded && self.ydLoaded.date === gameDate.format('YYYY-MM-DD')) {
         whichDay.yesterday = false
       }
