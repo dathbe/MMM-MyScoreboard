@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - BUG FIX: Fix ydLoaded logic (reduces API calls for yesterday's games)
 - Tweak noGamesToday logic
+- Update how 'delay' messages are displayed
+- Clean up some code
 
 ## [4.12.5](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.4...v4.12.5) - 2025-06-27
 
