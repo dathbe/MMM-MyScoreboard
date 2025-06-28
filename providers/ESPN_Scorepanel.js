@@ -297,7 +297,7 @@ module.exports = {
         case '17': // rain delay
           gameState = 1
           classes.push['delay']
-          status.push('Delay')
+          status.push(game.status.type.description) // shortDetail is too long for baseball ("Rain Delay, Top 1st")
           broadcast = channels
           break
         case '49': // SOCCER extra time half time
@@ -310,7 +310,7 @@ module.exports = {
         case '3': // final
         case '28': // SOCCER Full Time
           gameState = 2
-          status.push(game.status.type.description)
+          status.push(game.status.type.shortDetail) // or .description?  hopefully this doesn't mess up other leagues
           // broadcast = channels
           break
         case '45': // SOCCER Final ET
