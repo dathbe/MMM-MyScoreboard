@@ -618,7 +618,7 @@ module.exports = {
         body = body2
       }
 
-      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index)
+      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index, false)
     }
     catch (error) {
       Log.error(`[MMM-MyScoreboard] ${error} ${url}`)

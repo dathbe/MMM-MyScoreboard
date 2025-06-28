@@ -81,16 +81,16 @@ module.exports = NodeHelper.create({
       }
 
       if (payload.whichDay.today) {
-        provider.getScores(payload, moment(payload.gameDate), function (scores, sortIdx) {
-          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx })
+        provider.getScores(payload, moment(payload.gameDate), function (scores, sortIdx, noGamesToday) {
+          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx, provider: payload.provider, noGamesToday: noGamesToday })
         })
       }
       else {
-        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [], notRun: true, label: payload.label, sortIdx: 999 })
+        self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [], notRun: true, label: payload.label, sortIdx: 999, provider: payload.provider, noGamesToday: false })
       }
       if (payload.whichDay.yesterday === 'yes') {
-        provider2.getScores(payload, moment(payload.gameDate).subtract(1, 'day'), function (scores, sortIdx) {
-          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx })
+        provider2.getScores(payload, moment(payload.gameDate).subtract(1, 'day'), function (scores, sortIdx, noGamesToday) {
+          self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx, provider: payload.provider, noGamesToday: noGamesToday })
         })
       }
       /* else if (payload.whichDay.yesterday === 'erase') {
