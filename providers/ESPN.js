@@ -618,7 +618,8 @@ module.exports = {
         body = body2
       }
 
-      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index, false)
+      this.noGamesToday = false
+      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index, this.noGamesToday)
     }
     catch (error) {
       Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
@@ -994,6 +995,9 @@ module.exports = {
       }
     })
 
+    if (formattedGamesList.length === 0) {
+      this.noGamesToday = true
+    }
     return formattedGamesList
   },
 
