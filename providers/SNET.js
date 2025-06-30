@@ -65,6 +65,7 @@ module.exports = {
     var self = this
     this.gameDate = moment(gameDate)
 
+    var noGamesToday = false
     if (this.scoresObj == null) {
       // start the data poll.  Set a timer to check every second to see if the scoresObj gets populated.
       if (!this.dataPollStarted) {
@@ -76,12 +77,12 @@ module.exports = {
           clearInterval(waitForDataTimer)
           waitForDataTimer = null
 
-          callback(self.getLeague(payload.league, payload.teams), payload.index, false)
+          callback(self.getLeague(payload.league, payload.teams), payload.index, noGamesToday)
         }
       }, 1000)
     }
     else {
-      callback(self.getLeague(payload.league, payload.teams), payload.index, false)
+      callback(self.getLeague(payload.league, payload.teams), payload.index, noGamesToday)
     }
   },
 

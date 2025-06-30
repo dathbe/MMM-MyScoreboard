@@ -24,206 +24,19 @@ const ESPN = require('./ESPN.js')
 
 module.exports = {
 
-  PROVIDER_NAME: 'Scorepanel',
-
-  LEAGUE_PATHS: {
-
-    ALL_SOCCER: 'soccer/scorepanel',
-    SOCCER_ON_TV: 'soccer/scorepanel',
-    RSA_FIRST_DIV: 'soccer/rsa.2',
-    RUGBY: 'rugby/scorepanel',
-
-  },
+  LEAGUE_PATHS: ESPN.LEAGUE_PATHS,
 
   /*
     Used with isSoccer() so that we can quickly identify soccer leagues
     for score display patterns, instead of IFs for each league
    */
-  SOCCER_LEAGUES: [
+  SOCCER_LEAGUES: ESPN.SOCCER_LEAGUES,
 
-    // International
-    'AFC_ASIAN_CUP',
-    'AFC_ASIAN_CUP_Q',
-    'AFF_CUP',
-    'AFR_NATIONS_CUP',
-    'AFR_NATIONS_CUP_Q',
-    'CONCACAF_GOLD_CUP',
-    'CONCACAF_NATIONS_Q',
-    'CONCACAF_WOMENS_CHAMPIONSHIP',
-    'CONMEBOL_COPA_AMERICA',
-    'FIFA_CLUB_WORLD_CUP',
-    'FIFA_CONFEDERATIONS_CUP',
-    'FIFA_MENS_FRIENDLIES',
-    'FIFA_MENS_OLYMPICS',
-    'FIFA_WOMENS_FRIENDLIES',
-    'FIFA_WOMENS_WORLD_CUP',
-    'FIFA_WOMENS_OLYMPICS',
-    'FIFA_WORLD_CUP',
-    'FIFA_WORLD_CUP_Q_AFC',
-    'FIFA_WORLD_CUP_Q_CAF',
-    'FIFA_WORLD_CUP_Q_CONCACAF',
-    'FIFA_WORLD_CUP_Q_CONMEBOL',
-    'FIFA_WORLD_CUP_Q_OFC',
-    'FIFA_WORLD_CUP_Q_UEFA',
-    'FIFA_WORLD_U17',
-    'FIFA_WORLD_U20',
-    'UEFA_CHAMPIONS',
-    'UEFA_EUROPA',
-    'UEFA_EUROPEAN_CHAMPIONSHIP',
-    'UEFA_EUROPEAN_CHAMPIONSHIP_Q',
-    'UEFA_EUROPEAN_CHAMPIONSHIP_U19',
-    'UEFA_EUROPEAN_CHAMPIONSHIP_U21',
-    'UEFA_NATIONS',
-    'SAFF_CHAMPIONSHIP',
-    'WOMENS_EUROPEAN_CHAMPIONSHIP',
-
-    // UK / Ireland
-    'ENG_CARABAO_CUP',
-    'ENG_CHAMPIONSHIP',
-    'ENG_EFL',
-    'ENG_FA_CUP',
-    'ENG_LEAGUE_1',
-    'ENG_LEAGUE_2',
-    'ENG_NATIONAL',
-    'ENG_PREMIERE_LEAGUE',
-    'IRL_PREM',
-    'NIR_PREM',
-    'SCO_PREM',
-    'SCO_CHAMPIONSHIP',
-    'SCO_CHALLENGE_CUP',
-    'SCO_CIS',
-    'SCO_CUP',
-    'SCO_LEAGUE_1',
-    'SCO_LEAGUE_2',
-    'WAL_PREM',
-
-    // Europe
-    'AUT_BUNDESLIGA',
-    'BEL_DIV_A',
-    'DEN_SAS_LIGAEN',
-    'ESP_COPA_DEL_REY',
-    'ESP_LALIGA',
-    'ESP_SEGUNDA_DIV',
-    'FRA_COUPE_DE_FRANCE',
-    'FRA_COUPE_DE_LA_LIGUE',
-    'FRA_LIGUE_1',
-    'FRA_LIGUE_2',
-    'GER_2_BUNDESLIGA',
-    'GER_BUNDESLIGA',
-    'GER_DFB_POKAL',
-    'GRE_SUPER_LEAGUE',
-    'ISR_PREMIER_LEAGUE',
-    'ITA_COPPA_ITALIA',
-    'ITA_SERIE_A',
-    'ITA_SERIE_B',
-    'MLT_PREMIER_LEAGUE',
-    'NED_EERSTE_DIVISIE',
-    'NED_EREDIVISIE',
-    'NED_KNVB_BEKER',
-    'NOR_ELITESERIEN',
-    'POR_LIGA',
-    'ROU_FIRST_DIV',
-    'RUS_PREMIER_LEAGUE',
-    'TUR_SUPER_LIG',
-    'SUI_SUPER_LEAGUE',
-    'SWE_ALLSVENSKANLIGA',
-
-    // South America
-    'ARG_COPA',
-    'ARG_NACIONAL_B',
-    'ARG_PRIMERA_DIV_B',
-    'ARG_PRIMERA_DIV_C',
-    'ARG_PRIMERA_DIV_D',
-    'ARG_SUPERLIGA',
-    'BOL_LIGA_PRO',
-    'BRA_CAMP_CARIOCA',
-    'BRA_CAMP_GAUCHO',
-    'BRA_CAMP_MINEIRO',
-    'BRA_CAMP_PAULISTA',
-    'BRA_COPA',
-    'BRA_SERIE_A',
-    'BRA_SERIE_B',
-    'BRA_SERIE_C',
-    'CHI_COPA',
-    'CHI_PRIMERA_DIV',
-    'COL_COPA',
-    'COL_PRIMERA_A',
-    'COL_PRIMERA_B',
-    'CONMEBOL_COPA_LIBERTADORES',
-    'CONMEBOL_COPA_SUDAMERICANA',
-    'ECU_PRIMERA_A',
-    'PAR_PRIMERA_DIV',
-    'PER_PRIMERA_PRO',
-    'URU_PRIMERA_DIV',
-    'VEN_PRIMERA_PRO',
-
-    // North American
-    'CONCACAF_CHAMPIONS',
-    'CONCACAF_LEAGUE',
-    'CRC_PRIMERA_DIV',
-    'GUA_LIGA_NACIONAL',
-    'HON_PRIMERA_DIV',
-    'JAM_PREMIER_LEAGUE',
-    'MEX_ASCENSO_MX',
-    'MEX_COPA_MX',
-    'MEX_LIGA_BANCOMER',
-    'SLV_PRIMERA_DIV',
-    'USA_MLS',
-    'USA_NCAA_SL_M',
-    'USA_NCAA_SL_W',
-    'USA_NASL',
-    'USA_NWSL',
-    'USA_OPEN',
-    'USA_USL',
-
-    // Asia
-    'AFC_CHAMPIONS',
-    'AUS_A_LEAGUE',
-    'CHN_SUPER_LEAGUE',
-    'IDN_SUPER_LEAGUE',
-    'IND_I_LEAGUE',
-    'IND_SUPER_LEAGUE',
-    'JPN_J_LEAGUE',
-    'MYS_SUPER_LEAGUE',
-    'SGP_PREMIER_LEAGUE',
-    'THA_PREMIER_LEAGUE',
-
-    // Africa
-    'CAF_CHAMPIONS',
-    'CAF_CONFED_CUP',
-    'GHA_PREMIERE_LEAGUE',
-    'KEN_PREMIERE_LEAGUE',
-    'NGA_PRO_LEAGUE',
-    'RSA_FIRST_DIV',
-    'RSA_NEDBANK_CUP',
-    'RSA_PREMIERSHIP',
-    'RSA_TELKOM_KNOCKOUT',
-    'UGA_SUPER_LEAGUE',
-    'ZAM_SUPER_LEAGUE',
-    'ZIM_PREMIER_LEAGUE',
-  ],
-
-  /* lastUpdate: {}, */
   broadcastIcons: ESPN.broadcastIcons,
   broadcastIconsInvert: ESPN.broadcastIconsInvert,
-  /* bodyStorage: {}, */
-
-  getLeaguePath: function (league) {
-    return this.LEAGUE_PATHS[league]
-  },
 
   async getScores(payload, gameDate, callback) {
     var self = this
-
-    /* if (moment(gameDate).format('YYYYMMDD') === moment().format('YYYYMMDD')) {
-      var storedDay = 'today'
-    }
-    else if (moment(gameDate).format('YYYYMMDD') === moment().subtract(1, 'days').format('YYYYMMDD')) {
-      storedDay = 'yesterday'
-    }
-    else {
-      storedDay = 'other'
-    } */
 
     if (Object.keys(this.rugbyLeagues).includes(payload.league) || Object.values(this.rugbyLeagues).includes(payload.league)) {
       var sport = 'rugby'
@@ -233,42 +46,28 @@ module.exports = {
     }
     var url = 'https://site.api.espn.com/apis/site/v2/sports/' + sport + '/scorepanel?dates=' + moment(gameDate).format('YYYYMMDD') + '&limit=200'
 
-    // if (!this.lastUpdate[sport] || this.lastUpdate[sport] < moment().subtract(300, 'seconds')) {
     try {
       const response = await fetch(url)
       Log.debug(`[MMM-MyScoreboard] ${url} fetched for ${payload.league}`)
       var body = await response.json()
-
-      // if (this.getLeaguePath(payload.league).includes('scorepanel')) {
-      // }
-      /* if (!this.bodyStorage[sport]) {
-        this.bodyStorage[sport] = {}
-      } */
-      /* this.bodyStorage[sport][storedDay] = body
-      Log.debug(`Storage stored for ${payload.league}`)
-      this.lastUpdate[sport] = moment() */
     }
     catch (error) {
       Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
     }
-    // }
-    // else {
-    //  body = this.bodyStorage[sport][storedDay]
-    //  Log.debug('it worked')
-    // }
     this.totalGames = 0
     var noGamesToday = false
     for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
-      payload.label = body['scores'][leagueIdx]['leagues'][0]['name'] // `league${leagueIdx}`
-      if (leagueIdx === body['scores'].length - 1 && this.totalGames === 0) {
-        noGamesToday = true
+      if (payload.league === 'ALL_SOCCER' || payload.league === 'SOCCER_ON_TV' || payload.league === 'RUGBY' || this.LEAGUE_PATHS[payload.league].endsWith(body['scores'][leagueIdx]['leagues'][0].slug)) {
+        payload.label = body['scores'][leagueIdx]['leagues'][0]['name']
+        if (leagueIdx === body['scores'].length - 1 && this.totalGames === 0) {
+          noGamesToday = true
+        }
+        callback(self.formatScores(payload, body['scores'][leagueIdx], moment(gameDate).format('YYYYMMDD')), payload.index + (leagueIdx / 1000), noGamesToday)
       }
-      callback(self.formatScores(payload, body['scores'][leagueIdx], moment(gameDate).format('YYYYMMDD')), payload.index + (leagueIdx / 1000), noGamesToday)
     }
   },
 
   formatScores: function (payload, data, gameDate) {
-    // var self = this;
     var formattedGamesList = new Array()
     var localTZ = moment.tz.guess()
 
@@ -451,9 +250,6 @@ module.exports = {
             }
           })
         })
-        /* if (localGamesList.length > 0) {
-          Log.info(`The local channels available for ${game.shortName} are: ${localGamesList.join(', ')}`)
-        } */
       }
       channels = [...new Set(channels)]
 
@@ -501,7 +297,7 @@ module.exports = {
         case '17': // rain delay
           gameState = 1
           classes.push['delay']
-          status.push('Delay')
+          status.push(game.status.type.description) // shortDetail is too long for baseball ("Rain Delay, Top 1st")
           broadcast = channels
           break
         case '49': // SOCCER extra time half time
@@ -514,7 +310,7 @@ module.exports = {
         case '3': // final
         case '28': // SOCCER Full Time
           gameState = 2
-          status.push(game.status.type.description)
+          status.push(game.status.type.shortDetail) // or .description?  hopefully this doesn't mess up other leagues
           // broadcast = channels
           break
         case '45': // SOCCER Final ET

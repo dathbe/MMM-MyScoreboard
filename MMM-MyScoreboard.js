@@ -820,10 +820,7 @@ Module.register('MMM-MyScoreboard', {
       this.sportsData[payload.label]['league'] = payload.index
       this.sportsData[payload.label]['sortIdx'] = payload.sortIdx
       this.updateDom()
-      if (payload.scores.length === 0 && payload.notRun != true && payload.provider !== 'Scorepanel') {
-        this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
-      }
-      else if (payload.provider === 'Scorepanel' && payload.noGamesToday === true) {
+      if (payload.noGamesToday === true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
       if (moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').hour() >= this.config.rolloverHours) {
@@ -987,7 +984,8 @@ Module.register('MMM-MyScoreboard', {
       else {
         whichDay.today = tempToday
       }
-      if (self.ydLoaded[sport.league] && self.ydLoaded[sport.league].loaded && self.ydLoaded.date === gameDate.format('YYYY-MM-DD')) {
+
+      if (self.ydLoaded[sport.league] && self.ydLoaded[sport.league]['loaded'] && self.ydLoaded[sport.league]['date'] === gameDate.format('YYYY-MM-DD')) {
         whichDay.yesterday = false
       }
       else {

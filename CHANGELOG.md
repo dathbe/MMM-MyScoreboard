@@ -4,9 +4,17 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.12.6](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.5...v4.12.6) - 2025-06-30
+
+- BUG FIX: Fix `ydLoaded` logic (reduces API calls for yesterday's games)
+- Tweak `noGamesToday` logic
+- Update how "delay" messages are displayed
+- Clean up some code
+- Update dependencies
+
 ## [4.12.5](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.4...v4.12.5) - 2025-06-27
 
-- BUG FIX: Leagues that use the 'Scorepanel' provider would not update under certain conditions
+- BUG FIX: Leagues that use the "Scorepanel" provider would not update under certain conditions
 - Update dependencies
 - Update dependabot file
 

@@ -618,7 +618,8 @@ module.exports = {
         body = body2
       }
 
-      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index, false)
+      this.noGamesToday = false
+      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index, this.noGamesToday)
     }
     catch (error) {
       Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
@@ -858,16 +859,11 @@ module.exports = {
           status.push(game.status.type.description)
           broadcast = channels
           break
+        case '7': // delayed
         case '17': // rain delay
           gameState = 1
           classes.push['delay']
           status.push(game.status.type.description) // shortDetail is too long for baseball ("Rain Delay, Top 1st")
-          broadcast = channels
-          break
-        case '7': // delayed
-          gameState = 1
-          classes.push['delay']
-          status.push('Delay')
           broadcast = channels
           break
         case '49': // SOCCER extra time half time
@@ -994,6 +990,9 @@ module.exports = {
       }
     })
 
+    if (formattedGamesList.length === 0) {
+      this.noGamesToday = true
+    }
     return formattedGamesList
   },
 
