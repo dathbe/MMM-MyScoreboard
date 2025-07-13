@@ -77,12 +77,12 @@ module.exports = {
           clearInterval(waitForDataTimer)
           waitForDataTimer = null
 
-          callback(self.getLeague(payload.league, payload.teams), payload.index, noGamesToday)
+          callback(self.getLeague(payload.league, payload.teams, gameDate), payload.index, noGamesToday)
         }
       }, 1000)
     }
     else {
-      callback(self.getLeague(payload.league, payload.teams), payload.index, noGamesToday)
+      callback(self.getLeague(payload.league, payload.teams, gameDate), payload.index, noGamesToday)
     }
   },
 
@@ -113,7 +113,7 @@ module.exports = {
     }
   },
 
-  getLeague: function (league, teams) {
+  getLeague: function (league, teams, gameDate) {
     var self = this
 
     var filteredGames = this.scoresObj.data.games.filter(function (game) {
