@@ -580,12 +580,14 @@ Module.register('MMM-MyScoreboard', {
       broadcastPart.innerHTML += gameObj.broadcast[Math.floor(Math.random() * gameObj.broadcast.length)]
     } */
     // else {
-    for (var i = 0; i < gameObj.broadcast.length; i++) {
-      // broadcastPart.innerHTML += gameObj.broadcast[i]
-      var broadcastPartDiv = document.createElement('div')
-      broadcastPartDiv.classList.add('broadcastIconDiv')
-      broadcastPartDiv.innerHTML += gameObj.broadcast[i]
-      broadcastPart.appendChild(broadcastPartDiv)
+    if (gameObj.broadcast != null) {
+      for (var i = 0; i < gameObj.broadcast.length; i++) {
+        // broadcastPart.innerHTML += gameObj.broadcast[i]
+        var broadcastPartDiv = document.createElement('div')
+        broadcastPartDiv.classList.add('broadcastIconDiv')
+        broadcastPartDiv.innerHTML += gameObj.broadcast[i]
+        broadcastPart.appendChild(broadcastPartDiv)
+      }
     }
     // }
     /* if (gameObj.broadcast.length > 1) {
@@ -621,7 +623,7 @@ Module.register('MMM-MyScoreboard', {
       }
     }
 
-    if (this.config.showPlayoffStatus && gameObj.playoffStatus !== '') {
+    if (this.config.showPlayoffStatus && gameObj.playoffStatus !== '' && gameObj.playoffStatus !== undefined) {
       var playoffStatus = document.createElement('div')
       playoffStatus.classList.add('xsmall', 'dimmed', 'playoffStatus')
       playoffStatus.innerHTML = gameObj.playoffStatus

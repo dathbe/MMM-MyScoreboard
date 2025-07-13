@@ -77,12 +77,12 @@ module.exports = {
           clearInterval(waitForDataTimer)
           waitForDataTimer = null
 
-          callback(self.getLeague(payload.league, payload.teams), payload.index, noGamesToday)
+          callback(self.getLeague(payload.league, payload.teams, gameDate), payload.index, noGamesToday)
         }
       }, 1000)
     }
     else {
-      callback(self.getLeague(payload.league, payload.teams), payload.index, noGamesToday)
+      callback(self.getLeague(payload.league, payload.teams, gameDate), payload.index, noGamesToday)
     }
   },
 
@@ -100,7 +100,8 @@ module.exports = {
     // Log.debug('[]Get SNET JSON')
     var self = this
 
-    var url = 'https://stats-api.sportsnet.ca/ticker?day=' + this.gameDate.format('YYYY-MM-DD')
+    //const url = 'https://stats-api.sportsnet.ca/ticker?day=' + this.gameDate.format('YYYY-MM-DD')
+    const url = 'https://stats-api.sportsnet.ca/ticker?league=cfl'
 
     try {
       const response = await fetch(url)
@@ -112,13 +113,14 @@ module.exports = {
     }
   },
 
-  getLeague: function (league, teams) {
+  getLeague: function (league, teams, gameDate) {
     var self = this
 
     var filteredGames = this.scoresObj.data.games.filter(function (game) {
       return (game.league.toUpperCase() == league.toUpperCase()
         && (teams == null || teams.indexOf(game.home_team.short_name.toUpperCase()) != -1
-          || teams.indexOf(game.visiting_team.short_name.toUpperCase()) != -1))
+          || teams.indexOf(game.visiting_team.short_name.toUpperCase()) != -1)
+        && moment(game.timestamp * 1000).format("YYYYMMDD") === moment(gameDate).format("YYYYMMDD"))
     })
 
     /*
