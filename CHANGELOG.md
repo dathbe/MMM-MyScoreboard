@@ -4,6 +4,10 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.12.9](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.8...v4.12.9) - 2025-07-XX
+
+- Add MLB NL and AL to README (for All-Star Game)
+
 ## [4.12.8](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.7...v4.12.8) - 2025-07-15
 
 - BUG FIX: Fix CFL url based on SNET API changes
