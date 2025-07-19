@@ -457,8 +457,8 @@ TB    Tampa Bay Rays
 TEX   Texas Rangers
 TOR   Toronto Blue Jays
 WSH   Washington Nationals
-AL    American League (i.e., All-Star Game)
-NL    National League (i.e., All-Star Game)
+AL    American League All-Star team
+NL    National League All-Star team
 
 Groups:
 ---------------
