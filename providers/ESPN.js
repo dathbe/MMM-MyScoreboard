@@ -444,6 +444,7 @@ module.exports = {
     'Tele': './modules/MMM-MyScoreboard/logos/channels/Tele.svg',
     'TNT': 'https://www.tntdrama.com/themes/custom/ten_theme/images/tnt/tnt_logo_top.png',
     'truTV': './modules/MMM-MyScoreboard/logos/channels/truTV.svg',
+    'TUDN': './modules/MMM-MyScoreboard/logos/channels/TUDN.svg',
     'USA Net': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/USA_Network_logo_%282016%29.svg',
     'Universo': './modules/MMM-MyScoreboard/logos/channels/Universo.svg',
     'Victory+': './modules/MMM-MyScoreboard/logos/channels/Victory+.svg',
