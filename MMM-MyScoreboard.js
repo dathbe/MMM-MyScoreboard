@@ -88,6 +88,7 @@ Module.register('MMM-MyScoreboard', {
     // International Soccer
     'ALL_SOCCER': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
     'SOCCER_ON_TV': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
+    'SOCCER_ON_TV_NOW': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
     'AFC_ASIAN_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     'AFC_ASIAN_CUP_Q': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     'AFF_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },

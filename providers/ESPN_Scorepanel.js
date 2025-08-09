@@ -57,9 +57,9 @@ module.exports = {
     this.totalGames = 0
     var noGamesToday = false
     for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
-      if (payload.league === 'ALL_SOCCER' || payload.league === 'SOCCER_ON_TV' || payload.league === 'RUGBY' || this.LEAGUE_PATHS[payload.league].endsWith(body['scores'][leagueIdx]['leagues'][0].slug)) {
+      if (payload.league === 'ALL_SOCCER' || payload.league === 'SOCCER_ON_TV' || payload.league === 'SOCCER_ON_TV_NOW' || payload.league === 'RUGBY' || this.LEAGUE_PATHS[payload.league].endsWith(body['scores'][leagueIdx]['leagues'][0].slug)) {
         payload.label = body['scores'][leagueIdx]['leagues'][0]['name']
-        if (leagueIdx === body['scores'].length - 1 && this.totalGames === 0) {
+        if (leagueIdx === body['scores'].length - 1 && this.totalGames === 0 && payload.league !== 'SOCCER_ON_TV_NOW') {
           noGamesToday = true
         }
         callback(self.formatScores(payload, body['scores'][leagueIdx], moment(gameDate).format('YYYYMMDD')), payload.index + (leagueIdx / 1000), noGamesToday)
@@ -403,7 +403,11 @@ module.exports = {
         playoffStatus = ''
       }
 
-      if (payload.league !== 'SOCCER_ON_TV' || (broadcast.length > 0)) {
+      if ((payload.league !== 'SOCCER_ON_TV' && payload.league !== 'SOCCER_ON_TV_NOW')
+        || (payload.league === 'SOCCER_ON_TV' && broadcast.length > 0)
+        || (payload.league === 'SOCCER_ON_TV_NOW' && broadcast.length > 0 && gameState == 1)) {
+        Log.debug(payload.league, gameState, hTeamLong)
+
         formattedGamesList.push({
           classes: classes,
           gameMode: gameState,

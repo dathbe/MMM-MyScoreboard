@@ -4,6 +4,13 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.13.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.9...v4.13.0) - 2025-08-XX
+
+- ** NEW FEATURE**: Added `SOCCER_ON_TV_NOW` option
+- Add channel logo
+- Lint
+- Remove explicit @eslint/plugin-kit dev dependency
+
 ## [4.12.9](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.8...v4.12.9) - 2025-07-27
 
 - Add MLB NL and AL to README (for All-Star Game)
@@ -15,7 +22,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.12.8](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.7...v4.12.8) - 2025-07-15
 
 - BUG FIX: Fix CFL url based on SNET API changes
-- BREAKING CHANGE:  WBC will no longer work because of the CFL url change; will be updated when WBC resumes in March
+- BREAKING CHANGE:  WBC will no longer work because of the CFL url change; will be updated when WBC resumes in March  (no major version change because it's only a temporary breaking change, and there are no WBC games at the moment)
 - Update dependencies
 
 ## [4.12.7](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.6...v4.12.7) - 2025-07-05
