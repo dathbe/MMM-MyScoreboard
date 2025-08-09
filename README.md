@@ -145,6 +145,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 #### Most Popular
 * `ALL_SOCCER` - Will return all soccer matches.  The list gets very long, so pair this with a `teams` list.  Useful if your team plays in various cups and competitions.  Note that team abbreviations are not necessarily unique, so your mileage may vary with this "league."
 * `SOCCER_ON_TV` - Will return all soccer matches that have a broadcast option.  Handy if you just want to know what soccer you can watch today.  It will respect your `skipChannels` list and not display games that are only broadcast on one of those channels.
+* `SOCCER_ON_TV_NOW` - Will return all soccer matches currently on tv.  It will respect your `skipChannels` list and not display games that are only broadcast on one of those channels.
 * `English Premier League`
 * `UEFA_CHAMPIONS` - UEFA Champions League
 * `UEFA_EUROPA` - UEFA Europa League
