@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Add channel logo
 - Lint
+- Remove explicit @eslint/plugin-kit dev dependency
 
 ## [4.12.9](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.8...v4.12.9) - 2025-07-27
 

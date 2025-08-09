@@ -407,7 +407,7 @@ module.exports = {
         || (payload.league === 'SOCCER_ON_TV' && broadcast.length > 0)
         || (payload.league === 'SOCCER_ON_TV_NOW' && broadcast.length > 0 && gameState == 1)) {
         Log.debug(payload.league, gameState, hTeamLong)
-        
+
         formattedGamesList.push({
           classes: classes,
           gameMode: gameState,
