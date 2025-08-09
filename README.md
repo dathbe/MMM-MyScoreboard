@@ -68,10 +68,6 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
         league: "NFL",
         teams: ["BUF", "NYJ", "NYG"]
       },
-      {
-        league: "CFL",
-        teams: ["TOR", "MTL", "OTT"]
-      },
     ]
 
   }
