@@ -48,7 +48,7 @@
     "moment-timezone": "^0.6.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.33.0",
+    "@eslint/js": "^9.34.0",
     "@stylistic/eslint-plugin": "^5.2.3",
     "eslint": "^9.33.0",
     "globals": "^16.3.0"
