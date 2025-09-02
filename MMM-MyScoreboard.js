@@ -1165,7 +1165,7 @@ Module.register('MMM-MyScoreboard', {
     NCAAF: {
 
       // divisions
-      'American Athletic': ['ARMY', 'CHAR', 'ECU', 'FAU', 'MEM', 'NAVY', 'RICE', 'TEM', 'TULN', 'TLSA', 'UAB', 'UNT', 'USF', 'UTSA',],
+      'American Athletic': ['ARMY', 'CHAR', 'ECU', 'FAU', 'MEM', 'NAVY', 'RICE', 'TEM', 'TULN', 'TLSA', 'UAB', 'UNT', 'USF', 'UTSA'],
       'ACC': ['BC', 'CAL', 'CLEM', 'DUKE', 'FSU', 'GT', 'LOU', 'MIAMI', 'NCST', 'PITT', 'SMU', 'STAN', 'SYR', 'UNC', 'UVA', 'VT', 'WAKE'],
       'Big 12': ['ARIZ', 'ASU', 'BAY', 'BYU', 'CIN', 'COLO', 'HOU', 'ISU', 'KU', 'KSU', 'OKST', 'TCU', 'TTU', 'UCF', 'UTAH', 'WVU'],
       'Big Ten': ['ILL', 'IND', 'IOWA', 'MD', 'MICH', 'MSU', 'MINN', 'NEB', 'NW', 'OSU', 'ORE', 'PSU', 'PUR', 'RUTG', 'UCLA', 'USC', 'WASH', 'WIS'],
@@ -1213,7 +1213,7 @@ Module.register('MMM-MyScoreboard', {
       'Summit League': ['DEN', 'NDSU', 'OMA', 'ORU', 'SDAK', 'SDST', 'STMN', 'UMKC', 'UND'],
       'Sun Belt': ['APP', 'ARST', 'CCAR', 'GASO', 'GAST', 'JMU', 'MRSH', 'ODU', 'TXST', 'TROY', 'ULL', 'ULM', 'USA', 'USM'],
       'West Coast': ['GONZ', 'LMU', 'ORST', 'PAC', 'PEPP', 'PORT', 'SMC', 'USD', 'SF', 'SCU', 'SEA', 'WSU'],
-      'WAC': ['ACU', 'CBU', 'SUU', 'TAR', 'UTA', 'UTU',  'UVU'],
+      'WAC': ['ACU', 'CBU', 'SUU', 'TAR', 'UTA', 'UTU', 'UVU'],
       'Top 25': ['@T25'], // special indicator for Top 25 ranked teams
 
     },
@@ -1251,7 +1251,7 @@ Module.register('MMM-MyScoreboard', {
       'Summit League': ['DEN', 'NDSU', 'OMA', 'ORU', 'SDAK', 'SDST', 'STMN', 'KC', 'UND'],
       'Sun Belt': ['APP', 'ARST', 'CCU', 'GASO', 'GAST', 'JMU', 'MRSH', 'ODU', 'TXST', 'TROY', 'UL', 'ULM', 'USA', 'USM'],
       'West Coast': ['GONZ', 'LMU', 'ORST', 'PAC', 'PEPP', 'PORT', 'SMC', 'USD', 'SF', 'SCU', 'SEA', 'WSU'],
-      'WAC': ['ACU', 'CBU', 'SUU', 'TAR', 'UTA', 'UTU',  'UVU'],
+      'WAC': ['ACU', 'CBU', 'SUU', 'TAR', 'UTA', 'UTU', 'UVU'],
       'Top 25': ['@T25'], // special indicator for Top 25 ranked teams
 
     },
