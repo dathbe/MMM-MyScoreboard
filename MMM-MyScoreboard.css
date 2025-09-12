@@ -3,6 +3,10 @@
   max-width: 400px;
 }
 
+.MMM-MyScoreboard .module-content {
+  overflow: hidden;
+}
+
 .MMM-MyScoreboard:has(.oneLine),
 .MMM-MyScoreboard:has(.oneLineWithLogos) {
   min-width: 375px;
