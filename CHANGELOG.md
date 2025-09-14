@@ -4,11 +4,20 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.13.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.2...v4.13.3) - 2025-09-XX
+
+- Update dependencies
+
+## [4.13.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.1...v4.13.2) - 2025-09-11
+
+- BUG FIX: Update CSS to better display scrolling scores while using a custom header
+- Update dependencies
+
 ## [4.13.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.0...v4.13.1) - 2025-09-02
 
 - NCAA conferences updated for realignment
 - Update dependencies
-- 
+
 ## [4.13.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.9...v4.13.0) - 2025-08-09
 
 - ** NEW FEATURE**: Added `SOCCER_ON_TV_NOW` option
