@@ -4,6 +4,12 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.13.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.2...v4.13.3) - 2025-09-26
+
+- More channel logos
+- Update documentation
+- Update dependencies
+
 ## [4.13.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.1...v4.13.2) - 2025-09-11
 
 - BUG FIX: Update CSS to better display scrolling scores while using a custom header

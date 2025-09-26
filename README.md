@@ -31,6 +31,8 @@ npm install --omit=dev
 Dependencies:
 * [moment-timezone](https://www.npmjs.com/package/moment-timezone)
 
+Note:  running `npm install` is not strictly necessary unless the main MagicMirror² code is changed to eliminate the moment-timezone dependency.
+
 ## Updating the Module
 
 ```sh
