@@ -445,6 +445,7 @@ module.exports = {
     'Prime Video': 'https://upload.wikimedia.org/wikipedia/commons/9/90/Prime_Video_logo_%282024%29.svg',
     'Roku': 'https://image.roku.com/w/rapid/images/logo-image/aaef8f1c-af36-41a7-b851-d4cc32a55946.svg',
     'SEC Network': 'https://upload.wikimedia.org/wikipedia/commons/f/fd/SEC_Network_%282024%29.svg',
+    'SECN+': './modules/MMM-MyScoreboard/logos/channels/SECPlus.png',
     'TBS': 'https://upload.wikimedia.org/wikipedia/commons/2/2c/TBS_2020.svg',
     'Tele': './modules/MMM-MyScoreboard/logos/channels/Tele.svg',
     'TNT': 'https://www.tntdrama.com/themes/custom/ten_theme/images/tnt/tnt_logo_top.png',
