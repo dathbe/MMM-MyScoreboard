@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.13.4](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.3...v4.13.4) - 2025-10-XX
 
 - More channel logos
+- Update dependencies
 
 ## [4.13.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.2...v4.13.3) - 2025-09-26
 
