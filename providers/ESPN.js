@@ -430,6 +430,7 @@ module.exports = {
     'FOX Deportes': 'https://upload.wikimedia.org/wikipedia/commons/3/3b/FOX_Deportes_logo.png',
     'FS1': 'https://upload.wikimedia.org/wikipedia/commons/3/37/2015_Fox_Sports_1_logo.svg',
     'FS2': 'https://upload.wikimedia.org/wikipedia/commons/3/38/FS2_logo_2015.svg',
+    'HBO Max': 'https://www.hbomax.com/img/hbomax/logo_nav_bar.png',
     'Hulu': 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Hulu_logo_%282018%29.svg',
     'Max': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Max_logo.svg',
     'MLB Net': 'https://upload.wikimedia.org/wikipedia/en/a/ac/MLBNetworkLogo.svg',
@@ -544,7 +545,6 @@ module.exports = {
     'CBSSN': 'https://upload.wikimedia.org/wikipedia/commons/0/04/CBS_Sports_Network_2021.svg',
     'DAZN': 'https://upload.wikimedia.org/wikipedia/commons/0/06/DAZN_Logo_Master.svg',
     'FOX': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fox_Broadcasting_Company_logo_%282019%29.svg',
-    'HBO Max': 'https://www.hbomax.com/img/hbomax/logo_nav_bar.png',
     'ION': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Ion_logo.svg',
     'MLS Season Pass': 'https://upload.wikimedia.org/wikipedia/commons/7/71/MLS_Season_Pass_logo_black.svg',
 
