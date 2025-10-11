@@ -257,23 +257,23 @@ Module.register('MMM-MyScoreboard', {
     'ZIM_PREMIER_LEAGUE': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // Rugby
-    'RUGBY': { provider: 'Scorepanel', logoFormat: 'url' },
-    'PREMIERSHIP_RUGBY': { provider: 'ESPN', logoFormat: 'url' },
-    'RUGBY_WORLD_CUP': { provider: 'ESPN', logoFormat: 'url' },
-    'SIX_NATIONS': { provider: 'ESPN', logoFormat: 'url' },
-    'THE_RUGBY_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url' },
-    'EUROPEAN_RUGBY_CHAMPIONS_CUP': { provider: 'ESPN', logoFormat: 'url' },
-    'UNITED_RUGBY_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url' },
-    'SUPER_RUGBY_PACIFIC': { provider: 'ESPN', logoFormat: 'url' },
-    'OLYMPIC_MENS_7S': { provider: 'ESPN', logoFormat: 'url' },
-    'OLYMPIC_WOMENS_RUGBY_SEVENS': { provider: 'ESPN', logoFormat: 'url' },
-    'INTERNATIONAL_TEST_MATCH': { provider: 'ESPN', logoFormat: 'url' },
-    'URBA_TOP_12': { provider: 'ESPN', logoFormat: 'url' },
-    'MITRE_10_CUP': { provider: 'ESPN', logoFormat: 'url' },
-    'Major League Rugby': { provider: 'ESPN', logoFormat: 'url' },
+    'RUGBY': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
+    'PREMIERSHIP_RUGBY': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'RUGBY_WORLD_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SIX_NATIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'THE_RUGBY_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'EUROPEAN_RUGBY_CHAMPIONS_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'UNITED_RUGBY_CHAMPIONSHIP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'SUPER_RUGBY_PACIFIC': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'OLYMPIC_MENS_7S': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'OLYMPIC_WOMENS_RUGBY_SEVENS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'INTERNATIONAL_TEST_MATCH': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'URBA_TOP_12': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'MITRE_10_CUP': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'Major League Rugby': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // Other
-    'AFL': { provider: 'ESPN', logoFormat: 'url' },
+    'AFL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
   },
 
