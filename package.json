@@ -36,7 +36,8 @@
   "contributors": [
     "Jeff Clarke",
     "dathbe",
-    "mikeyounge"
+    "mikeyounge",
+    "szech"
   ],  
   "scripts": {
     "lint": "eslint",
