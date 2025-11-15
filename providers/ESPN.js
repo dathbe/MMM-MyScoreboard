@@ -565,7 +565,7 @@ module.exports = {
   async getScores(payload, gameDate, callback) {
     var self = this
 
-    var url = 'https://site.api.espn.com/apis/site/v2/sports/'
+    var url = 'https://site.web.api.espn.com/apis/site/v2/sports/'
     url += this.getLeaguePath(payload.league)
     if (this.getLeaguePath(payload.league).includes('scorepanel')) {
       url += '?dates='
