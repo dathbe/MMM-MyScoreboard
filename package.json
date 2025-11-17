@@ -36,7 +36,8 @@
   "contributors": [
     "Jeff Clarke",
     "dathbe",
-    "mikeyounge"
+    "mikeyounge",
+    "szech"
   ],  
   "scripts": {
     "lint": "eslint",
@@ -48,9 +49,9 @@
     "moment-timezone": "^0.6.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
-    "@stylistic/eslint-plugin": "^5.4.0",
-    "eslint": "^9.37.0",
-    "globals": "^16.4.0"
+    "@eslint/js": "^9.39.1",
+    "@stylistic/eslint-plugin": "^5.5.0",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0"
   }
 }
