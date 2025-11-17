@@ -4,6 +4,10 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.13.6](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.5...v4.13.6) - 2025-11-16
+
+- Update ESPN API endpoint
+
 ## [4.13.5](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.4...v4.13.5) - 2025-10-11
 
 - Home team displayed first for AFL and rugby
