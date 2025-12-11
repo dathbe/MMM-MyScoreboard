@@ -228,6 +228,7 @@ Module.register('MMM-MyScoreboard', {
     'NWSL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     'USA_OPEN': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
     'USA_USL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
+    'NSL': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },
 
     // Asian Soccer
     'AFC_CHAMPIONS': { provider: 'ESPN', logoFormat: 'url', homeTeamFirst: true },

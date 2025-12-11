@@ -199,6 +199,7 @@ module.exports = {
     'NWSL': 'soccer/usa.nwsl',
     'USA_OPEN': 'soccer/usa.open',
     'USA_USL': 'soccer/usa.usl.1',
+    'NSL': 'soccer/can.w.nsl',
 
     // Asian Soccer
     'AFC_CHAMPIONS': 'soccer/afc.champions',
