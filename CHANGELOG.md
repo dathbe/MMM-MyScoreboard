@@ -4,6 +4,14 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.14.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.6...v4.14.0) - 2025-12-11
+
+- ** NEW FEATURE**: Add Northern Super League (`NSL`)
+- ** NEW FEATURE**: Add Canadian Premier League (`CPL`)
+- Add logos
+- Update readme for developers
+- Update dependencies
+
 ## [4.13.6](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.5...v4.13.6) - 2025-11-16
 
 - Update ESPN API endpoint

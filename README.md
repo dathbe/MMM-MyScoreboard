@@ -297,6 +297,8 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 * `NWSL` - United States NWSL Women's League
 * `USA_OPEN` - United States Open Cup 
 * `USA_USL` - United States USL Championship
+* `NSL` - Canada's Northern Super League
+* `CPL` - Canadian Premier League
 
 #### Asia
 * `AFC_CHAMPIONS` - AFC Champions League
@@ -1834,8 +1836,11 @@ You will need to first install the dev dependencies:
 
 ```bash
 cd ~/MagicMirror/modules/MMM-MyScoreboard
+git switch development
 npm install
 ```
+
+Please create all PRs against the development branch for testing and eventual merging into master.
 
 - `node --run lint` - Run linting checks.
 - `node --run lint:fix` - Fix automatically fixable linting errors.
