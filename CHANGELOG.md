@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.14.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.14.0...v4.14.1) - 2025-12-XX
 
 - Lint
+- Update dependencies
 
 ## [4.14.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.6...v4.14.0) - 2025-12-11
 
