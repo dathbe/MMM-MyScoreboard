@@ -37,7 +37,8 @@
     {"name": "Jeff Clarke"},
     {"name": "dathbe"},
     {"name": "mikeyounge"},
-    {"name": "szech"}
+    {"name": "szech"},
+    {"name": "jvoss117-2"}
   ],  
   "scripts": {
     "lint": "eslint",
