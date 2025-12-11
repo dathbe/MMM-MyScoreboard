@@ -34,10 +34,11 @@
   ],
   "author": "Jeff Clarke",
   "contributors": [
-    "Jeff Clarke",
-    "dathbe",
-    "mikeyounge",
-    "szech"
+    {"name": "Jeff Clarke"},
+    {"name": "dathbe"},
+    {"name": "mikeyounge"},
+    {"name": "szech"},
+    {"name": "jvoss117-2"}
   ],  
   "scripts": {
     "lint": "eslint",
