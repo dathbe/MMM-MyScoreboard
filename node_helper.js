@@ -15,6 +15,7 @@ module.exports = NodeHelper.create({
     this.providers.SNET_YD = require('./providers/SNET_YD.js')
     this.providers.ESPN = require('./providers/ESPN.js')
     this.providers.Scorepanel = require('./providers/ESPN_Scorepanel.js')
+    this.providers.CPL = require('./providers/CPL.js')
 
     this.localLogos = {}
     var fsTree = this.getDirectoryTree('./modules/MMM-MyScoreboard/logos')

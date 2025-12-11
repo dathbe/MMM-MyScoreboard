@@ -298,6 +298,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 * `USA_OPEN` - United States Open Cup 
 * `USA_USL` - United States USL Championship
 * `NSL` - Canada's Northern Super League
+* `CPL` - Canadian Premier League
 
 #### Asia
 * `AFC_CHAMPIONS` - AFC Champions League
