@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Add Northern Super League (`NSL`)
 - Add Canadian Premier League (`CPL`)
+- Add logos
 - Update readme for developers
 - Update dependencies
 
