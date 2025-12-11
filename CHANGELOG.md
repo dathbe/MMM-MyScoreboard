@@ -4,10 +4,10 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.13.7](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.6...v4.13.7) - 2025-12-11
+## [4.14.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.13.6...v4.14.0) - 2025-12-11
 
-- Add Northern Super League (`NSL`)
-- Add Canadian Premier League (`CPL`)
+- ** NEW FEATURE**: Add Northern Super League (`NSL`)
+- ** NEW FEATURE**: Add Canadian Premier League (`CPL`)
 - Add logos
 - Update readme for developers
 - Update dependencies
