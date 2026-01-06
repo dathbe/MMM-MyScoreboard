@@ -8,6 +8,7 @@
     NCAAF (College Football, FBS Division)
     NCAAM (College Basketball. Division I)
     NCAAM_MM (College Basketball, March Madness Tournament)
+    NCAAB (College Baseball)
     MLB (Major League Baseball)
     NHL
     NFL
@@ -52,6 +53,7 @@ module.exports = {
     'NCAAM': 'basketball/mens-college-basketball',
     'NCAAM_MM': 'basketball/mens-college-basketball',
     'NCAAW': 'basketball/womens-college-basketball',
+    'NCAAB': 'baseball/college-baseball',
     'PLL': 'lacrosse/pll',
     'NLL': 'lacrosse/nll',
     'MLB': 'baseball/mlb',
@@ -939,7 +941,7 @@ module.exports = {
       var hTeamLong = ''
       var vTeamLong = ''
       // For college sports, use the displayName property
-      if (payload.league == 'NCAAF' || payload.league == 'NCAAM') {
+      if (payload.league.startsWith('NCAA')) {
         hTeamLong = (hTeamData.team.abbreviation == undefined ? '' : hTeamData.team.abbreviation + ' ') + hTeamData.team.name
         vTeamLong = (vTeamData.team.abbreviation == undefined ? '' : vTeamData.team.abbreviation + ' ') + vTeamData.team.name
       }
@@ -988,8 +990,8 @@ module.exports = {
           vTeam: vTeamData.team.abbreviation == undefined ? vTeamData.team.name.substring(0, 4).toUpperCase() + ' ' : vTeamData.team.abbreviation,
           hTeamLong: hTeamLong,
           vTeamLong: vTeamLong,
-          hTeamRanking: (payload.league == 'NCAAF' || payload.league == 'NCAAM') ? this.formatT25Ranking(hTeamData.curatedRank.current) : null,
-          vTeamRanking: (payload.league == 'NCAAF' || payload.league == 'NCAAM') ? this.formatT25Ranking(vTeamData.curatedRank.current) : null,
+          hTeamRanking: (payload.league.startsWith('NCAA') && hTeamData.curatedRank) ? this.formatT25Ranking(hTeamData.curatedRank.current) : null,
+          vTeamRanking: (payload.league.startsWith('NCAA') && vTeamData.curatedRank) ? this.formatT25Ranking(vTeamData.curatedRank.current) : null,
           hScore: parseInt(hTeamData.score),
           vScore: parseInt(vTeamData.score),
           status: status,

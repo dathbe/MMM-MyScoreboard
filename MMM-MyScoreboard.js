@@ -80,6 +80,7 @@ Module.register('MMM-MyScoreboard', {
     'NCAAM': { provider: 'ESPN', logoFormat: 'url' },
     'NCAAM_MM': { provider: 'ESPN', logoFormat: 'url' },
     'NCAAW': { provider: 'ESPN', logoFormat: 'url' },
+    'NCAAB': { provider: 'ESPN', logoFormat: 'url' },
     'WNBA': { provider: 'ESPN', logoFormat: 'url' },
     'NBAG': { provider: 'ESPN', logoFormat: 'url' },
     'NLL': { provider: 'ESPN', logoFormat: 'url' },
