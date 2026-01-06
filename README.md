@@ -5,7 +5,7 @@ leagues, including:
 
 * NHL Hockey
 * NBA / WNBA / NCAA Basketball
-* MLB Baseball
+* MLB / College Baseball
 * NFL / NCAA / CFL Football
 * Over 100 soccer leagues
 * And more
@@ -128,6 +128,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 * `NCAAM` - NCAA College Basketball (Division I)
 * `NCAAM_MM` - NCAA College Basketball (March Madness Tournament)
 * `NCAAW` - NCAA Women's College Basketball
+* `NCAAB` - NCAA Baseball
 * `NLL` - National Lacrosse League
 * `PLL` - Premier Lacrosse League
 
