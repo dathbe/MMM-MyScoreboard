@@ -4,9 +4,13 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.15.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.1...v4.15.2) - 2025-02-20
+
+- BUG FIX: Fixed CFL URL
+
 ## [4.15.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.0...v4.15.1) - 2025-02-20
 
-- Fixed `WBC` (World Baseball Classic)
+- BUG FIX: Fixed `WBC` (World Baseball Classic)
 - Update dependencies
 - Lint
 
@@ -59,7 +63,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [4.13.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.12.9...v4.13.0) - 2025-08-09
 
-- ** NEW FEATURE**: Added `SOCCER_ON_TV_NOW` option
+- **NEW FEATURE**: Added `SOCCER_ON_TV_NOW` option
 - Add channel logo
 - Lint
 - Remove explicit @eslint/plugin-kit dev dependency
