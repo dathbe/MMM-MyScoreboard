@@ -1,6 +1,6 @@
 {
   "name": "mmm-myscoreboard",
-  "version": "4.13.0",
+  "version": "4.15.0",
   "type": "commonjs",
   "description": "A MagicMirror² module to display scores for your favorite teams from many major sports.",
   "repository": {
