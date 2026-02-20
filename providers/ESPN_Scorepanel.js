@@ -134,8 +134,6 @@ module.exports = {
       var broadcast = []
       var classes = []
 
-      var gameState = 0
-
       var hTeamData = game.competitions[0].competitors[0]
       var vTeamData = game.competitions[0].competitors[1]
 
@@ -257,7 +255,7 @@ module.exports = {
         // Not started
         case '5': // cancelled
         case '6': // postponed
-          gameState = 0
+          var gameState = 0
           status.push(game.status.type.detail)
           break
         case '0' : // TBD
@@ -359,12 +357,10 @@ module.exports = {
       }
 
       // determine which display name to use
-      var hTeamLong = ''
-      var vTeamLong = ''
       // For college sports, use the displayName property
       if (payload.league == 'NCAAF' || payload.league == 'NCAAM') {
-        hTeamLong = (hTeamData.team.abbreviation == undefined ? '' : hTeamData.team.abbreviation + ' ') + hTeamData.team.name
-        vTeamLong = (vTeamData.team.abbreviation == undefined ? '' : vTeamData.team.abbreviation + ' ') + vTeamData.team.name
+        var hTeamLong = (hTeamData.team.abbreviation == undefined ? '' : hTeamData.team.abbreviation + ' ') + hTeamData.team.name
+        var vTeamLong = (vTeamData.team.abbreviation == undefined ? '' : vTeamData.team.abbreviation + ' ') + vTeamData.team.name
       }
       else { // use the shortDisplayName property
         hTeamLong = hTeamData.team.shortDisplayName

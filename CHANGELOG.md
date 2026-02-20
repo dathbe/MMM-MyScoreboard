@@ -4,10 +4,12 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.15.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.14.1...v4.15.0) - 2025-01-XX
+## [4.15.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.14.1...v4.15.0) - 2025-02-20
 
+- **NEW FEATURE**: Added `WBC` (World Baseball Classic)
 - **NEW FEATURE**: Added `NCAAB` (College Baseball)
 - Update dependencies
+- Lint
 
 ## [4.14.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.14.0...v4.14.1) - 2025-12-11
 

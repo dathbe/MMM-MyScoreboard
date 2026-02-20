@@ -484,11 +484,12 @@ National League
 Teams:
 ---------------
 AUS   Australia
+BRA   Brazil
 CAN   Canada
 CHN   China
 COL   Colombia
 CUB   Cuba
-CZE   Czech Republic
+CZE   Czechia (Czech Republic)
 DOM   Dominican Republic
 GBR   Great Britain
 ISR   Israel
