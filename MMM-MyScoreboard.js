@@ -74,7 +74,8 @@ Module.register('MMM-MyScoreboard', {
     'NFL': { provider: 'ESPN', logoFormat: 'svg' },
     'CFL': { provider: 'SNET', logoFormat: 'svg' },
     'MLB': { provider: 'ESPN', logoFormat: 'svg' },
-    'WBC': { provider: 'SNET', logoFormat: 'svg' },
+    //'WBC': { provider: 'SNET', logoFormat: 'svg' },
+    'WBC': { provider: 'ESPN', logoFormat: 'svg' },
 
     'NCAAF': { provider: 'ESPN', logoFormat: 'url' },
     'NCAAM': { provider: 'ESPN', logoFormat: 'url' },

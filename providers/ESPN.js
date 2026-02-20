@@ -61,6 +61,7 @@ module.exports = {
     'NHL': 'hockey/nhl',
     'MLS': 'soccer/usa.1',
     'RUGBY': 'rugby/scorepanel',
+    'WBC': 'baseball/world-baseball-classic',
 
     // International Soccer
     'AFC_ASIAN_CUP': 'soccer/afc.cup',
