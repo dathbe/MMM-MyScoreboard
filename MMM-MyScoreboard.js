@@ -74,7 +74,6 @@ Module.register('MMM-MyScoreboard', {
     'NFL': { provider: 'ESPN', logoFormat: 'svg' },
     'CFL': { provider: 'SNET', logoFormat: 'svg' },
     'MLB': { provider: 'ESPN', logoFormat: 'svg' },
-    //'WBC': { provider: 'SNET', logoFormat: 'svg' },
     'WBC': { provider: 'ESPN', logoFormat: 'svg' },
 
     'NCAAF': { provider: 'ESPN', logoFormat: 'url' },
@@ -729,11 +728,10 @@ Module.register('MMM-MyScoreboard', {
 
     self.sportsData = this.sortDict(self.sportsData)
     for (const [sport, scores] of Object.entries(self.sportsData)) {
-      var leagueSeparator = []
       if (scores['scores'].length > 0) {
         // anyGames = true
         if (self.config.showLeagueSeparators) {
-          leagueSeparator = document.createElement('div')
+          var leagueSeparator = document.createElement('div')
           leagueSeparator.classList.add('league-separator')
           leagueSeparator.innerHTML = '<span>' + sport + '</span>'
           wrapper.appendChild(leagueSeparator)
@@ -762,7 +760,6 @@ Module.register('MMM-MyScoreboard', {
 
     self.sportsDataYd = this.sortDict(self.sportsDataYd)
     for (const [sport, scores] of Object.entries(self.sportsDataYd)) {
-      leagueSeparator = []
       if (scores['scores'].length > 0 && !self.sportsData[sport]) {
         // anyGames = true
         if (self.config.showLeagueSeparators) {
