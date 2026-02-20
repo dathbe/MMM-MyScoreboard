@@ -101,7 +101,7 @@ module.exports = {
     var self = this
 
     // const url = 'https://stats-api.sportsnet.ca/ticker?day=' + this.gameDate.format('YYYY-MM-DD')
-    const url = 'https://stats-api.sportsnet.ca/ticker?league=cfl'
+    const url = 'https://stats-api.sportsnet.ca/ticker?league=cfl&day=' + this.gameDate.format('YYYY-MM-DD')
 
     try {
       const response = await fetch(url)
