@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [4.15.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.2...v4.15.3) - 2025-03-XX
 
-- Add logos
+- Add logos (teams and broadcast stations)
 
 ## [4.15.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.1...v4.15.2) - 2025-02-20
 
