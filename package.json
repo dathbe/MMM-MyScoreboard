@@ -52,7 +52,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.9.0",
-    "eslint": "^10.0.1",
+    "eslint": "^10.0.2",
     "globals": "^17.3.0"
   }
 }
