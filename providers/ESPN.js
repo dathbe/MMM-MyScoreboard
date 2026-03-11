@@ -420,6 +420,7 @@ module.exports = {
   broadcastIcons: {
     'ACC Network': 'https://upload.wikimedia.org/wikipedia/commons/f/fd/ACC_Network_ESPN_logo.svg',
     'ACC Extra': './modules/MMM-MyScoreboard/logos/channels/ACC-NX-logo.png',
+    'Apple TV': 'https://upload.wikimedia.org/wikipedia/en/e/eb/Apple_TV_logo_2025.png',
     'B1G+': './modules/MMM-MyScoreboard/logos/channels/B1GPlus.png',
     'BTN': 'https://upload.wikimedia.org/wikipedia/en/3/39/Big_Ten_Network_Logo.svg',
     'CW': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/The_CW_2024.svg',
@@ -456,6 +457,7 @@ module.exports = {
     'Tele': './modules/MMM-MyScoreboard/logos/channels/Tele.svg',
     'TNT': 'https://www.tntdrama.com/themes/custom/ten_theme/images/tnt/tnt_logo_top.png',
     'truTV': './modules/MMM-MyScoreboard/logos/channels/truTV.svg',
+    'TUBI': 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Tubi_logo_2024_purple.svg',
     'TUDN': './modules/MMM-MyScoreboard/logos/channels/TUDN.svg',
     'USA Net': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/USA_Network_logo_%282016%29.svg',
     'Universo': './modules/MMM-MyScoreboard/logos/channels/Universo.svg',
@@ -550,6 +552,7 @@ module.exports = {
     'CBSSN': 'https://upload.wikimedia.org/wikipedia/commons/0/04/CBS_Sports_Network_2021.svg',
     'DAZN': 'https://upload.wikimedia.org/wikipedia/commons/0/06/DAZN_Logo_Master.svg',
     'FOX': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fox_Broadcasting_Company_logo_%282019%29.svg',
+    'Fox Sports App': 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Fox_Sports_wordmark_logo.svg',
     'ION': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Ion_logo.svg',
     'MLS Season Pass': 'https://upload.wikimedia.org/wikipedia/commons/7/71/MLS_Season_Pass_logo_black.svg',
 
