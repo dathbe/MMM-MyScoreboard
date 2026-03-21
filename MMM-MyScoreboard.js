@@ -34,6 +34,9 @@ Module.register('MMM-MyScoreboard', {
     debugHours: 0,
     debugMinutes: 0,
     showPlayoffStatus: false,
+    showBaseballDetail: false,
+    baseballDetailInterval: 5,
+    baseballDetailViewOverride: false,
     sports: [
       {
         league: 'NHL',
@@ -311,6 +314,9 @@ Module.register('MMM-MyScoreboard', {
   ydLoaded: {},
   noGamesToday: {},
   logoIndex: 0,
+  baseballLeagues: ['MLB', 'NCAAB', 'WBC'],
+  baseballFastPollTimer: null,
+  baseballFastPollActive: false,
 
   viewStyleHasLogos: function (v) {
     switch (v) {
@@ -419,6 +425,12 @@ Module.register('MMM-MyScoreboard', {
    ******************************************************************/
   boxScoreFactory: function (league, gameObj, label) {
     var viewStyle = this.config.viewStyle
+
+    // Override viewStyle for active baseball games with detail enabled
+    if (this.config.showBaseballDetail && this.config.baseballDetailViewOverride
+      && gameObj.baseballSituation && this.baseballLeagues.includes(league)) {
+      viewStyle = 'largeLogos'
+    }
 
     var boxScore = document.createElement('div')
     boxScore.classList.add('box-score', league.replaceAll(' ', ''))
@@ -611,6 +623,84 @@ Module.register('MMM-MyScoreboard', {
       vTeamScore.classList.add('score', 'visitor')
       vTeamScore.innerHTML = (gameObj.vScore)
       boxScore.appendChild(vTeamScore)
+    }
+
+    // add baseball detail for active games
+    if (this.config.showBaseballDetail && gameObj.baseballSituation) {
+      var canShowDetail = true
+      if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(viewStyle)) {
+        canShowDetail = false
+      }
+
+      if (canShowDetail) {
+        var sit = gameObj.baseballSituation
+        boxScore.classList.add('baseball-live-detail')
+
+        var detail = document.createElement('div')
+        detail.classList.add('baseball-detail')
+        if (sit.isMidInning) detail.classList.add('mid-inning')
+
+        // Top row: diamond + count/outs
+        var detailTop = document.createElement('div')
+        detailTop.classList.add('baseball-detail-top')
+
+        // Diamond / bases indicator
+        var diamond = document.createElement('div')
+        diamond.classList.add('baseball-diamond')
+        var baseSecond = document.createElement('span')
+        baseSecond.classList.add('base', 'second')
+        if (sit.onSecond) baseSecond.classList.add('occupied')
+        diamond.appendChild(baseSecond)
+        var baseThird = document.createElement('span')
+        baseThird.classList.add('base', 'third')
+        if (sit.onThird) baseThird.classList.add('occupied')
+        diamond.appendChild(baseThird)
+        var baseFirst = document.createElement('span')
+        baseFirst.classList.add('base', 'first')
+        if (sit.onFirst) baseFirst.classList.add('occupied')
+        diamond.appendChild(baseFirst)
+        detailTop.appendChild(diamond)
+
+        // Count and outs
+        var countOuts = document.createElement('div')
+        countOuts.classList.add('baseball-count-outs')
+        var count = document.createElement('span')
+        count.classList.add('baseball-count')
+        count.innerHTML = sit.balls + '-' + sit.strikes
+        countOuts.appendChild(count)
+        var outs = document.createElement('span')
+        outs.classList.add('baseball-outs')
+        for (var o = 0; o < 3; o++) {
+          var outDot = document.createElement('span')
+          outDot.classList.add('out-dot')
+          if (o < sit.outs) outDot.classList.add('active')
+          outs.appendChild(outDot)
+        }
+        countOuts.appendChild(outs)
+        detailTop.appendChild(countOuts)
+        detail.appendChild(detailTop)
+
+        // Pitcher and batter (hidden mid-inning)
+        if (!sit.isMidInning) {
+          var matchup = document.createElement('div')
+          matchup.classList.add('baseball-matchup')
+          if (sit.pitcher) {
+            var pitcher = document.createElement('span')
+            pitcher.classList.add('baseball-pitcher')
+            pitcher.innerHTML = 'P: ' + sit.pitcher
+            matchup.appendChild(pitcher)
+          }
+          if (sit.batter) {
+            var batter = document.createElement('span')
+            batter.classList.add('baseball-batter')
+            batter.innerHTML = 'AB: ' + sit.batter
+            matchup.appendChild(batter)
+          }
+          detail.appendChild(matchup)
+        }
+
+        boxScore.appendChild(detail)
+      }
     }
 
     // add classes to final games
@@ -830,6 +920,38 @@ Module.register('MMM-MyScoreboard', {
       if (moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').hour() >= this.config.rolloverHours) {
         this.sportsDataYd = {}
       }
+
+      // Manage fast polling for active baseball games
+      if (this.config.showBaseballDetail) {
+        var hasActiveBaseball = false
+        var baseballLabels = this.config.sports
+          .filter(function (s) { return ['MLB', 'NCAAB', 'WBC'].includes(s.league) })
+          .map(function (s) { return s.label || s.league })
+        for (var i = 0; i < baseballLabels.length; i++) {
+          var labelData = this.sportsData[baseballLabels[i]]
+          if (labelData && labelData.scores) {
+            for (var j = 0; j < labelData.scores.length; j++) {
+              if (labelData.scores[j].gameMode === this.gameModes.IN_PROGRESS) {
+                hasActiveBaseball = true
+                break
+              }
+            }
+          }
+          if (hasActiveBaseball) break
+        }
+        if (hasActiveBaseball && !this.baseballFastPollActive) {
+          this.baseballFastPollActive = true
+          var interval = Math.max(1, this.config.baseballDetailInterval) * 1000
+          this.baseballFastPollTimer = setInterval(function () {
+            self.getBaseballScoresOnly()
+          }, interval)
+        }
+        else if (!hasActiveBaseball && this.baseballFastPollActive) {
+          clearInterval(this.baseballFastPollTimer)
+          this.baseballFastPollTimer = null
+          this.baseballFastPollActive = false
+        }
+      }
     }
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
@@ -1019,6 +1141,36 @@ Module.register('MMM-MyScoreboard', {
         debugMinutes: self.config.debugMinutes,
       }
 
+      self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
+    })
+  },
+
+  getBaseballScoresOnly: function () {
+    var gameDate = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes')
+    if (this.config.DEBUG_gameDate) {
+      gameDate = moment(this.config.DEBUG_gameDate, 'YYYYMMDD')
+    }
+    var self = this
+    this.config.sports.forEach(function (sport, index) {
+      if (!self.baseballLeagues.includes(sport.league)) return
+      var thisLabel = sport.label || sport.league
+      var payload = {
+        instanceId: self.identifier,
+        index: index,
+        league: sport.league,
+        teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
+        provider: self.supportedLeagues[sport.league].provider,
+        label: thisLabel,
+        gameDate: gameDate,
+        whichDay: { today: true, yesterday: false },
+        hideBroadcasts: self.config.hideBroadcasts,
+        skipChannels: self.config.skipChannels,
+        showLocalBroadcasts: self.config.showLocalBroadcasts,
+        displayLocalChannels: self.config.displayLocalChannels,
+        localMarkets: self.config.localMarkets,
+        debugHours: self.config.debugHours,
+        debugMinutes: self.config.debugMinutes,
+      }
       self.sendSocketNotification('MMM-MYSCOREBOARD-GET-SCORES', payload)
     })
   },

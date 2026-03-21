@@ -948,6 +948,229 @@
   color: #AAA;
 }
 
+/* Baseball Live Detail */
+
+/* Increase box heights to fit the detail row */
+.MMM-MyScoreboard .box-score.baseball-live-detail.largeLogos {
+  height: 90px;
+}
+.MMM-MyScoreboard .box-score.baseball-live-detail.mediumLogos {
+  height: 80px;
+}
+.MMM-MyScoreboard .box-score.baseball-live-detail.stacked {
+  height: 80px;
+}
+.MMM-MyScoreboard .box-score.baseball-live-detail.stackedWithLogos {
+  height: 86px;
+}
+
+/* Shrink inning text and push it to top when detail is showing */
+.MMM-MyScoreboard .box-score.baseball-live-detail .status {
+  height: auto;
+  top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.MMM-MyScoreboard .box-score.baseball-live-detail.mediumLogos .status {
+  top: 1px;
+  font-size: 11px;
+}
+
+/* Center logos and scores in the taller baseball-live-detail boxes */
+.MMM-MyScoreboard .box-score.baseball-live-detail.largeLogos .logo {
+  top: 10px;
+}
+.MMM-MyScoreboard .box-score.baseball-live-detail.largeLogos .score {
+  top: 25px;
+}
+
+.MMM-MyScoreboard .box-score.baseball-live-detail.mediumLogos .logo {
+  top: 20px;
+}
+.MMM-MyScoreboard .box-score.baseball-live-detail.mediumLogos .score {
+  top: 26px;
+}
+
+.MMM-MyScoreboard .box-score.baseball-live-detail.stacked .status,
+.MMM-MyScoreboard .box-score.baseball-live-detail.stackedWithLogos .status {
+  top: 2px;
+  font-size: 11px;
+}
+
+/* Detail container centered in the box */
+.MMM-MyScoreboard .baseball-detail {
+  position: absolute;
+  top: 16px;
+  bottom: 2px;
+  left: 108px;
+  right: 108px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #CCC;
+}
+
+.MMM-MyScoreboard .baseball-detail.mid-inning {
+  top: 22px;
+  bottom: auto;
+}
+
+.MMM-MyScoreboard .box-score.mediumLogos .baseball-detail {
+  left: 86px;
+  right: 86px;
+  top: 12px;
+  bottom: 2px;
+}
+
+.MMM-MyScoreboard .box-score.stacked .baseball-detail,
+.MMM-MyScoreboard .box-score.stackedWithLogos .baseball-detail {
+  left: 10px;
+  right: 10px;
+  top: 14px;
+}
+
+/* Top row: diamond + count/outs side by side */
+.MMM-MyScoreboard .baseball-detail-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Diamond indicator */
+.MMM-MyScoreboard .baseball-diamond {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.MMM-MyScoreboard .baseball-diamond .base {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #666;
+  transform: rotate(45deg);
+  background-color: transparent;
+}
+
+.MMM-MyScoreboard .baseball-diamond .base.occupied {
+  background-color: #CCC;
+  border-color: #CCC;
+}
+
+.MMM-MyScoreboard .wrapper.colored .baseball-diamond .base.occupied {
+  background-color: #f8dd70;
+  border-color: #f8dd70;
+}
+
+/* 38px container, 8px base + 4px border = 12px rendered.
+   1B/3B vertical center: (38 - 12) / 2 = 13px
+   2B horizontal center: (38 - 12) / 2 = 13px */
+.MMM-MyScoreboard .baseball-diamond .base.first {
+  right: 0px;
+  top: 13px;
+}
+
+.MMM-MyScoreboard .baseball-diamond .base.second {
+  left: 13px;
+  top: 0px;
+}
+
+.MMM-MyScoreboard .baseball-diamond .base.third {
+  left: 0px;
+  top: 13px;
+}
+
+/* Count and outs */
+.MMM-MyScoreboard .baseball-count-outs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.MMM-MyScoreboard .baseball-count {
+  font-weight: bold;
+  font-size: 18px;
+  color: #FFF;
+}
+
+.MMM-MyScoreboard .baseball-outs {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.MMM-MyScoreboard .out-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid #666;
+  background-color: transparent;
+}
+
+.MMM-MyScoreboard .out-dot.active {
+  background-color: #CCC;
+  border-color: #CCC;
+}
+
+.MMM-MyScoreboard .wrapper.colored .out-dot.active {
+  background-color: #f8dd70;
+  border-color: #f8dd70;
+}
+
+/* Pitcher/Batter matchup row */
+.MMM-MyScoreboard .baseball-matchup {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #CCC;
+}
+
+.MMM-MyScoreboard .baseball-pitcher,
+.MMM-MyScoreboard .baseball-batter {
+  white-space: nowrap;
+}
+
+/* mediumLogos scaling */
+.MMM-MyScoreboard .box-score.mediumLogos .baseball-diamond {
+  width: 30px;
+  height: 30px;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .baseball-diamond .base {
+  width: 6px;
+  height: 6px;
+}
+/* 30px container, 6px base + 4px border = 10px. Center = (30-10)/2 = 10px */
+.MMM-MyScoreboard .box-score.mediumLogos .baseball-diamond .base.first {
+  right: 0px;
+  top: 10px;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .baseball-diamond .base.second {
+  left: 10px;
+  top: 0px;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .baseball-diamond .base.third {
+  left: 0px;
+  top: 10px;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .baseball-count {
+  font-size: 15px;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .out-dot {
+  width: 7px;
+  height: 7px;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .baseball-matchup {
+  font-size: 11px;
+}
+
 
 /* Broadcast Logos */
 .MMM-MyScoreboard .broadcast {
