@@ -100,6 +100,10 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `baseballDetailInterval` | When `showBaseballDetail` is enabled and a baseball game is in-progress, the module polls for score updates at this interval (in seconds) instead of the default 2-minute interval. Only baseball leagues are polled at this faster rate.<br><br>**Type** `Number`<br>**Default** `5` (seconds, minimum `1`)
 | `baseballDetailViewOverride` | When set to `true` and `showBaseballDetail` is enabled, active baseball games will be rendered using the `largeLogos` view style regardless of the configured `viewStyle`. This is useful if you prefer a compact view style but want more detail during live games.<br><br>**Type** `Boolean`<br>**Default** `false`
 
+#### Baseball Detail Example
+
+![Baseball Detail](example5.png)
+
 ### Configuring Your "Sports" List
 
 Each entry in your `sports` array is an object with the following properties:
