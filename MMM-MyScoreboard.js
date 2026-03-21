@@ -906,6 +906,7 @@ Module.register('MMM-MyScoreboard', {
   },
 
   socketNotificationReceived: function (notification, payload) {
+    var self = this
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Scores')
       this.loaded = true
@@ -989,7 +990,6 @@ Module.register('MMM-MyScoreboard', {
         respective feed owners to lock down the APIs. Updating
         every two minutes should be more than fine for our purposes.
       */
-      var self = this
       setInterval(function () {
         self.getScores()
       }, 2 * 60 * 1000)
