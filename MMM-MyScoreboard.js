@@ -634,7 +634,7 @@ Module.register('MMM-MyScoreboard', {
     // add baseball detail for active games
     if (this.config.showBaseballDetail && gameObj.baseballSituation) {
       var canShowDetail = true
-      if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(viewStyle)) {
+      if (['smallLogos', 'oneLine', 'oneLineWithLogos', 'stacked', 'stackedWithLogos'].includes(viewStyle)) {
         canShowDetail = false
       }
 
