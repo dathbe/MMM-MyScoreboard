@@ -867,20 +867,24 @@ module.exports = {
         case '48': // SOCCER end extra time
           gameState = 1
           status.push(game.status.type.shortDetail)
+          broadcast = channels
           break
         case '23': // halftime
           gameState = 1
           status.push(game.status.type.description)
+          broadcast = channels
           break
         case '7': // delayed
         case '17': // rain delay
           gameState = 1
           classes.push['delay']
           status.push(game.status.type.description) // shortDetail is too long for baseball ("Rain Delay, Top 1st")
+          broadcast = channels
           break
         case '49': // SOCCER extra time half time
           gameState = 1
           status.push('HALFTIME (ET)')
+          broadcast = channels
           break
 
         // Completed

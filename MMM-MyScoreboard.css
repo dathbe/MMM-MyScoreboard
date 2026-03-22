@@ -964,6 +964,11 @@
   height: 86px;
 }
 
+/* Hide broadcast logos when baseball detail is showing */
+.MMM-MyScoreboard .box-score.baseball-live-detail .broadcast {
+  display: none;
+}
+
 /* Shrink inning text and push it to top when detail is showing */
 .MMM-MyScoreboard .box-score.baseball-live-detail .status {
   height: auto;
