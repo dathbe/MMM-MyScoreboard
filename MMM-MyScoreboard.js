@@ -602,6 +602,12 @@ Module.register('MMM-MyScoreboard', {
         var broadcastPartDiv = document.createElement('div')
         broadcastPartDiv.classList.add('broadcastIconDiv')
         broadcastPartDiv.innerHTML += gameObj.broadcast[i]
+        // Only show the icon matching the current rotation index to prevent flash on DOM rebuild
+        if (gameObj.broadcast.length > 1) {
+          broadcastPartDiv.style.display = (i === this.logoIndex % gameObj.broadcast.length)
+            ? 'flex'
+            : 'none'
+        }
         broadcastPart.appendChild(broadcastPartDiv)
       }
     }
