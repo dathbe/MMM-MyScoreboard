@@ -910,11 +910,13 @@ Module.register('MMM-MyScoreboard', {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Scores')
       this.loaded = true
-      this.sportsData[payload.label] = {}
-      this.sportsData[payload.label]['scores'] = payload.scores
-      this.sportsData[payload.label]['league'] = payload.index
-      this.sportsData[payload.label]['sortIdx'] = payload.sortIdx
-      this.updateDom()
+      var newData = { scores: payload.scores, league: payload.index, sortIdx: payload.sortIdx }
+      var oldData = this.sportsData[payload.label]
+      var dataChanged = !oldData || JSON.stringify(oldData.scores) !== JSON.stringify(newData.scores)
+      this.sportsData[payload.label] = newData
+      if (dataChanged) {
+        this.updateDom()
+      }
       if (payload.noGamesToday === true) {
         this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
       }
@@ -957,11 +959,13 @@ Module.register('MMM-MyScoreboard', {
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
-      this.sportsDataYd[payload.label] = {}
-      this.sportsDataYd[payload.label]['scores'] = payload.scores
-      this.sportsDataYd[payload.label]['league'] = payload.index
-      this.sportsDataYd[payload.label]['sortIdx'] = payload.sortIdx
-      this.updateDom()
+      var newYdData = { scores: payload.scores, league: payload.index, sortIdx: payload.sortIdx }
+      var oldYdData = this.sportsDataYd[payload.label]
+      var ydDataChanged = !oldYdData || JSON.stringify(oldYdData.scores) !== JSON.stringify(newYdData.scores)
+      this.sportsDataYd[payload.label] = newYdData
+      if (ydDataChanged) {
+        this.updateDom()
+      }
       var stopGrabbingYD = true
       for (let i = 0; i < payload.scores.length; i++) {
         if (payload.scores[i].gameMode < 2) {
