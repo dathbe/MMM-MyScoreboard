@@ -131,6 +131,7 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 * `NCAAB` - NCAA Baseball
 * `NLL` - National Lacrosse League
 * `PLL` - Premier Lacrosse League
+* `PWHL` - Professional Women's Hockey League
 
 ### Other Leagues
 
@@ -1809,6 +1810,26 @@ Teams:
 - CARL - Carlton
 - MELB - Melbourne
 - WCE - West Coast Eagles
+```
+</details>
+
+### PWHL (Professional Women's Hockey League)
+
+<details>
+  <summary><b>PWHL Codes</b> (click to expand)</summary>
+
+```
+Teams:
+---------------
+
+- Boston
+- Minnesota
+- Montreal (**note the accent**)
+- New York
+- Ottawa
+- Seattle
+- Toronto
+- Vancouver
 ```
 </details>
 
