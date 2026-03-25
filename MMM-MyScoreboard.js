@@ -819,7 +819,7 @@ Module.register('MMM-MyScoreboard', {
 
   socketNotificationReceived: function (notification, payload) {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
-      Log.debug(`[MMM-MyScoreboard] Updating ${payload.label} Scores`)
+      // Log.debug(`[MMM-MyScoreboard] Updating ${payload.label} Scores`)
       this.loaded = true
       this.sportsData[payload.label] = {}
       this.sportsData[payload.label]['scores'] = payload.scores
