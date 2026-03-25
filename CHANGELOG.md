@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.17.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.16.0...v4.17.0) - 2025-03-XX
+
+- **NEW FEATURE**: Added config option to display MLB live game detail
+- Add logos
+
 ## [4.16.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.3...v4.16.0) - 2025-03-24
 
 - **NEW FEATURE**: Added `PWHL` (Professional Women's Hockey League)
