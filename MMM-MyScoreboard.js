@@ -86,6 +86,8 @@ Module.register('MMM-MyScoreboard', {
     'NLL': { provider: 'ESPN', logoFormat: 'url' },
     'PLL': { provider: 'ESPN', logoFormat: 'url' },
 
+    'PWHL': { provider: 'PWHL', logoFormat: 'url' },
+
     // International Soccer
     'ALL_SOCCER': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
     'SOCCER_ON_TV': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
@@ -452,17 +454,17 @@ Module.register('MMM-MyScoreboard', {
 
       var hTeamLogoImg = document.createElement('img')
 
-      if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.hTeam + '.svg') !== -1) {
-        hTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.hTeam + '.svg')
+      if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.hTeam.replace('é', 'e') + '.svg') !== -1) {
+        hTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.hTeam.replace('é', 'e') + '.svg')
       }
-      else if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.hTeam + '.png') !== -1) {
-        hTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.hTeam + '.png')
+      else if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.hTeam.replace('é', 'e') + '.png') !== -1) {
+        hTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.hTeam.replace('é', 'e') + '.png')
       }
-      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.hTeam + '.svg') !== -1) {
-        hTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.hTeam + '.svg')
+      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.hTeam.replace('é', 'e') + '.svg') !== -1) {
+        hTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.hTeam.replace('é', 'e') + '.svg')
       }
-      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.hTeam + '.png') !== -1) {
-        hTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.hTeam + '.png')
+      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.hTeam.replace('é', 'e') + '.png') !== -1) {
+        hTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.hTeam.replace('é', 'e') + '.png')
       }
       else {
         hTeamLogoImg.src = gameObj.hTeamLogoUrl
@@ -485,17 +487,17 @@ Module.register('MMM-MyScoreboard', {
 
       var vTeamLogoImg = document.createElement('img')
 
-      if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.vTeam + '.svg') !== -1) {
-        vTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.vTeam + '.svg')
+      if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.vTeam.replace('é', 'e') + '.svg') !== -1) {
+        vTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.vTeam.replace('é', 'e') + '.svg')
       }
-      else if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.vTeam + '.png') !== -1) {
-        vTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.vTeam + '.png')
+      else if (this.localLogosCustom[leagueForLogoPath] && this.localLogosCustom[leagueForLogoPath].indexOf(gameObj.vTeam.replace('é', 'e') + '.png') !== -1) {
+        vTeamLogoImg.src = this.file('logos_custom/' + leagueForLogoPath + '/' + gameObj.vTeam.replace('é', 'e') + '.png')
       }
-      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.vTeam + '.svg') !== -1) {
-        vTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.vTeam + '.svg')
+      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.vTeam.replace('é', 'e') + '.svg') !== -1) {
+        vTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.vTeam.replace('é', 'e') + '.svg')
       }
-      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.vTeam + '.png') !== -1) {
-        vTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.vTeam + '.png')
+      else if (this.localLogos[leagueForLogoPath] && this.localLogos[leagueForLogoPath].indexOf(gameObj.vTeam.replace('é', 'e') + '.png') !== -1) {
+        vTeamLogoImg.src = this.file('logos/' + leagueForLogoPath + '/' + gameObj.vTeam.replace('é', 'e') + '.png')
       }
       else {
         vTeamLogoImg.src = gameObj.vTeamLogoUrl
@@ -817,7 +819,7 @@ Module.register('MMM-MyScoreboard', {
 
   socketNotificationReceived: function (notification, payload) {
     if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
-      // Log.info('[MMM-MyScoreboard] Updating Scores')
+      // Log.debug(`[MMM-MyScoreboard] Updating ${payload.label} Scores`)
       this.loaded = true
       this.sportsData[payload.label] = {}
       this.sportsData[payload.label]['scores'] = payload.scores

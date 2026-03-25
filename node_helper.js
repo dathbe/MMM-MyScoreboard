@@ -16,6 +16,7 @@ module.exports = NodeHelper.create({
     this.providers.ESPN = require('./providers/ESPN.js')
     this.providers.Scorepanel = require('./providers/ESPN_Scorepanel.js')
     this.providers.CPL = require('./providers/CPL.js')
+    this.providers.PWHL = require('./providers/PWHL.js')
 
     this.localLogos = {}
     var fsTree = this.getDirectoryTree('./modules/MMM-MyScoreboard/logos')
@@ -42,6 +43,10 @@ module.exports = NodeHelper.create({
     })
   },
 
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  },
+
   getDirectoryTree(dirPath) {
     const result = []
     const files = fs.readdirSync(dirPath, { withFileTypes: true })
@@ -62,7 +67,7 @@ module.exports = NodeHelper.create({
     return result
   },
 
-  socketNotificationReceived: function (notification, payload) {
+  async socketNotificationReceived(notification, payload) {
     if (notification == 'MMM-MYSCOREBOARD-GET-SCORES') {
       /*
         payload contains:
@@ -90,6 +95,7 @@ module.exports = NodeHelper.create({
         self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: [], notRun: true, label: payload.label, sortIdx: 999, provider: payload.provider, noGamesToday: false })
       }
       if (payload.whichDay.yesterday === 'yes') {
+        await this.sleep(4000)
         provider2.getScores(payload, moment(payload.gameDate).subtract(1, 'day'), function (scores, sortIdx, noGamesToday) {
           self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx, provider: payload.provider, noGamesToday: noGamesToday })
         })
