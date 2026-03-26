@@ -35,8 +35,8 @@ Module.register('MMM-MyScoreboard', {
     debugMinutes: 0,
     showPlayoffStatus: false,
     showBaseballDetail: false,
-    baseballDetailInterval: 5,
-    baseballDetailViewOverride: false,
+    baseballDetailInterval: 15,
+    baseballDetailViewOverride: true,
     sports: [
       {
         league: 'NHL',
