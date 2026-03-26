@@ -38,7 +38,8 @@
     {"name": "dathbe"},
     {"name": "mikeyounge"},
     {"name": "szech"},
-    {"name": "jvoss117-2"}
+    {"name": "jvoss117-2"},
+    {"name": "gerber55555"}
   ],  
   "scripts": {
     "lint": "eslint",
