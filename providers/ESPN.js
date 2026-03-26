@@ -444,6 +444,7 @@ module.exports = {
     'NBA League Pass': 'https://cdn.nba.com/manage/2025/02/NBA_League_Pass_horiz_onDkBkgd_NEWLOGO.png',
     'NBA TV': 'https://upload.wikimedia.org/wikipedia/en/d/d2/NBA_TV.svg',
     'NBC': 'https://upload.wikimedia.org/wikipedia/commons/9/9f/NBC_Peacock_1986.svg',
+    'Netflix': 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg',
     'NFL Net': 'https://upload.wikimedia.org/wikipedia/en/8/8f/NFL_Network_logo.svg',
     'NHL Net': 'https://upload.wikimedia.org/wikipedia/commons/f/f4/NHL_Network_2012.svg',
     'NWSL+': './modules/MMM-MyScoreboard/logos/channels/NWSL+.webp',
@@ -982,6 +983,28 @@ module.exports = {
         playoffStatus = ''
       }
 
+      // Extract baseball situation data for in-progress baseball games
+      var baseballSituation = null
+      var leaguePath = this.getLeaguePath(payload.league)
+      if (gameState === 1 && leaguePath && leaguePath.startsWith('baseball')) {
+        var situation = game.competitions[0].situation
+        if (situation) {
+          var statusDetail = game.status.type.shortDetail || ''
+          var isMidInning = /\b(End|Mid)\b/i.test(statusDetail)
+          baseballSituation = {
+            balls: situation.balls || 0,
+            strikes: situation.strikes || 0,
+            outs: situation.outs || 0,
+            onFirst: !!situation.onFirst,
+            onSecond: !!situation.onSecond,
+            onThird: !!situation.onThird,
+            pitcher: (situation.pitcher && situation.pitcher.athlete) ? situation.pitcher.athlete.shortName : '',
+            batter: (situation.batter && situation.batter.athlete) ? situation.batter.athlete.shortName : '',
+            isMidInning: isMidInning,
+          }
+        }
+      }
+
       if (payload.league !== 'SOCCER_ON_TV' || (broadcast.length > 0)) {
         formattedGamesList.push({
           classes: classes,
@@ -999,6 +1022,7 @@ module.exports = {
           hTeamLogoUrl: hTeamData.team.logo ? hTeamData.team.logo : '',
           vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
           playoffStatus: playoffStatus,
+          baseballSituation: baseballSituation,
         })
       }
     })
