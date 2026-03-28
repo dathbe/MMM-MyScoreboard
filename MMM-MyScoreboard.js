@@ -708,6 +708,12 @@ Module.register('MMM-MyScoreboard', {
         }
 
         boxScore.appendChild(detail)
+
+        // Move broadcast out of status and into boxScore so it can be positioned at the bottom
+        if (gameObj.broadcast != null) {
+          boxScore.classList.add('baseball-has-broadcast')
+          boxScore.appendChild(broadcastPart)
+        }
       }
     }
 
