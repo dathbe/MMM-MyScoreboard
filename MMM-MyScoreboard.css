@@ -1391,3 +1391,148 @@
   text-overflow: ellipsis;
   width: 100%;
 } */
+
+
+/* ==========================================
+   Score Animations
+   ========================================== */
+
+/* Allow firework particles to overflow the box */
+.MMM-MyScoreboard .box-score {
+  overflow: visible;
+}
+
+/* Firework element — launches upward from the score, then explodes */
+.MMM-MyScoreboard .score-firework,
+.MMM-MyScoreboard .score-firework::before,
+.MMM-MyScoreboard .score-firework::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 60px);
+  width: 2px;
+  aspect-ratio: 1;
+  background:
+    radial-gradient(circle, #ff4444 1.2px, #0000 0) 50% 0%,
+    radial-gradient(circle, #ffaa00 1.5px, #0000 0) 0% 50%,
+    radial-gradient(circle, #44ff44 1.2px, #0000 0) 50% 99%,
+    radial-gradient(circle, #4488ff 1.5px, #0000 0) 99% 50%,
+    radial-gradient(circle, #ff44ff 1.2px, #0000 0) 80% 90%,
+    radial-gradient(circle, #ffdd44 1.5px, #0000 0) 95% 10%,
+    radial-gradient(circle, #44ffdd 1.2px, #0000 0) 10% 85%,
+    radial-gradient(circle, #ff8844 1.5px, #0000 0) 31% 5%,
+    radial-gradient(circle, #44ddff 1.2px, #0000 0) 85% 30%,
+    radial-gradient(circle, #aa44ff 1.5px, #0000 0) 15% 20%,
+    radial-gradient(circle, #ffff44 1.2px, #0000 0) 70% 70%,
+    radial-gradient(circle, #ff6644 1.5px, #0000 0) 25% 75%;
+  background-size: 2px 2px;
+  background-repeat: no-repeat;
+  animation: scoreFirework 3s ease-out forwards;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.MMM-MyScoreboard .score-firework::before,
+.MMM-MyScoreboard .score-firework::after {
+  content: '';
+}
+
+.MMM-MyScoreboard .score-firework::before {
+  transform: translate(-50%, -50%) rotate(25deg) !important;
+}
+
+.MMM-MyScoreboard .score-firework::after {
+  transform: translate(-50%, -50%) rotate(-37deg) !important;
+}
+
+/* Win firework overrides — use CSS custom properties for randomized positions */
+.MMM-MyScoreboard .score-firework.win-firework {
+  animation: winFireworkLaunch 3s ease-out forwards;
+}
+
+.MMM-MyScoreboard .score-firework.win-firework::before,
+.MMM-MyScoreboard .score-firework.win-firework::after {
+  animation: winFireworkLaunch 3s ease-out forwards;
+}
+
+@keyframes scoreFirework {
+  0% {
+    transform: translate(-50%, 20px);
+    width: 2px;
+    opacity: 1;
+  }
+  35% {
+    transform: translate(-50%, -80px);
+    width: 2px;
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-50%, -80px);
+    width: 180px;
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -80px);
+    width: 250px;
+    opacity: 0;
+  }
+}
+
+@keyframes winFireworkLaunch {
+  0% {
+    transform: translate(calc(-50% + var(--offset-x, 0px)), 20px);
+    width: 2px;
+    opacity: 1;
+  }
+  35% {
+    transform: translate(calc(-50% + var(--offset-x, 0px)), var(--launch-y, -90px));
+    width: 2px;
+    opacity: 1;
+  }
+  60% {
+    transform: translate(calc(-50% + var(--offset-x, 0px)), var(--launch-y, -90px));
+    width: var(--expand, 200px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--offset-x, 0px)), var(--launch-y, -90px));
+    width: var(--expand, 200px);
+    opacity: 0;
+  }
+}
+
+/* Quick flash/glow for high-scoring sports (NBA, college basketball) */
+.MMM-MyScoreboard .score-flash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 200, 0.6) 0%, rgba(255, 255, 200, 0) 70%);
+  animation: scoreFlash 1.5s ease-out forwards;
+  pointer-events: none;
+  z-index: 100;
+}
+
+@keyframes scoreFlash {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+  30% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+}
+
+/* Extended celebration for followed team winning */
+.MMM-MyScoreboard .box-score.score-anim-win .score {
+  overflow: visible;
+}
+
+.MMM-MyScoreboard .box-score.score-anim-win {
+  animation: winGlow 8s ease-out forwards;
+}
+
+@keyframes winGlow {
+  0% { background-color: rgba(255, 215, 0, 0.3); }
+  50% { background-color: rgba(255, 215, 0, 0.15); }
+  100% { background-color: transparent; }
+}

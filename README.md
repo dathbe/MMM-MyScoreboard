@@ -98,10 +98,15 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `showPlayoffStatus`    | Displays information about playoff series when set to `true`. (Currently only works with `stacked` and `stackedWithLogos` views without adding custom css.)<br><br>**Type** `Boolean`<br>**Default** `false`
 | `showBaseballDetail`   | When set to `true`, in-progress baseball games (MLB, NCAAB, WBC) display the current game situation: base runners on a diamond indicator, ball-strike count, outs, and the current pitcher/batter matchup. Pitcher and batter are hidden between half-innings.<br><br>**Type** `Boolean`<br>**Default** `false`
 | `baseballDetailInterval` | When `showBaseballDetail` is enabled and a baseball game is in-progress, the module polls for score updates at this interval (in seconds) instead of the default 2-minute interval. Only baseball leagues are polled at this faster rate.<br><br>**Type** `Number`<br>**Default** `15` (seconds, minimum `1`)
+| `showScoreAnimation`   | When set to `true`, a firework animation plays on the score element whenever a followed team scores. The animation type varies by sport: low-scoring sports (MLB, NFL, NHL, soccer) get a firework burst, high-scoring sports (NBA, college basketball) get a quick flash, and an extended celebration with multiple staggered fireworks plays when a followed team wins.<br><br>**Type** `Boolean`<br>**Default** `false`
 
 #### Baseball Detail Example
 
 ![Baseball Detail](example5.png)
+
+#### Score Animation Example
+
+![Score Animation](scoreAnimationsExample.gif)
 
 ### Configuring Your "Sports" List
 
