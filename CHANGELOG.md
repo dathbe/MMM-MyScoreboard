@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - **NEW FEATURE**: Added config option to display fireworks animation when followed team scores
 - Add broadcast logos to the display when baseball detail is shown
+- Update dependencies
 
 ## [4.17.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.16.0...v4.17.0) - 2026-03-25
 
