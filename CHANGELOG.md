@@ -4,36 +4,37 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.17.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.17.0...v4.17.1) - 2025-XX-XX
+## [4.18.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.17.0...v4.18.0) - 2026-XX-XX
 
+- **NEW FEATURE**: Added config option to display fireworks animation when followed team scores
 - Add broadcast logos to the display when baseball detail is shown
 
-## [4.17.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.16.0...v4.17.0) - 2025-03-25
+## [4.17.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.16.0...v4.17.0) - 2026-03-25
 
 - **NEW FEATURE**: Added config option to display MLB live game detail
 - Add logos
 
-## [4.16.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.3...v4.16.0) - 2025-03-24
+## [4.16.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.3...v4.16.0) - 2026-03-24
 
 - **NEW FEATURE**: Added `PWHL` (Professional Women's Hockey League)
 - Update dependencies
 
-## [4.15.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.2...v4.15.3) - 2025-03-11
+## [4.15.3](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.2...v4.15.3) - 2026-03-11
 
 - Add logos (teams and broadcast stations)
 - Update dependencies
 
-## [4.15.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.1...v4.15.2) - 2025-02-20
+## [4.15.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.1...v4.15.2) - 2026-02-20
 
 - BUG FIX: Fixed CFL URL
 
-## [4.15.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.0...v4.15.1) - 2025-02-20
+## [4.15.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.15.0...v4.15.1) - 2026-02-20
 
 - BUG FIX: Fixed `WBC` (World Baseball Classic)
 - Update dependencies
 - Lint
 
-## [4.15.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.14.1...v4.15.0) - 2025-01-06
+## [4.15.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.14.1...v4.15.0) - 2026-01-06
 
 - **NEW FEATURE**: Added `NCAAB` (College Baseball)
 - Update dependencies
