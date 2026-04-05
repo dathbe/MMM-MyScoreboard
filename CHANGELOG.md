@@ -4,6 +4,10 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.17.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.17.0...v4.17.1) - 2025-XX-XX
+
+- Add broadcast logos to the display when baseball detail is shown
+
 ## [4.17.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.16.0...v4.17.0) - 2025-03-25
 
 - **NEW FEATURE**: Added config option to display MLB live game detail
