@@ -37,6 +37,7 @@ Module.register('MMM-MyScoreboard', {
     showBaseballDetail: false,
     baseballDetailInterval: 15,
     baseballDetailViewOverride: true,
+    showScoreAnimation: false,
     sports: [
       {
         league: 'NHL',
@@ -317,6 +318,7 @@ Module.register('MMM-MyScoreboard', {
   noGamesToday: {},
   logoIndex: 0,
   baseballLeagues: ['MLB', 'NCAAB', 'WBC'],
+  highScoringLeagues: ['NBA', 'NCAAM', 'NCAAM_MM', 'NCAAW', 'WNBA', 'NBAG'],
   baseballFastPollTimer: null,
   baseballFastPollActive: false,
 
@@ -739,6 +741,33 @@ Module.register('MMM-MyScoreboard', {
       boxScore.classList.add('playoff')
     }
 
+    // Apply score animation if triggered
+    if (this.config.showScoreAnimation) {
+      var gameKey = label + ':' + gameObj.vTeam + '@' + gameObj.hTeam
+      var anim = this.scoreAnimations[gameKey]
+      if (anim) {
+        var isHighScoring = this.highScoringLeagues.includes(league)
+        if (anim.type === 'win') {
+          boxScore.classList.add('score-anim-win')
+          this.spawnWinFireworks(boxScore)
+        }
+        else if (anim.type === 'score') {
+          var scoreEl = anim.team === 'home' ? hTeamScore : vTeamScore
+          if (scoreEl) {
+            var firework = document.createElement('div')
+            if (isHighScoring) {
+              firework.classList.add('score-flash')
+            }
+            else {
+              firework.classList.add('score-firework')
+            }
+            scoreEl.appendChild(firework)
+          }
+        }
+        delete this.scoreAnimations[gameKey]
+      }
+    }
+
     return boxScore
   },
 
@@ -927,6 +956,12 @@ Module.register('MMM-MyScoreboard', {
       var newData = { scores: payload.scores, league: payload.index, sortIdx: payload.sortIdx }
       var oldData = this.sportsData[payload.label]
       var dataChanged = !oldData || JSON.stringify(oldData.scores) !== JSON.stringify(newData.scores)
+
+      // Detect score changes for animations
+      if (this.config.showScoreAnimation && oldData && oldData.scores && dataChanged) {
+        this.detectScoreChanges(payload.label, oldData.scores, payload.scores)
+      }
+
       this.sportsData[payload.label] = newData
       if (dataChanged) {
         this.updateDom()
@@ -1014,6 +1049,92 @@ Module.register('MMM-MyScoreboard', {
     }
   },
 
+  detectScoreChanges: function (label, oldScores, newScores) {
+    var followed = this.followedTeams[label]
+    if (!followed) return
+
+    for (var i = 0; i < newScores.length; i++) {
+      var newGame = newScores[i]
+      // Find matching old game by team matchup
+      var oldGame = null
+      for (var j = 0; j < oldScores.length; j++) {
+        if (oldScores[j].hTeam === newGame.hTeam && oldScores[j].vTeam === newGame.vTeam) {
+          oldGame = oldScores[j]
+          break
+        }
+      }
+      if (!oldGame) continue
+
+      var gameKey = label + ':' + newGame.vTeam + '@' + newGame.hTeam
+      var hIsFollowed = followed.includes(newGame.hTeam)
+      var vIsFollowed = followed.includes(newGame.vTeam)
+
+      // Check if followed team scored
+      if (hIsFollowed && newGame.hScore > oldGame.hScore) {
+        this.scoreAnimations[gameKey] = { type: 'score', team: 'home' }
+      }
+      else if (vIsFollowed && newGame.vScore > oldGame.vScore) {
+        this.scoreAnimations[gameKey] = { type: 'score', team: 'visitor' }
+      }
+
+      // Check if game just ended and followed team won
+      if (newGame.gameMode === this.gameModes.FINAL && oldGame.gameMode !== this.gameModes.FINAL) {
+        var followedWon = (hIsFollowed && newGame.hScore > newGame.vScore)
+          || (vIsFollowed && newGame.vScore > newGame.hScore)
+        if (followedWon) {
+          this.scoreAnimations[gameKey] = { type: 'win' }
+        }
+      }
+    }
+  },
+
+  spawnWinFireworks: function (boxScore) {
+    var colors = [
+      ['#ff4444', '#ffaa00', '#44ff44', '#4488ff', '#ff44ff', '#ffdd44'],
+      ['#ffd700', '#ffaa00', '#fff44f', '#ff8844', '#44ffdd', '#aa44ff'],
+      ['#ff6644', '#44ddff', '#ffff44', '#44ff88', '#ff4488', '#ffaa44']
+    ]
+    var scoreEls = [
+      boxScore.querySelector('.score.visitor'),
+      boxScore.querySelector('.score.home')
+    ]
+
+    // Spawn 8 fireworks staggered over 8 seconds
+    for (var i = 0; i < 8; i++) {
+      ;(function (idx) {
+        setTimeout(function () {
+          var scoreEl = scoreEls[idx % 2]
+          if (!scoreEl) return
+          var colorSet = colors[idx % colors.length]
+          var fw = document.createElement('div')
+          fw.classList.add('score-firework', 'win-firework')
+          // Randomize launch height and horizontal offset
+          var launchY = -70 - Math.random() * 80
+          var offsetX = (Math.random() - 0.5) * 60
+          fw.style.setProperty('--launch-y', launchY + 'px')
+          fw.style.setProperty('--offset-x', offsetX + 'px')
+          fw.style.setProperty('--expand', (200 + Math.random() * 100) + 'px')
+          // Randomize colors
+          var bg = ''
+          var positions = ['50% 0%', '0% 50%', '50% 99%', '99% 50%', '80% 90%', '95% 10%',
+            '10% 85%', '31% 5%', '85% 30%', '15% 20%', '70% 70%', '25% 75%']
+          for (var c = 0; c < positions.length; c++) {
+            var color = colorSet[c % colorSet.length]
+            var size = (1 + Math.random() * 1).toFixed(1) + 'px'
+            bg += 'radial-gradient(circle, ' + color + ' ' + size + ', #0000 0) ' + positions[c]
+            if (c < positions.length - 1) bg += ', '
+          }
+          fw.style.background = bg
+          fw.style.backgroundSize = '2px 2px'
+          fw.style.backgroundRepeat = 'no-repeat'
+          scoreEl.appendChild(fw)
+          // Clean up after animation
+          setTimeout(function () { fw.remove() }, 3500)
+        }, idx * 1000)
+      })(i)
+    }
+  },
+
   start: function () {
     Log.info('Starting module: ' + this.name)
 
@@ -1047,6 +1168,16 @@ Module.register('MMM-MyScoreboard', {
     this.loaded = false
     this.sportsData = {}
     this.sportsDataYd = {}
+    this.scoreAnimations = {}
+
+    // Build a map of followed teams per label for score animations
+    this.followedTeams = {}
+    this.config.sports.forEach(function (sport) {
+      var label = sport.label || sport.league
+      if (sport.teams) {
+        self.followedTeams[label] = sport.teams
+      }
+    })
 
     if (this.viewStyles.indexOf(this.config.viewStyle) == -1) {
       this.config.viewStyle = 'largeLogos'
