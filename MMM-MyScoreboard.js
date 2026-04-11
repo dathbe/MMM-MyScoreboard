@@ -11,6 +11,7 @@
  *********************************/
 
 Module.register('MMM-MyScoreboard', {
+  requiresVersion: '2.34.0',
 
   // Default module config.
   defaults: {
@@ -967,9 +968,9 @@ Module.register('MMM-MyScoreboard', {
         this.updateDom()
       }
       if (payload.noGamesToday === true) {
-        this.noGamesToday[payload.index] = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD')
+        this.noGamesToday[payload.index] = Temporal.Now.plainDateTimeISO().add({ hours: this.config.debugHours, minutes: this.config.debugMinutes }).toPlainDate()
       }
-      if (moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').hour() >= this.config.rolloverHours) {
+      if (Temporal.Now.plainDateTimeISO().add({ hours: this.config.debugHours, minutes: this.config.debugMinutes }).hour >= this.config.rolloverHours) {
         this.sportsDataYd = {}
       }
 
@@ -1253,7 +1254,9 @@ Module.register('MMM-MyScoreboard', {
     }
     self.loadTime.start = Date.now()
     this.config.sports.forEach(function (sport, index) {
-      if (self.noGamesToday[sport.league] === gameDate.format('YYYY-MM-DD')) {
+      
+      //NEED TO CHANGE THE FOLLOWING LINE ONCE gameDate CHANGED FROM MOMENT
+      if (self.noGamesToday[sport.league] != undefined && Temporal.PlainDate.compare(self.noGamesToday[sport.league], Temporal.Instant.from(gameDate.format('YYYY-MM-DDT12:00:00Z')).toZonedDateTimeISO(Temporal.Now.timeZoneId()).toPlainDate()) == 0) {
         whichDay.today = false
       }
       else {

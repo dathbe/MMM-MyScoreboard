@@ -4,6 +4,10 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.18.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.18.1...v4.18.2) - 2026-04-XX
+
+- Add logos
+
 ## [4.18.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.18.0...v4.18.1) - 2026-04-05
 
 - **BUG FIX**: Remove CPL league because custom provider file is not currently working
