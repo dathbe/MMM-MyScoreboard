@@ -1311,6 +1311,12 @@
   width: unset;
 }
 
+.MMM-MyScoreboard .oneLine .statusPart + .statusPart,
+.MMM-MyScoreboard .oneLineWithLogos .statusPart + .statusPart,
+.MMM-MyScoreboard .smallLogos .statusPart + .statusPart {
+  margin-left: 4px;
+}
+
 .MMM-MyScoreboard .stacked .statusPart,
 .MMM-MyScoreboard .stackedWithLogos .statusPart {
   text-align: right;
