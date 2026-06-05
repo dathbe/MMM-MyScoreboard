@@ -2,16 +2,13 @@
   Shared Temporal-based time helpers.
 
   This module is used by node_helper.js and all server-side providers.
-  It installs the Temporal API globally via the temporal-polyfill package
-  so the rest of the server code can use `Temporal.*` directly.
+  It relies on built-in Temporal from node.js >=22.21.1.
 
   All functions return Temporal objects (ZonedDateTime, PlainDate, Instant)
   or plain strings — no wrapper objects. This keeps the surface small and
   lets callers use Temporal's own API directly when they need more than
   the common patterns captured here.
 */
-
-// require('temporal-polyfill/global')
 
 module.exports = {
 
