@@ -567,6 +567,10 @@ module.exports = {
     teams: [],
   },
 
+  // Cache for per-team schedule lookups used by the Upcoming Games feature.
+  // Key: `${LEAGUE}:${TEAM_ABBR}`. TTL is 6 hours; schedules rarely change intraday.
+  teamScheduleCache: {},
+
   getLeaguePath: function (league) {
     return this.LEAGUE_PATHS[league]
   },
@@ -1106,6 +1110,125 @@ module.exports = {
 
   isSoccer: function (league) {
     return (this.SOCCER_LEAGUES.indexOf(league) !== -1)
+  },
+
+  async getTeamSchedule(payload, callback) {
+    var self = this
+    var league = payload.league
+    var teams = payload.teams || []
+    var results = {}
+    var now = Date.now()
+    var CACHE_TTL_MS = 6 * 60 * 60 * 1000
+
+    var leaguePath = this.getLeaguePath(league)
+    if (!leaguePath || leaguePath.includes('scorepanel')) {
+      callback(results, payload)
+      return
+    }
+
+    for (var i = 0; i < teams.length; i++) {
+      var team = teams[i]
+      var cacheKey = league + ':' + team
+      var cached = this.teamScheduleCache[cacheKey]
+      if (cached && (now - cached.fetchedAt) < CACHE_TTL_MS) {
+        results[team] = cached.nextGame
+        continue
+      }
+      var url = 'https://site.api.espn.com/apis/site/v2/sports/'
+        + leaguePath + '/teams/' + encodeURIComponent(team) + '/schedule'
+      try {
+        var response = await fetch(url)
+        Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
+        if (!response.ok) {
+          self.teamScheduleCache[cacheKey] = { fetchedAt: now, nextGame: null }
+          results[team] = null
+          continue
+        }
+        var body = await response.json()
+        var nextGame = self.extractNextGame(payload, body)
+        self.teamScheduleCache[cacheKey] = { fetchedAt: now, nextGame: nextGame }
+        results[team] = nextGame
+      }
+      catch (error) {
+        Log.error(`[MMM-MyScoreboard] getTeamSchedule ${error} ${url}`)
+        results[team] = null
+      }
+    }
+    callback(results, payload)
+  },
+
+  extractNextGame: function (payload, body) {
+    if (!body || !body.events || body.events.length === 0) return null
+    var localTZ = moment.tz.guess()
+    var nowMoment = moment().add(payload.debugHours || 0, 'hours').add(payload.debugMinutes || 0, 'minutes')
+
+    var future = body.events.filter(function (event) {
+      if (!event.date) return false
+      if (!moment(event.date).isAfter(nowMoment)) return false
+      var comp = event.competitions && event.competitions[0]
+      var typeObj = comp && comp.status && comp.status.type
+      if (typeObj && typeObj.completed) return false
+      // Exclude cancelled/postponed
+      if (typeObj && (typeObj.id === '5' || typeObj.id === '6')) return false
+      return true
+    })
+    future.sort(function (a, b) {
+      return moment(a.date).diff(moment(b.date))
+    })
+    if (future.length === 0) return null
+
+    var game = future[0]
+    var comp = game.competitions[0]
+    var hData = comp.competitors[0]
+    var vData = comp.competitors[1]
+    if (hData.homeAway === 'away') {
+      hData = comp.competitors[1]
+      vData = comp.competitors[0]
+    }
+
+    var timeFormat = (config.timeFormat === 24) ? 'H:mm' : 'h:mm a'
+    var dateLabel = moment(comp.date).tz(localTZ).format('ddd, MMM D')
+    var timeLabel = moment(comp.date).tz(localTZ).format(timeFormat)
+
+    var getLogo = function (tm) {
+      if (!tm) return ''
+      if (tm.logo) return tm.logo
+      if (tm.logos && tm.logos.length > 0 && tm.logos[0].href) return tm.logos[0].href
+      return ''
+    }
+
+    var hTeamLong, vTeamLong
+    if (payload.league.startsWith('NCAA')) {
+      hTeamLong = (hData.team.abbreviation ? hData.team.abbreviation + ' ' : '') + (hData.team.name || '')
+      vTeamLong = (vData.team.abbreviation ? vData.team.abbreviation + ' ' : '') + (vData.team.name || '')
+    }
+    else {
+      hTeamLong = hData.team.shortDisplayName || hData.team.displayName || hData.team.name || ''
+      vTeamLong = vData.team.shortDisplayName || vData.team.displayName || vData.team.name || ''
+    }
+
+    var hAbbr = hData.team.abbreviation || (hData.team.name || '').substring(0, 4).toUpperCase()
+    var vAbbr = vData.team.abbreviation || (vData.team.name || '').substring(0, 4).toUpperCase()
+
+    return {
+      classes: ['upcoming'],
+      gameMode: 0,
+      hTeam: hAbbr,
+      vTeam: vAbbr,
+      hTeamLong: hTeamLong,
+      vTeamLong: vTeamLong,
+      hTeamRanking: null,
+      vTeamRanking: null,
+      hScore: 0,
+      vScore: 0,
+      status: [dateLabel, timeLabel],
+      broadcast: [],
+      hTeamLogoUrl: getLogo(hData.team),
+      vTeamLogoUrl: getLogo(vData.team),
+      playoffStatus: '',
+      baseballSituation: null,
+      gameDate: comp.date,
+    }
   },
 
 }
