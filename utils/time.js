@@ -11,7 +11,7 @@
   the common patterns captured here.
 */
 
-require('temporal-polyfill/global')
+//require('temporal-polyfill/global')
 
 module.exports = {
 
