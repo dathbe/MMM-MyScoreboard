@@ -1,0 +1,94 @@
+{
+  "events": [
+    {
+      "id": "401688001",
+      "date": "2099-01-15T00:00Z",
+      "status": { "type": { "id": "3", "detail": "Final", "shortDetail": "Final", "description": "Final" } },
+      "competitions": [{
+        "date": "2099-01-15T00:00Z",
+        "status": { "type": { "id": "3", "detail": "Final", "shortDetail": "Final", "description": "Final" } },
+        "broadcasts": [],
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "4",
+            "team": {
+              "abbreviation": "TOR", "name": "Maple Leafs", "shortDisplayName": "Leafs",
+              "displayName": "Toronto Maple Leafs", "location": "Toronto",
+              "logo": ""
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "2",
+            "team": {
+              "abbreviation": "MTL", "name": "Canadiens", "shortDisplayName": "Habs",
+              "displayName": "Montreal Canadiens", "location": "Montreal",
+              "logo": ""
+            }
+          }
+        ]
+      }]
+    },
+    {
+      "id": "401688002",
+      "date": "2099-01-15T01:00Z",
+      "status": { "type": { "id": "3", "detail": "Final/OT", "shortDetail": "Final/OT", "description": "Final" } },
+      "competitions": [{
+        "date": "2099-01-15T01:00Z",
+        "status": { "type": { "id": "3", "detail": "Final/OT", "shortDetail": "Final/OT", "description": "Final" } },
+        "broadcasts": [],
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "3",
+            "team": {
+              "abbreviation": "BOS", "name": "Bruins", "shortDisplayName": "Bruins",
+              "displayName": "Boston Bruins", "location": "Boston",
+              "logo": ""
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "4",
+            "team": {
+              "abbreviation": "NYR", "name": "Rangers", "shortDisplayName": "Rangers",
+              "displayName": "New York Rangers", "location": "New York",
+              "logo": ""
+            }
+          }
+        ]
+      }]
+    },
+    {
+      "id": "401688003",
+      "date": "2099-01-15T02:00Z",
+      "status": { "type": { "id": "1", "detail": "Scheduled", "shortDetail": "7:00 PM", "description": "Scheduled" } },
+      "competitions": [{
+        "date": "2099-01-15T02:00Z",
+        "status": { "type": { "id": "1", "detail": "Scheduled", "shortDetail": "7:00 PM", "description": "Scheduled" } },
+        "broadcasts": [],
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "team": {
+              "abbreviation": "PIT", "name": "Penguins", "shortDisplayName": "Penguins",
+              "displayName": "Pittsburgh Penguins", "location": "Pittsburgh",
+              "logo": ""
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "team": {
+              "abbreviation": "PHI", "name": "Flyers", "shortDisplayName": "Flyers",
+              "displayName": "Philadelphia Flyers", "location": "Philadelphia",
+              "logo": ""
+            }
+          }
+        ]
+      }]
+    }
+  ]
+}

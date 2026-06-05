@@ -99,6 +99,7 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 | `showBaseballDetail`   | When set to `true`, in-progress baseball games (MLB, NCAAB, WBC) display the current game situation: base runners on a diamond indicator, ball-strike count, outs, and the current pitcher/batter matchup. Pitcher and batter are hidden between half-innings.<br><br>**Type** `Boolean`<br>**Default** `false`
 | `baseballDetailInterval` | When `showBaseballDetail` is enabled and a baseball game is in-progress, the module polls for score updates at this interval (in seconds) instead of the default 2-minute interval. Only baseball leagues are polled at this faster rate.<br><br>**Type** `Number`<br>**Default** `15` (seconds, minimum `1`)
 | `showScoreAnimation`   | When set to `true`, a firework animation plays on the score element whenever a followed team scores. The animation type varies by sport: low-scoring sports (MLB, NFL, NHL, soccer) get a firework burst, high-scoring sports (NBA, college basketball) get a quick flash, and an extended celebration with multiple staggered fireworks plays when a followed team wins.<br><br>**Type** `Boolean`<br>**Default** `false`
+| `showUpcomingGames`    | When set to `true`, adds an "Upcoming" section below each sport for every followed team whose today slate is either empty or fully final (MLB doubleheaders are handled — both games must be final). Each row shows the team's next scheduled game with its date and start time, pulled once per team from the league's schedule endpoint and cached for 6 hours. Only applies to followed teams (the `teams` array in a sport config) and only for ESPN-backed leagues (MLB, NFL, NBA, NHL, NCAAF, NCAAM, MLS, most soccer). Non-ESPN providers (CPL, PWHL, SNET) are skipped.<br><br>**Type** `Boolean`<br>**Default** `false`
 
 #### Baseball Detail Example
 
@@ -107,6 +108,10 @@ Add MMM-MyScoreboard module to the `modules` array in the `config/config.js` fil
 #### Score Animation Example
 
 ![Score Animation](scoreAnimationsExample.gif)
+
+#### Upcoming Games Example
+
+![Upcoming Games](upcomingGamesExample.png)
 
 ### Configuring Your "Sports" List
 
@@ -1878,6 +1883,14 @@ Please create all PRs against the development branch for testing and eventual me
 
 - `node --run lint` - Run linting checks.
 - `node --run lint:fix` - Fix automatically fixable linting errors.
+- `node --run test:unit` - Run unit tests (`node:test`, no external services).
+- `node --run test:e2e:install` - One-time: clone MagicMirror + install Playwright Chromium for the end-to-end matrix.
+- `node --run test:e2e` - Run the curated Playwright matrix (25 scenarios, ~1–2 min). Screenshots land in `test-results/screenshots/`.
+- `node --run test:e2e:pairwise` - Algorithmic pairwise matrix (~15 scenarios) covering every pair of parameter values.
+- `node --run test:e2e:full` - Exhaustive cartesian matrix (~224 scenarios, ~10 min). Reserve for major releases.
+- `node --run test` - Run lint + unit + e2e (full suite).
+
+See `tests/README.md` for details on what the suite covers and how to add new scenarios.
 
 ## License
 

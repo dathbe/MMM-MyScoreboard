@@ -4,6 +4,14 @@ import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 
 export default defineConfig([
+  {
+    ignores: [
+      'tests/e2e/.tmp/**',
+      'test-results/**',
+      'playwright-report/**',
+      'node_modules/**',
+    ],
+  },
   eslintPluginJs.configs.recommended,
   eslintPluginStylistic.configs.recommended,
   {

@@ -105,6 +105,23 @@ module.exports = NodeHelper.create({
         self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE-YD', { instanceId: payload.instanceId, index: payload.league, scores: [], label: payload.label, sortIdx: 999 })
       } */
     }
+    else if (notification == 'MMM-MYSCOREBOARD-GET-UPCOMING') {
+      const helper = this
+      const upcomingProvider = this.providers[payload.provider]
+      if (!upcomingProvider || typeof upcomingProvider.getTeamSchedule !== 'function') {
+        helper.sendSocketNotification('MMM-MYSCOREBOARD-UPCOMING-UPDATE', {
+          instanceId: payload.instanceId, label: payload.label, league: payload.league,
+          sortIdx: payload.sortIdx, games: {}, unsupported: true,
+        })
+        return
+      }
+      upcomingProvider.getTeamSchedule(payload, function (gamesByTeam) {
+        helper.sendSocketNotification('MMM-MYSCOREBOARD-UPCOMING-UPDATE', {
+          instanceId: payload.instanceId, label: payload.label, league: payload.league,
+          sortIdx: payload.sortIdx, games: gamesByTeam,
+        })
+      })
+    }
     else if (notification == 'MMM-MYSCOREBOARD-GET-LOCAL-LOGOS') {
       this.sendSocketNotification('MMM-MYSCOREBOARD-LOCAL-LOGO-LIST', { instanceId: payload.instanceId, index: payload.league, logos: this.localLogos, logosCustom: this.localLogosCustom })
     }

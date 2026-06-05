@@ -44,16 +44,26 @@
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "test": "node --run lint"
+    "test": "node --run test:unit && node --run test:e2e",
+    "test:unit": "node --test --import ./tests/setup.js \"tests/unit/**/*.test.js\"",
+    "test:unit:watch": "node --test --watch --import ./tests/setup.js \"tests/unit/**/*.test.js\"",
+    "test:e2e": "node tests/e2e/run-mode.js curated",
+    "test:e2e:pairwise": "node tests/e2e/run-mode.js pairwise",
+    "test:e2e:full": "node tests/e2e/run-mode.js full",
+    "test:e2e:install": "node tests/e2e/mm-bootstrap/install-mm.mjs && playwright install chromium",
+    "test:screenshots": "playwright test --config tests/e2e/playwright.config.js --update-snapshots",
+    "fixtures:capture": "node tests/fixtures/capture.js"
   },
   "license": "MIT",
   "dependencies": {
-    "moment-timezone": "^0.6.1"
+    "moment-timezone": "^0.6.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.48.0",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "eslint": "^10.2.0",
-    "globals": "^17.4.0"
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
+    "linkedom": "^0.18.0"
   }
 }

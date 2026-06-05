@@ -4,6 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.19.0](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.18.1...v4.19.0) - 2026-06-05
+
+- **NEW FEATURE**: `showUpcomingGames`
+- Add automated PR tests and additional dev commands
+
 ## [4.18.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.18.0...v4.18.1) - 2026-04-05
 
 - **BUG FIX**: Remove CPL league because custom provider file is not currently working
