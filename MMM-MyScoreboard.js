@@ -999,7 +999,14 @@ Module.register('MMM-MyScoreboard', {
         this.maybeRequestUpcoming(payload.label, payload.index)
       }
       if (moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').hour() >= this.config.rolloverHours) {
-        this.sportsDataYd = {}
+        // Past rolloverHours: drop yesterday's games. The updateDom() above only
+        // fires when today's data changed, so without re-rendering here the
+        // stale yesterday scores would linger on screen until the next change
+        // (e.g. a team plays again) or until midnight — see issue #204.
+        if (Object.keys(this.sportsDataYd).length > 0) {
+          this.sportsDataYd = {}
+          this.updateDom()
+        }
       }
 
       // Manage fast polling for active baseball games

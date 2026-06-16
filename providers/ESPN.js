@@ -575,20 +575,19 @@ module.exports = {
     return this.LEAGUE_PATHS[league]
   },
 
-  async getScores(payload, gameDate, callback) {
-    var self = this
-
+  /*
+    Build the ESPN scoreboard URL for a single YYYYMMDD date string.
+  */
+  scoreboardUrl: function (league, dateStr) {
     var url = 'https://site.web.api.espn.com/apis/site/v2/sports/'
-    url += this.getLeaguePath(payload.league)
-    if (this.getLeaguePath(payload.league).includes('scorepanel')) {
+    url += this.getLeaguePath(league)
+    if (this.getLeaguePath(league).includes('scorepanel')) {
       url += '?dates='
     }
     else {
       url += '/scoreboard?dates='
     }
-    url += moment(gameDate).format('YYYYMMDD') + '&limit=200'
-    var MLBurl = 'https://mastapi.mobile.mlbinfra.com/api/epg/v3/search?date='
-      + moment().add(payload.debugHours, 'hours').add(payload.debugMinutes, 'minutes').format('YYYY-MM-DD') + '&exp=MLB'
+    url += dateStr + '&limit=200'
     /*
       by default, ESPN returns only the Top 25 ranked teams for NCAAF
       and NCAAM. By appending the group parameter (80 for NCAAF and 50
@@ -599,20 +598,80 @@ module.exports = {
       currently have things set up, I need to treat it like a different
       league.
     */
-    if (payload.league == 'NCAAF') {
+    if (league == 'NCAAF') {
       url = url + '&groups=80'
     }
-    else if (payload.league == 'NCAAM') {
+    else if (league == 'NCAAM') {
       url = url + '&groups=50'
     }
-    else if (payload.league == 'NCAAM_MM') {
+    else if (league == 'NCAAM_MM') {
       url = url + '&groups=100'
     }
+    return url
+  },
+
+  /*
+    Fetch one ESPN scoreboard day and return a body normalized to { events: [] }.
+    The scorepanel feed (rugby) nests events under a `scores` array; flatten it
+    so callers always see a plain events list.
+  */
+  async fetchScoreboardEvents(league, dateStr) {
+    var url = this.scoreboardUrl(league, dateStr)
+    const response = await fetch(url)
+    Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
+    var body = await response.json()
+
+    if (this.getLeaguePath(league).includes('scorepanel')) {
+      var flattened = { events: [] }
+      for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
+        flattened['events'] = flattened['events'].concat(body['scores'][leagueIdx]['events'])
+      }
+      body = flattened
+    }
+    if (!body.events) {
+      body.events = []
+    }
+    return body
+  },
+
+  /*
+    ESPN buckets games by US Eastern calendar date, but formatScores() filters
+    the returned events by the *viewer's local* calendar date. A game that
+    kicks off near midnight ET can therefore land on a different local day than
+    the ET day ESPN filed it under — so it would be returned by neither the
+    "today" nor the "yesterday" query and silently disappear (issue #210: a
+    World Cup match at 02:00 UTC shows under ESPN's previous day, but is "today"
+    for a European viewer).
+
+    Return the single adjacent ESPN date that must also be fetched so the local
+    filter can recover such games. Viewers east of ET see games on the same or
+    next local day (so also pull the previous ET day); viewers west of ET see
+    them on the same or previous local day (so also pull the next ET day).
+    Returns null when the viewer is on Eastern time (no skew possible).
+  */
+  neighborGameDate: function (dateStr) {
+    var localTZ = moment.tz.guess()
+    var ref = moment(dateStr, 'YYYYMMDD')
+    var localOffset = moment.tz(ref, localTZ).utcOffset()
+    var easternOffset = moment.tz(ref, 'America/New_York').utcOffset()
+    if (localOffset > easternOffset) {
+      return moment(ref).subtract(1, 'day').format('YYYYMMDD') // east of ET
+    }
+    if (localOffset < easternOffset) {
+      return moment(ref).add(1, 'day').format('YYYYMMDD') // west of ET
+    }
+    return null
+  },
+
+  async getScores(payload, gameDate, callback) {
+    var self = this
+
+    var primaryDate = moment(gameDate).format('YYYYMMDD')
+    var MLBurl = 'https://mastapi.mobile.mlbinfra.com/api/epg/v3/search?date='
+      + moment().add(payload.debugHours, 'hours').add(payload.debugMinutes, 'minutes').format('YYYY-MM-DD') + '&exp=MLB'
 
     try {
-      const response = await fetch(url)
-      Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
-      var body = await response.json()
+      var body = await this.fetchScoreboardEvents(payload.league, primaryDate)
 
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
         const freeGameResponse = await fetch(MLBurl)
@@ -632,19 +691,36 @@ module.exports = {
         }
       }
 
-      if (this.getLeaguePath(payload.league).includes('scorepanel')) {
-        var body2 = { events: [] }
-        for (let leagueIdx = 0; leagueIdx < body['scores'].length; leagueIdx++) {
-          body2['events'] = body2['events'].concat(body['scores'][leagueIdx]['events'])
+      /*
+        Timezone widening (issue #210): also pull the adjacent ESPN day so games
+        ESPN filed under a neighboring US-Eastern date — but which fall on the
+        requested LOCAL date — survive the local-date filter in formatScores().
+        Events are deduped by id; ESPN's date buckets are disjoint, so this only
+        adds the boundary games.
+      */
+      var neighborDate = this.neighborGameDate(primaryDate)
+      if (neighborDate) {
+        try {
+          var neighborBody = await this.fetchScoreboardEvents(payload.league, neighborDate)
+          var seenIds = new Set(body.events.map(function (e) {
+            return e.id
+          }))
+          neighborBody.events.forEach(function (e) {
+            if (!seenIds.has(e.id)) {
+              body.events.push(e)
+            }
+          })
         }
-        body = body2
+        catch (neighborError) {
+          Log.error(`[MMM-MyScoreboard] neighbor day fetch failed: ${neighborError}`)
+        }
       }
 
       this.noGamesToday = false
-      callback(self.formatScores(payload, body, moment(gameDate).format('YYYYMMDD')), payload.index, this.noGamesToday)
+      callback(self.formatScores(payload, body, primaryDate), payload.index, this.noGamesToday)
     }
     catch (error) {
-      Log.error(`[MMM-MyScoreboard] ${error} ${url}`)
+      Log.error(`[MMM-MyScoreboard] ${error} ${this.scoreboardUrl(payload.league, primaryDate)}`)
     }
   },
 
