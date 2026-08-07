@@ -571,6 +571,13 @@ module.exports = {
   // Key: `${LEAGUE}:${TEAM_ABBR}`. TTL is 6 hours; schedules rarely change intraday.
   teamScheduleCache: {},
 
+  // site.api.espn.com sits behind Akamai bot protection that 403s requests
+  // with no User-Agent (Node's fetch default) and also 403s browser UAs whose
+  // TLS fingerprint doesn't match a real browser. An honest non-browser UA
+  // passes. See https://github.com/dathbe/MMM-MyScoreboard issue on upcoming
+  // games returning empty.
+  FETCH_USER_AGENT: 'MMM-MyScoreboard (+https://github.com/dathbe/MMM-MyScoreboard)',
+
   getLeaguePath: function (league) {
     return this.LEAGUE_PATHS[league]
   },
@@ -1213,7 +1220,7 @@ module.exports = {
       var url = 'https://site.api.espn.com/apis/site/v2/sports/'
         + leaguePath + '/teams/' + encodeURIComponent(team) + '/schedule'
       try {
-        var response = await fetch(url)
+        var response = await fetch(url, { headers: { 'User-Agent': this.FETCH_USER_AGENT } })
         Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
         if (!response.ok) {
           self.teamScheduleCache[cacheKey] = { fetchedAt: now, nextGame: null }

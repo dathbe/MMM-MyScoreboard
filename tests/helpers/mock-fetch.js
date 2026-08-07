@@ -44,7 +44,9 @@ function mockFetch() {
     hitCounts.set(url, 0)
   }
 
-  globalThis.fetch = async function (input) {
+  const lastInits = new Map()
+
+  globalThis.fetch = async function (input, init) {
     const url = typeof input === 'string'
       ? input
       : input?.url ? input.url : String(input)
@@ -53,11 +55,16 @@ function mockFetch() {
       throw new Error(`mockFetch: no route for ${url}`)
     }
     hitCounts.set(url, hitCounts.get(url) + 1)
+    lastInits.set(url, init)
     return new Response(r.body, { status: r.status, headers: r.headers })
   }
 
   function hits(url) {
     return hitCounts.get(url) ?? 0
+  }
+
+  function lastInit(url) {
+    return lastInits.get(url)
   }
 
   function setError(url, err) {
@@ -67,7 +74,7 @@ function mockFetch() {
 
   // Patch fetch to honor setError routes.
   const wrapped = globalThis.fetch
-  globalThis.fetch = async function (input) {
+  globalThis.fetch = async function (input, init) {
     const url = typeof input === 'string'
       ? input
       : input?.url ? input.url : String(input)
@@ -76,14 +83,14 @@ function mockFetch() {
       hitCounts.set(url, hitCounts.get(url) + 1)
       throw r.error
     }
-    return wrapped(input)
+    return wrapped(input, init)
   }
 
   function restore() {
     globalThis.fetch = origFetch
   }
 
-  return { route, setError, hits, restore }
+  return { route, setError, hits, lastInit, restore }
 }
 
 module.exports = { mockFetch }

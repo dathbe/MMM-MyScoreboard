@@ -316,6 +316,18 @@ describe('ESPN.getTeamSchedule', () => {
     assert.equal(ESPN.teamScheduleCache['NHL:TOR'].nextGame.hTeam, 'TOR')
   })
 
+  it('sends a non-browser User-Agent (Akamai 403s UA-less requests)', async () => {
+    const future = new Date(Date.now() + 24 * 3600 * 1000).toISOString()
+    const url = 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/teams/TOR/schedule'
+    mock.route(url, { events: [futureEvent(future, TOR, MTL)] })
+
+    await ESPN.getTeamSchedule({ league: 'NHL', teams: ['TOR'] }, () => {})
+
+    const init = mock.lastInit(url)
+    assert.equal(init.headers['User-Agent'], ESPN.FETCH_USER_AGENT)
+    assert.match(ESPN.FETCH_USER_AGENT, /MMM-MyScoreboard/)
+  })
+
   it('second call within TTL hits cache (no second fetch)', async () => {
     const future = new Date(Date.now() + 24 * 3600 * 1000).toISOString()
     const url = 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/teams/TOR/schedule'
