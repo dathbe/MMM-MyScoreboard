@@ -4,10 +4,11 @@ Notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.19.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.19.1...v4.19.2) - 2026-06-XX
+## [4.19.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.19.1...v4.19.2) - 2026-08-08
 
 - Add WNBA expansion teams
 - Fix user agent for ESPN fetches
+- Add channel logo
 - Update dependencies
 
 ## [4.19.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.19.0...v4.19.1) - 2026-06-15
