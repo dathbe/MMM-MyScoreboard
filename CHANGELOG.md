@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [4.19.2](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.19.1...v4.19.2) - 2026-06-XX
 
 - Add WNBA expansion teams
+- Fix user agent for ESPN fetches
 - Update dependencies
 
 ## [4.19.1](https://github.com/dathbe/MMM-MyScoreboard/compare/v4.19.0...v4.19.1) - 2026-06-15
