@@ -64,6 +64,6 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "eslint": "^10.8.0",
     "globals": "^17.6.0",
-    "linkedom": "^0.18.0"
+    "linkedom": "^0.18.13"
   }
 }
