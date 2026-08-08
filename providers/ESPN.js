@@ -1213,7 +1213,13 @@ module.exports = {
       var url = 'https://site.api.espn.com/apis/site/v2/sports/'
         + leaguePath + '/teams/' + encodeURIComponent(team) + '/schedule'
       try {
-        var response = await fetch(url)
+        var response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) MagicMirrorModule',
+          'Accept': 'application/json, text/plain, */*',
+        }
+      })
         Log.debug(`[MMM-MyScoreboard] ${url} fetched`)
         if (!response.ok) {
           self.teamScheduleCache[cacheKey] = { fetchedAt: now, nextGame: null }
