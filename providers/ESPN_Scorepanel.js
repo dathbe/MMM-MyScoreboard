@@ -47,7 +47,13 @@ module.exports = {
     var url = 'https://site.api.espn.com/apis/site/v2/sports/' + sport + '/scorepanel?dates=' + moment(gameDate).format('YYYYMMDD') + '&limit=200'
 
     try {
-      const response = await fetch(url)
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+          'Accept': 'application/json, text/plain, */*',
+        },
+      })
       Log.debug(`[MMM-MyScoreboard] ${url} fetched for ${payload.league}`)
       var body = await response.json()
     }

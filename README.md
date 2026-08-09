@@ -589,13 +589,16 @@ ATL   Atlanta Dream
 CHI   Chicago Sky
 CONN  Connecticut Sun
 DAL   Dallas Wings
+GS    Golden State Valkyries
 IND   Indiana Fever
 LA    Los Angeles Sparks
 LV    Las Vegas Aces
 MIN   Minnesota Lynx
 NY    New York Liberty
 PHX   Phoenix Mercury
+POR   Portland Fire
 SEA   Seattle Storm
+TOR   Toronto Tempo
 WSH   Washington Mystics
 
 Groups:

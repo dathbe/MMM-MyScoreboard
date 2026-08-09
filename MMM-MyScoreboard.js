@@ -1590,8 +1590,8 @@ Module.register('MMM-MyScoreboard', {
     WNBA: {
 
       // conferences
-      East: ['ATL', 'CHI', 'CONN', 'IND', 'NY', 'WSH'],
-      West: ['DAL', 'LA', 'LV', 'MIN', 'PHX', 'SEA'],
+      East: ['ATL', 'CHI', 'CONN', 'IND', 'NY', 'TOR', 'WSH'],
+      West: ['DAL', 'LA', 'LV', 'GS', 'MIN', 'PHX', 'POR', 'SEA'],
 
     },
 
