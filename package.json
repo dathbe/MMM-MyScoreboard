@@ -63,7 +63,7 @@
     "@playwright/test": "^1.62.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "eslint": "^10.8.0",
-    "globals": "^17.7.0",
+    "globals": "^17.11.0",
     "linkedom": "^0.18.13"
   }
 }
