@@ -25,12 +25,14 @@ Module.register('MMM-MyScoreboard', {
     hideBroadcasts: false,
     showLocalBroadcasts: false,
     skipChannels: [],
+    channelTiers: [],
+    showUnmatchedChannels: false,
+    maxChannels: 0,
     localMarkets: [],
     displayLocalChannels: [],
     channelRotateInterval: 7000,
     scrollSpeed: 6,
     maxHeight: 10000,
-    // limitBroadcasts: 1,
     debugHours: 0,
     debugMinutes: 0,
     showPlayoffStatus: false,
@@ -582,16 +584,6 @@ Module.register('MMM-MyScoreboard', {
       statusPart.classList.add('statusPart')
       status.appendChild(statusPart)
     })
-    /*     if (['smallLogos', 'oneLine', 'oneLineWithLogos'].includes(this.config.viewStyle)) {
-      var maxBroadcasts = Math.min(1, gameObj.broadcast.length, this.config.limitBroadcasts)
-    }
-    else if (['largeLogos', 'stacked', 'stackedWithLogos'].includes(this.config.viewStyle)) {
-      maxBroadcasts = Math.min(2, gameObj.broadcast.length, this.config.limitBroadcasts)
-    }
-    else {
-      maxBroadcasts = Math.min(gameObj.broadcast.length, this.config.limitBroadcasts)
-     } */
-    // maxBroadcasts = gameObj.broadcast.length
     var broadcastPart = document.createElement('div')
     broadcastPart.classList.add('broadcast')
     /*     if (gameObj.broadcast.length === 1) {
@@ -602,14 +594,17 @@ Module.register('MMM-MyScoreboard', {
     } */
     // else {
     if (gameObj.broadcast != null) {
-      for (var i = 0; i < gameObj.broadcast.length; i++) {
-        // broadcastPart.innerHTML += gameObj.broadcast[i]
+      var broadcasts = this.config.maxChannels > 0
+        ? gameObj.broadcast.slice(0, this.config.maxChannels)
+        : gameObj.broadcast
+      for (var i = 0; i < broadcasts.length; i++) {
+        // broadcastPart.innerHTML += broadcasts[i]
         var broadcastPartDiv = document.createElement('div')
         broadcastPartDiv.classList.add('broadcastIconDiv')
-        broadcastPartDiv.innerHTML += gameObj.broadcast[i]
+        broadcastPartDiv.innerHTML += broadcasts[i]
         // Only show the icon matching the current rotation index to prevent flash on DOM rebuild
-        if (gameObj.broadcast.length > 1) {
-          broadcastPartDiv.style.display = (i === this.logoIndex % gameObj.broadcast.length)
+        if (broadcasts.length > 1) {
+          broadcastPartDiv.style.display = (i === this.logoIndex % broadcasts.length)
             ? 'flex'
             : 'none'
         }
@@ -1448,6 +1443,8 @@ Module.register('MMM-MyScoreboard', {
         whichDay: whichDay,
         hideBroadcasts: self.config.hideBroadcasts,
         skipChannels: self.config.skipChannels,
+        channelTiers: self.config.channelTiers,
+        showUnmatchedChannels: self.config.showUnmatchedChannels,
         showLocalBroadcasts: self.config.showLocalBroadcasts,
         displayLocalChannels: self.config.displayLocalChannels,
         localMarkets: self.config.localMarkets,
@@ -1479,6 +1476,8 @@ Module.register('MMM-MyScoreboard', {
         whichDay: { today: true, yesterday: false },
         hideBroadcasts: self.config.hideBroadcasts,
         skipChannels: self.config.skipChannels,
+        channelTiers: self.config.channelTiers,
+        showUnmatchedChannels: self.config.showUnmatchedChannels,
         showLocalBroadcasts: self.config.showLocalBroadcasts,
         displayLocalChannels: self.config.displayLocalChannels,
         localMarkets: self.config.localMarkets,

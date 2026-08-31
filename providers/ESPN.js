@@ -38,6 +38,7 @@
 
 const Log = require('logger')
 const moment = require('moment-timezone')
+const broadcastUtils = require('./broadcastUtils.js')
 
 module.exports = {
 
@@ -819,6 +820,23 @@ module.exports = {
         timeFormat = 'h:mm a'
       }
       var channels = []
+      const addChannel = (channelName, localDesignation = '') => {
+        if (this.broadcastIcons[channelName] !== undefined) {
+          channels.push({
+            name: channelName,
+            display: `<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`,
+          })
+        }
+        else if (this.broadcastIconsInvert[channelName] !== undefined) {
+          channels.push({
+            name: channelName,
+            display: `<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`,
+          })
+        }
+        else {
+          channels.push({ name: channelName, display: channelName })
+        }
+      }
 
       if (game.competitions[0].broadcasts.length > 0 && !payload.hideBroadcasts) {
         game.competitions[0].broadcasts.forEach((market) => {
@@ -847,15 +865,7 @@ module.exports = {
                 channelName = 'MSG'
               }
               if (!payload.skipChannels.includes(channelName)) {
-                if (this.broadcastIcons[channelName] !== undefined) {
-                  channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
-                }
-                else if (this.broadcastIconsInvert[channelName] !== undefined) {
-                  channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`)
-                }
-                else {
-                  channels.push(channelName)
-                }
+                addChannel(channelName, localDesignation)
               }
             })
           }
@@ -891,16 +901,10 @@ module.exports = {
                 homeAwayWanted.push(market.market)
               }
             }
-            if (((payload.showLocalBroadcasts || homeAwayWanted.includes(market.market)) && !payload.skipChannels.includes(channelName)) || payload.displayLocalChannels.includes(channelName)) {
-              if (this.broadcastIcons[channelName] !== undefined) {
-                channels.push(`<img src="${this.broadcastIcons[channelName]}" class="broadcastIcon">${localDesignation}`)
-              }
-              else if (this.broadcastIconsInvert[channelName] !== undefined) {
-                channels.push(`<img src="${this.broadcastIconsInvert[channelName]}" class="broadcastIcon broadcastIconInvert">${localDesignation}`)
-              }
-              else {
-                channels.push(channelName)
-              }
+            if (!payload.skipChannels.includes(channelName)
+              && ((payload.showLocalBroadcasts || homeAwayWanted.includes(market.market))
+                || payload.displayLocalChannels.includes(channelName))) {
+              addChannel(channelName, localDesignation)
             }
             else if (!payload.showLocalBroadcasts && !payload.skipChannels.includes(channelName) && !payload.displayLocalChannels.includes(channelName)) {
               localGamesList.push(channelName)
@@ -911,10 +915,12 @@ module.exports = {
           Log.info(`The local channels available for ${game.shortName} are: ${localGamesList.join(', ')}`)
         } */
       }
-      if (this.freeGameOfTheDay['day'] === moment(game.competitions[0].date).format('YYYY-MM-DD') && payload.league === 'MLB' && this.freeGameOfTheDay['teams'].includes(hTeamData.team.abbreviation)) {
-        channels.push(`<img src="${this.broadcastIcons['MLB.TV Free Game']}" class="broadcastIcon">`)
+      if (this.freeGameOfTheDay['day'] === moment(game.competitions[0].date).format('YYYY-MM-DD') && payload.league === 'MLB' && this.freeGameOfTheDay['teams'].includes(hTeamData.team.abbreviation) && !payload.skipChannels.includes('MLB.TV Free Game')) {
+        addChannel('MLB.TV Free Game')
       }
-      channels = [...new Set(channels)]
+      channels = broadcastUtils.filterSkippedChannels(channels, payload.skipChannels)
+      channels = broadcastUtils.applyChannelTiers(channels, payload.channelTiers, payload.showUnmatchedChannels)
+      channels = [...new Set(channels.map(channel => channel.display))]
 
       switch (game.status.type.id) {
         // Not started
