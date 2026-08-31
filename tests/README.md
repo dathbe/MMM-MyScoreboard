@@ -43,7 +43,7 @@ node --run test:e2e:install      # clones MagicMirror + installs Playwright Chro
 ```sh
 node --run lint                   # ESLint
 node --run test:unit              # unit tests (~30 s)
-node --run test:e2e               # curated matrix — 25 scenarios (~1–2 min)
+node --run test:e2e               # curated matrix — 26 scenarios (~1–2 min)
 node --run test                   # all of the above
 ```
 

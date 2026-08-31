@@ -48,11 +48,12 @@ const CURATED = [
   // E. NCAA rankings (1)
   require('./ncaa-rankings-on.js'),
 
-  // F. Broadcasts (4)
+  // F. Broadcasts (5)
   require('./broadcast-hideBroadcasts-on.js'),
   require('./broadcast-national-tv.js'),
   require('./broadcast-multiple-networks.js'),
   require('./broadcast-showLocalBroadcasts-on.js'),
+  require('./broadcast-channel-preferences.js'),
 
   // G. Baseball detail (2)
   require('./baseball-detail-on.js'),
