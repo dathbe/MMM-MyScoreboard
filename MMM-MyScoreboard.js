@@ -327,6 +327,7 @@ Module.register('MMM-MyScoreboard', {
   fastPollTimers: {},
   fastPollActive: {},
   footballFieldState: {},
+  localLogoRetryTimer: null,
   fastPollSports: [
     { key: 'baseball', leagues: 'baseballLeagues', show: 'showBaseballDetail', interval: 'baseballDetailInterval' },
     { key: 'football', leagues: 'footballLeagues', show: 'showFootballDetail', interval: 'footballDetailInterval' },
@@ -1293,6 +1294,14 @@ Module.register('MMM-MyScoreboard', {
       }
     }
     else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
+      // Duplicate responses possible (startup request is retried until
+      // answered) — only the first one may set up polling
+      if (this.localLogoRetryTimer === null) {
+        return
+      }
+      clearInterval(this.localLogoRetryTimer)
+      this.localLogoRetryTimer = null
+
       this.localLogos = payload.logos
       this.localLogosCustom = payload.logosCustom
 
@@ -1552,10 +1561,16 @@ Module.register('MMM-MyScoreboard', {
       Get list of local logo images files.
       These will override the URL provided by the feed
 
-      Once this returns the list, we'll start polling for data
+      Once this returns the list, we'll start polling for data.
+      Retry until answered: if this request is emitted before the node
+      helper's socket is bound (slow startup), it is lost and no score
+      polling would ever start.
     */
 
     this.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: this.identifier })
+    this.localLogoRetryTimer = setInterval(function () {
+      self.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: self.identifier })
+    }, 2000)
 
     // Schedule the first logo rotation
     this.rotateChannels()

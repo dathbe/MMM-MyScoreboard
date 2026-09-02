@@ -13,7 +13,7 @@ module.exports = {
   ipWhitelist: [],
   language: 'en',
   locale: 'en-US',
-  logLevel: ['INFO', 'LOG', 'WARN', 'ERROR'],
+  logLevel: ['INFO', 'LOG', 'WARN', 'ERROR', 'DEBUG'],
   timeFormat: 12,
   units: 'imperial',
   modules: [

@@ -77,4 +77,24 @@ async function startMM(opts) {
   throw new Error(`MagicMirror did not respond within ${timeoutMs}ms.\nstdout tail:\n${stdoutBuf.slice(-2000)}`)
 }
 
-module.exports = { startMM }
+/*
+  Wait until nothing is answering on the port. stop() resolves when the npm
+  wrapper exits, but the MM server process can linger for a moment — if the
+  next scenario's readiness probe hits the dying instance it sees the OLD
+  config and the test runs against the wrong fixture data.
+*/
+async function waitForPortFree(port, timeoutMs = 10000) {
+  const start = Date.now()
+  while (Date.now() - start < timeoutMs) {
+    try {
+      await fetch(`http://localhost:${port}/`, { signal: AbortSignal.timeout(300) })
+    }
+    catch {
+      return // connection refused/timeout — port is free
+    }
+    await new Promise(r => setTimeout(r, 200))
+  }
+  throw new Error(`Port ${port} still occupied ${timeoutMs}ms after MM stop()`)
+}
+
+module.exports = { startMM, waitForPortFree }
