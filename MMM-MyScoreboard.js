@@ -34,12 +34,13 @@ Module.register('MMM-MyScoreboard', {
     debugHours: 0,
     debugMinutes: 0,
     showPlayoffStatus: false,
-    showBaseballDetail: false,
-    baseballDetailInterval: 15,
-    baseballDetailViewOverride: true,
-    showFootballDetail: false,
-    footballDetailInterval: 15,
-    footballDetailViewOverride: true,
+    showDetail: false,
+    detailInterval: 15,
+    detailViewOverride: true,
+    /*
+      Deprecated aliases (mapped onto the unified options in start()):
+      showBaseballDetail, baseballDetailInterval, baseballDetailViewOverride
+    */
     showScoreAnimation: false,
     showUpcomingGames: false,
     sports: [
@@ -329,8 +330,8 @@ Module.register('MMM-MyScoreboard', {
   footballFieldState: {},
   localLogoRetryTimer: null,
   fastPollSports: [
-    { key: 'baseball', leagues: 'baseballLeagues', show: 'showBaseballDetail', interval: 'baseballDetailInterval' },
-    { key: 'football', leagues: 'footballLeagues', show: 'showFootballDetail', interval: 'footballDetailInterval' },
+    { key: 'baseball', leagues: 'baseballLeagues', show: 'showDetail', interval: 'detailInterval' },
+    { key: 'football', leagues: 'footballLeagues', show: 'showDetail', interval: 'detailInterval' },
   ],
 
   viewStyleHasLogos: function (v) {
@@ -442,13 +443,13 @@ Module.register('MMM-MyScoreboard', {
     var viewStyle = this.config.viewStyle
 
     // Override viewStyle for active baseball games with detail enabled
-    if (this.config.showBaseballDetail && this.config.baseballDetailViewOverride
+    if (this.config.showDetail && this.config.detailViewOverride
       && gameObj.baseballSituation && this.baseballLeagues.includes(league)) {
       viewStyle = 'largeLogos'
     }
 
     // Override viewStyle for active football games with detail enabled
-    if (this.config.showFootballDetail && this.config.footballDetailViewOverride
+    if (this.config.showDetail && this.config.detailViewOverride
       && gameObj.footballSituation && this.footballLeagues.includes(league)) {
       viewStyle = 'largeLogos'
     }
@@ -653,7 +654,7 @@ Module.register('MMM-MyScoreboard', {
     }
 
     // add baseball detail for active games
-    if (this.config.showBaseballDetail && gameObj.baseballSituation) {
+    if (this.config.showDetail && gameObj.baseballSituation) {
       var canShowDetail = true
       if (['smallLogos', 'oneLine', 'oneLineWithLogos', 'stacked', 'stackedWithLogos'].includes(viewStyle)) {
         canShowDetail = false
@@ -742,7 +743,7 @@ Module.register('MMM-MyScoreboard', {
       && (gameObj.gameMode === this.gameModes.FINAL || !gameObj.footballSituation)) {
       delete this.footballFieldState[fbGameKey]
     }
-    if (this.config.showFootballDetail && gameObj.footballSituation) {
+    if (this.config.showDetail && gameObj.footballSituation) {
       var canShowFbDetail = !['smallLogos', 'oneLine', 'oneLineWithLogos', 'stacked', 'stackedWithLogos'].includes(viewStyle)
       var fsit = gameObj.footballSituation
       var hasFbContent = fsit.downDistance || fsit.possessionText
@@ -1527,6 +1528,21 @@ Module.register('MMM-MyScoreboard', {
 
   start: function () {
     Log.info('Starting module: ' + this.name)
+
+    /*
+      Deprecated option mapping: older configs used baseball-specific
+      detail options. They keep working, but the unified showDetail /
+      detailInterval / detailViewOverride options are the documented ones.
+    */
+    if (this.config.showBaseballDetail) {
+      this.config.showDetail = true
+    }
+    if (typeof this.config.baseballDetailInterval === 'number' && this.config.detailInterval === 15) {
+      this.config.detailInterval = this.config.baseballDetailInterval
+    }
+    if (this.config.baseballDetailViewOverride === false) {
+      this.config.detailViewOverride = false
+    }
 
     /*
       scrub the config to ensure only supported leagues are included

@@ -9,8 +9,8 @@ module.exports = {
     showLeagueSeparators: true,
     colored: true,
     highlightWinners: true,
-    showFootballDetail: true,
-    footballDetailViewOverride: true,
+    showDetail: true,
+    detailViewOverride: true,
     sports: [{ league: 'NFL', teams: ['DAL'] }],
   },
   fixtures: {
