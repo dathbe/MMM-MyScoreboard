@@ -3,7 +3,7 @@
 /*
   Scenario registry. The MATRIX_MODE env var selects which scenarios run:
 
-    MATRIX_MODE=curated   (default) — 29 hand-picked scenarios covering every
+    MATRIX_MODE=curated   (default) — 30 hand-picked scenarios covering every
                                        view style, key flag, PR #198 upcoming
                                        games, broadcasts, and baseball/football detail.
     MATRIX_MODE=pairwise  — algorithmic covering array (~15–25 scenarios).
@@ -54,13 +54,14 @@ const CURATED = [
   require('./broadcast-multiple-networks.js'),
   require('./broadcast-showLocalBroadcasts-on.js'),
 
-  // G. Baseball/football detail (6)
+  // G. Baseball/football detail (7)
   require('./baseball-detail-on.js'),
   require('./baseball-detail-bases-loaded.js'),
   require('./football-detail-on.js'),
   require('./football-detail-red-zone.js'),
   require('./football-detail-halftime.js'),
   require('./football-detail-touchdown.js'),
+  require('./football-detail-mono.js'),
 
   // H. Multi-sport (1)
   require('./multi-nfl-nhl-mlb.js'),

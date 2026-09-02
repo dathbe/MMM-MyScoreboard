@@ -123,9 +123,13 @@ Red zone — field position, possession indicator, and ball turn red:
 
 ![Football Detail Red Zone](footballDetailExample3.png)
 
-Touchdown — the ball sits in the end zone until the kickoff:
+Touchdown — the ball slides into the end zone and sits there until the kickoff:
 
 ![Football Detail Touchdown](footballDetailExample4.png)
+
+With `colored: false`, the field goes full grayscale like the rest of the display:
+
+![Football Detail Monochrome](footballDetailExample5.png)
 
 #### Score Animation Example
 
