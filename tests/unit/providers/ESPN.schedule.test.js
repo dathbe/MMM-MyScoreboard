@@ -371,3 +371,93 @@ describe('ESPN.getTeamSchedule', () => {
     assert.equal(cbResult.BOS.hTeam, 'BOS')
   })
 })
+
+describe('ESPN.getTeamSchedule season rollover', () => {
+  const { mockFetch } = require('../../helpers/mock-fetch')
+  let mock
+
+  beforeEach(() => {
+    ESPN.teamScheduleCache = {}
+    mock = mockFetch()
+  })
+
+  afterEach(() => {
+    mock.restore()
+  })
+
+  const CHI = team({ abbreviation: 'CHI', name: 'Bears', shortDisplayName: 'Bears' })
+  const CAR = team({ abbreviation: 'CAR', name: 'Panthers', shortDisplayName: 'Panthers' })
+  const BASE = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/CHI/schedule'
+
+  function pastEvent(home, away) {
+    return event({ date: '2026-08-15T17:00:00Z', home, away, completed: true })
+  }
+
+  it('chases the next season type when the current one has no future games', async () => {
+    const future = new Date(Date.now() + 11 * 24 * 3600 * 1000).toISOString()
+    // Default fetch: preseason (type 1), all games completed
+    mock.route(BASE, { season: { type: 1 }, events: [pastEvent(CHI, CAR)] })
+    // Regular season has the upcoming game
+    mock.route(BASE + '?seasontype=2', { season: { type: 1 }, events: [event({ date: future, home: CAR, away: CHI })] })
+
+    let cbResult = null
+    await ESPN.getTeamSchedule({ league: 'NFL', teams: ['CHI'] }, (r) => {
+      cbResult = r
+    })
+
+    assert.equal(mock.hits(BASE), 1)
+    assert.equal(mock.hits(BASE + '?seasontype=2'), 1)
+    assert.equal(cbResult.CHI.hTeam, 'CAR')
+    assert.equal(cbResult.CHI.gameDate, future)
+    assert.equal(ESPN.teamScheduleCache['NFL:CHI'].nextGame.hTeam, 'CAR')
+  })
+
+  it('chases through to the postseason when the regular season is over', async () => {
+    const future = new Date(Date.now() + 5 * 24 * 3600 * 1000).toISOString()
+    mock.route(BASE, { season: { type: 2 }, events: [pastEvent(CHI, CAR)] })
+    mock.route(BASE + '?seasontype=3', { season: { type: 2 }, events: [event({ date: future, home: CHI, away: CAR })] })
+
+    let cbResult = null
+    await ESPN.getTeamSchedule({ league: 'NFL', teams: ['CHI'] }, (r) => {
+      cbResult = r
+    })
+
+    assert.equal(cbResult.CHI.hTeam, 'CHI')
+  })
+
+  it('does not chase when a future game exists in the current season type', async () => {
+    const future = new Date(Date.now() + 24 * 3600 * 1000).toISOString()
+    mock.route(BASE, { season: { type: 2 }, events: [event({ date: future, home: CHI, away: CAR })] })
+
+    await ESPN.getTeamSchedule({ league: 'NFL', teams: ['CHI'] }, () => {})
+
+    assert.equal(mock.hits(BASE), 1)
+    assert.equal(mock.hits(BASE + '?seasontype=3'), 0)
+  })
+
+  it('caches null when no season type has a future game', async () => {
+    mock.route(BASE, { season: { type: 1 }, events: [pastEvent(CHI, CAR)] })
+    mock.route(BASE + '?seasontype=2', { season: { type: 1 }, events: [pastEvent(CAR, CHI)] })
+    mock.route(BASE + '?seasontype=3', { season: { type: 1 }, events: [] })
+
+    let cbResult = null
+    await ESPN.getTeamSchedule({ league: 'NFL', teams: ['CHI'] }, (r) => {
+      cbResult = r
+    })
+
+    assert.equal(cbResult.CHI, null)
+    assert.equal(mock.hits(BASE + '?seasontype=3'), 1)
+  })
+
+  it('missing season info: no chase, null result', async () => {
+    mock.route(BASE, { events: [pastEvent(CHI, CAR)] })
+
+    let cbResult = null
+    await ESPN.getTeamSchedule({ league: 'NFL', teams: ['CHI'] }, (r) => {
+      cbResult = r
+    })
+
+    assert.equal(cbResult.CHI, null)
+    assert.equal(mock.hits(BASE), 1)
+  })
+})

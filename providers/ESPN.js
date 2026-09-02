@@ -1229,6 +1229,34 @@ module.exports = {
         }
         var body = await response.json()
         var nextGame = self.extractNextGame(payload, body)
+
+        /*
+          Season-boundary rollover: the schedule endpoint returns only the
+          CURRENT season type. Between the last preseason game and the
+          regular-season opener (or between the regular season and the
+          playoffs) every returned game is already completed, so no next
+          game is found even though one is scheduled. Chase the later
+          season types (1 = preseason, 2 = regular, 3 = postseason) until
+          a future game turns up.
+        */
+        var seasonType = (body && body.season && typeof body.season.type === 'number') ? body.season.type : null
+        while (nextGame === null && seasonType !== null && seasonType < 3) {
+          seasonType++
+          var stResponse = await fetch(url + '?seasontype=' + seasonType, {
+            method: 'GET',
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+              'Accept': 'application/json, text/plain, */*',
+            },
+          })
+          Log.debug(`[MMM-MyScoreboard] ${url}?seasontype=${seasonType} fetched`)
+          if (!stResponse.ok) {
+            break
+          }
+          var stBody = await stResponse.json()
+          nextGame = self.extractNextGame(payload, stBody)
+        }
+
         self.teamScheduleCache[cacheKey] = { fetchedAt: now, nextGame: nextGame }
         results[team] = nextGame
       }
