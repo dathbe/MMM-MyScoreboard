@@ -50,7 +50,7 @@ describe('rollover clear re-renders (issue #204)', () => {
     // rolloverHours: 0 → current hour (0-23) is always >= 0 → always "past rollover".
     const inst = freshInstance(def, 0)
 
-    inst.socketNotificationReceived('MMM-MYSCOREBOARD-SCORE-UPDATE', unchangedUpdate('m1'))
+    inst.socketNotificationReceived('MMM-MYSCOREBOARD-SCORE-UPDATE', unchangedUpdate(inst.instanceId))
 
     assert.deepEqual(inst.sportsDataYd, {}, 'yesterday scores should be cleared')
     assert.ok(inst.domUpdated >= 1, 'updateDom() should fire after clearing yesterday')
@@ -61,7 +61,7 @@ describe('rollover clear re-renders (issue #204)', () => {
     // rolloverHours: 24 → hour() maxes at 23, never >= 24 → never "past rollover".
     const inst = freshInstance(def, 24)
 
-    inst.socketNotificationReceived('MMM-MYSCOREBOARD-SCORE-UPDATE', unchangedUpdate('m1'))
+    inst.socketNotificationReceived('MMM-MYSCOREBOARD-SCORE-UPDATE', unchangedUpdate(inst.instanceId))
 
     assert.ok(inst.sportsDataYd[LABEL], 'yesterday scores should be retained before rollover')
     assert.equal(inst.domUpdated, 0, 'no re-render when nothing changed and not past rollover')
@@ -76,7 +76,7 @@ describe('rollover clear re-renders (issue #204)', () => {
       sportsDataYd: {}, // already cleared
     })
 
-    inst.socketNotificationReceived('MMM-MYSCOREBOARD-SCORE-UPDATE', unchangedUpdate('m1'))
+    inst.socketNotificationReceived('MMM-MYSCOREBOARD-SCORE-UPDATE', unchangedUpdate(inst.instanceId))
 
     assert.deepEqual(inst.sportsDataYd, {})
     assert.equal(inst.domUpdated, 0, 'should not re-render when yesterday is already empty')

@@ -58,6 +58,8 @@ function makeInstance(def, init = {}) {
   Object.assign(instance, {
     config: Object.assign({}, def.defaults, init.config ?? {}),
     identifier: init.identifier ?? 'module-1',
+    // Mirrors the per-page-load id normally minted in start() (issue #233)
+    instanceId: init.instanceId ?? (init.identifier ?? 'module-1') + '::test',
     name: 'MMM-MyScoreboard',
     sportsData: init.sportsData ?? {},
     sportsDataYd: init.sportsDataYd ?? {},
