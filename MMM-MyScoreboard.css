@@ -1230,6 +1230,519 @@
 }
 
 
+/* Football Live Detail */
+
+/* Box heights (compact: no dead space above the logos) */
+.MMM-MyScoreboard .box-score.football-live-detail.largeLogos {
+  height: 72px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos {
+  height: 56px;
+}
+
+/* Extra height when broadcast is shown */
+.MMM-MyScoreboard .box-score.football-has-broadcast.largeLogos {
+  height: 92px;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast.mediumLogos {
+  height: 76px;
+}
+
+/* Room for the play text when the field is hidden (touchdown/PAT, halftime) */
+.MMM-MyScoreboard .box-score.football-has-playtext.largeLogos {
+  height: 88px;
+}
+.MMM-MyScoreboard .box-score.football-has-playtext.mediumLogos {
+  height: 70px;
+}
+.MMM-MyScoreboard .box-score.football-has-playtext.football-has-broadcast.largeLogos {
+  height: 108px;
+}
+.MMM-MyScoreboard .box-score.football-has-playtext.football-has-broadcast.mediumLogos {
+  height: 90px;
+}
+
+/* Clock takes the center row, centerline aligned with the scores */
+.MMM-MyScoreboard .box-score.football-live-detail .status {
+  height: auto;
+  top: 23px;
+  font-size: 20px;
+  font-weight: 400;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.football-has-broadcast .status {
+  top: 27px;
+}
+
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos .status {
+  top: 16px;
+  font-size: 17px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.football-has-broadcast.mediumLogos .status {
+  top: 20px;
+}
+
+/* Hide empty broadcast in football detail; position at bottom when present */
+.MMM-MyScoreboard .box-score.football-live-detail .broadcast {
+  display: none;
+}
+
+.MMM-MyScoreboard .box-score.football-has-broadcast .broadcast {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Pin logos and scores to the top of the compact box */
+.MMM-MyScoreboard .box-score.football-live-detail.largeLogos .logo {
+  top: 2px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.largeLogos .score {
+  top: 17px;
+}
+
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos .logo {
+  top: 6px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos .score {
+  top: 12px;
+}
+
+/* Nudge down slightly when broadcast is also shown */
+.MMM-MyScoreboard .box-score.football-has-broadcast.largeLogos .logo {
+  top: 6px;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast.largeLogos .score {
+  top: 21px;
+}
+
+.MMM-MyScoreboard .box-score.football-has-broadcast.mediumLogos .logo {
+  top: 10px;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast.mediumLogos .score {
+  top: 16px;
+}
+
+/* Detail container: centered column between the score columns */
+.MMM-MyScoreboard .football-detail {
+  position: absolute;
+  top: 26px;
+  bottom: 2px;
+  left: 110px;
+  right: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: #CCC;
+  overflow: hidden;
+}
+
+/* Reserve space at bottom when broadcast is shown */
+.MMM-MyScoreboard .box-score.football-has-broadcast .football-detail {
+  top: 29px;
+  bottom: 21px;
+}
+
+.MMM-MyScoreboard .box-score.mediumLogos .football-detail {
+  left: 92px;
+  right: 92px;
+  top: 12px;
+  bottom: 2px;
+}
+
+/* Top row: down & distance + field position */
+.MMM-MyScoreboard .football-detail-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFF;
+}
+
+.MMM-MyScoreboard .football-field-position {
+  font-weight: 400;
+  color: #CCC;
+}
+
+.MMM-MyScoreboard .wrapper.colored .football-detail-top .football-down-distance {
+  color: #f8dd70;
+}
+
+/* Red zone accent: white emphasis in mono, red when colored */
+.MMM-MyScoreboard .box-score.red-zone .football-field-position {
+  color: #FFF;
+  font-weight: bold;
+}
+.MMM-MyScoreboard .wrapper.colored .box-score.red-zone .football-field-position {
+  color: #ff5a5a;
+}
+
+.MMM-MyScoreboard .box-score.red-zone .possession-indicator {
+  background-color: #FFF;
+}
+.MMM-MyScoreboard .wrapper.colored .box-score.red-zone .possession-indicator {
+  background-color: #ff5a5a;
+}
+
+/* Gridiron field graphic */
+
+/* Taller box when the field is shown (halftime keeps the base heights) */
+.MMM-MyScoreboard .box-score.football-has-field.largeLogos {
+  height: 120px;
+}
+.MMM-MyScoreboard .box-score.football-has-field.mediumLogos {
+  height: 96px;
+}
+.MMM-MyScoreboard .box-score.football-has-field.football-has-broadcast.largeLogos {
+  height: 142px;
+}
+.MMM-MyScoreboard .box-score.football-has-field.football-has-broadcast.mediumLogos {
+  height: 118px;
+}
+
+/* Yards row (down & distance + field position) drops to the timeout-dot
+   level, centered between the two timeout columns; clock owns the old spot */
+.MMM-MyScoreboard .box-score.football-has-field .football-detail {
+  justify-content: flex-start;
+  top: 47px;
+  bottom: auto;
+}
+.MMM-MyScoreboard .box-score.football-has-field.football-has-broadcast .football-detail {
+  top: 51px;
+  bottom: auto;
+}
+.MMM-MyScoreboard .box-score.football-has-field.mediumLogos .football-detail {
+  top: 36px;
+  bottom: auto;
+}
+.MMM-MyScoreboard .box-score.football-has-field.football-has-broadcast.mediumLogos .football-detail {
+  top: 40px;
+}
+
+.MMM-MyScoreboard .football-field {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 18px;
+  height: 26px;
+  box-sizing: border-box;
+  display: flex;
+  overflow: hidden;
+  background-color: #242424;
+  border: 1px solid #333;
+  border-radius: 3px;
+}
+.MMM-MyScoreboard .wrapper.colored .football-field {
+  background-color: #1e3324;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast .football-field {
+  bottom: 38px;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .football-field {
+  left: 6px;
+  right: 6px;
+  height: 20px;
+  bottom: 17px;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast.mediumLogos .football-field {
+  bottom: 37px;
+}
+
+/* Static last-play description under the field */
+.MMM-MyScoreboard .football-play-text {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 2px;
+  font-size: 12px;
+  line-height: 1;
+  color: #CCC;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast .football-play-text {
+  bottom: 22px;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .football-play-text {
+  left: 6px;
+  right: 6px;
+  font-size: 11px;
+}
+
+/* End zones: fixed bands outside the 0-100% play scale; inner border = goal line */
+.MMM-MyScoreboard .field-endzone {
+  position: relative;
+  width: 10px;
+  flex-shrink: 0;
+  background-color: #2e2e2e;
+}
+
+/* Touchdown: ball parked in the scoring end zone */
+.MMM-MyScoreboard .field-endzone .field-ball.in-endzone {
+  left: 50%;
+  top: 50%;
+}
+.MMM-MyScoreboard .field-endzone.visitor {
+  border-right: 1px solid #666;
+}
+.MMM-MyScoreboard .field-endzone.home {
+  border-left: 1px solid #666;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .field-endzone {
+  width: 8px;
+}
+
+/* Play area: 0% = visitor goal line, 100% = home goal line; hashes every 10 yards */
+.MMM-MyScoreboard .field-play-area {
+  position: relative;
+  flex: 1;
+  background-image: repeating-linear-gradient(90deg,
+    rgba(255, 255, 255, 0.12) 0,
+    rgba(255, 255, 255, 0.12) 1px,
+    transparent 1px,
+    transparent 10%);
+}
+
+.MMM-MyScoreboard .field-first-down {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background-color: #CCC;
+  opacity: 0.9;
+}
+.MMM-MyScoreboard .wrapper.colored .field-first-down {
+  background-color: #ffe14d;
+}
+
+/* On a new set of downs the marker stays at the old line-to-gain while the
+   ball slides, then jumps to the new spot once the ball has crossed */
+.MMM-MyScoreboard .field-first-down.hold {
+  animation: msb-fb-fd-hold 1.3s linear;
+}
+@keyframes msb-fb-fd-hold {
+  0% {
+    left: var(--fd-prev-x);
+  }
+  99.9% {
+    left: var(--fd-prev-x);
+  }
+  100% {
+    left: var(--fd-x);
+  }
+}
+
+/* Goal-to-go reached: hold the old marker through the slide, then vanish
+   (the goal line itself becomes the line-to-gain) */
+.MMM-MyScoreboard .field-first-down.hold-out {
+  animation: msb-fb-fd-hold-out 1.3s linear forwards;
+}
+@keyframes msb-fb-fd-hold-out {
+  0% {
+    left: var(--fd-prev-x);
+    opacity: 0.9;
+  }
+  99.9% {
+    left: var(--fd-prev-x);
+    opacity: 0.9;
+  }
+  100% {
+    left: var(--fd-prev-x);
+    opacity: 0;
+  }
+}
+
+.MMM-MyScoreboard .field-ball {
+  position: absolute;
+  top: 50%;
+  left: var(--ball-x);
+  width: 12px;
+  height: 7px;
+  margin: -3.5px 0 0 -6px;
+  border-radius: 50%;
+  background-color: #CCC;
+  z-index: 2;
+}
+.MMM-MyScoreboard .box-score.mediumLogos .field-ball {
+  width: 10px;
+  height: 6px;
+  margin: -3px 0 0 -5px;
+}
+.MMM-MyScoreboard .field-ball.slide {
+  animation: msb-fb-ball-slide 1s ease;
+}
+@keyframes msb-fb-ball-slide {
+  from {
+    left: var(--ball-prev-x);
+  }
+  to {
+    left: var(--ball-x);
+  }
+}
+
+.MMM-MyScoreboard .field-trail {
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  z-index: 1;
+  animation: msb-fb-trail-fade 2s ease-out forwards;
+}
+.MMM-MyScoreboard .field-trail.gain {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.MMM-MyScoreboard .field-trail.loss {
+  background-color: rgba(110, 110, 110, 0.6);
+}
+.MMM-MyScoreboard .wrapper.colored .field-trail.gain {
+  background-color: rgba(90, 220, 110, 0.55);
+}
+.MMM-MyScoreboard .wrapper.colored .field-trail.loss {
+  background-color: rgba(255, 90, 90, 0.55);
+}
+@keyframes msb-fb-trail-fade {
+  0% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.MMM-MyScoreboard .wrapper.colored .field-ball {
+  background-color: #f8dd70;
+}
+.MMM-MyScoreboard .box-score.red-zone .field-ball {
+  background-color: #FFF;
+}
+.MMM-MyScoreboard .wrapper.colored .box-score.red-zone .field-ball {
+  background-color: #ff5a5a;
+}
+
+/* Possession indicator: CSS-drawn football centered under the possessing team's logo */
+.MMM-MyScoreboard .possession-indicator {
+  position: absolute;
+  width: 15px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #CCC;
+}
+
+.MMM-MyScoreboard .possession-indicator::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 4px;
+  height: 1px;
+  background-color: #000;
+}
+
+.MMM-MyScoreboard .wrapper.colored .possession-indicator {
+  background-color: #f8dd70;
+}
+
+/* Logos are 60px wide at the box edges (40px in mediumLogos).
+   Icon sits directly below the logo, clear of the field graphic. */
+.MMM-MyScoreboard .box-score.football-live-detail.largeLogos .possession-indicator.home {
+  right: 22px;
+  top: 63px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.largeLogos .possession-indicator.visitor {
+  left: 22px;
+  top: 63px;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast.largeLogos .possession-indicator.home,
+.MMM-MyScoreboard .box-score.football-has-broadcast.largeLogos .possession-indicator.visitor {
+  top: 67px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos .possession-indicator.home {
+  right: 12px;
+  top: 47px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos .possession-indicator.visitor {
+  left: 12px;
+  top: 47px;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast.mediumLogos .possession-indicator.home,
+.MMM-MyScoreboard .box-score.football-has-broadcast.mediumLogos .possession-indicator.visitor {
+  top: 51px;
+}
+
+/* Timeouts: three dots centered under each score column (width 44px at left/right 62px) */
+.MMM-MyScoreboard .football-timeouts {
+  position: absolute;
+  display: flex;
+  gap: 3px;
+  width: 44px;
+  justify-content: center;
+}
+
+.MMM-MyScoreboard .football-timeouts.home {
+  right: 62px;
+}
+.MMM-MyScoreboard .football-timeouts.visitor {
+  left: 62px;
+}
+
+.MMM-MyScoreboard .box-score.football-live-detail.largeLogos .football-timeouts {
+  top: 54px;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast.largeLogos .football-timeouts {
+  top: 58px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos .football-timeouts {
+  width: 40px;
+  top: 42px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos .football-timeouts.home {
+  right: 42px;
+}
+.MMM-MyScoreboard .box-score.football-live-detail.mediumLogos .football-timeouts.visitor {
+  left: 42px;
+}
+.MMM-MyScoreboard .box-score.football-has-broadcast.mediumLogos .football-timeouts {
+  top: 46px;
+}
+
+.MMM-MyScoreboard .football-timeouts .timeout-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid #666;
+  background-color: transparent;
+}
+
+.MMM-MyScoreboard .football-timeouts .timeout-dot.active {
+  background-color: #CCC;
+  border-color: #CCC;
+}
+
+.MMM-MyScoreboard .wrapper.colored .football-timeouts .timeout-dot.active {
+  background-color: #f8dd70;
+  border-color: #f8dd70;
+}
+
+/* mediumLogos scaling */
+.MMM-MyScoreboard .box-score.mediumLogos .football-detail-top {
+  font-size: 13px;
+}
+
+
 /* Broadcast Logos */
 .MMM-MyScoreboard .broadcast {
 	font-size: 14px;

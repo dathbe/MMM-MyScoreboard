@@ -145,3 +145,133 @@ describe('ESPN module shape', () => {
     }
   })
 })
+
+describe('ESPN.formatScores footballSituation', () => {
+  const moment = require('moment-timezone')
+
+  function liveNflEvent(situation) {
+    const nowISO = new Date().toISOString()
+    return {
+      events: [{
+        id: 'nfl-live',
+        date: nowISO,
+        status: { type: { id: '2', detail: 'In Progress', shortDetail: '2nd 8:42', description: 'In Progress' } },
+        competitions: [{
+          date: nowISO,
+          status: { type: { id: '2', detail: 'In Progress', shortDetail: '2nd 8:42', description: 'In Progress' } },
+          broadcasts: [],
+          situation: situation,
+          competitors: [
+            { homeAway: 'home', score: '14', id: '6', team: { abbreviation: 'DAL', name: 'Cowboys', id: '6' } },
+            { homeAway: 'away', score: '10', id: '21', team: { abbreviation: 'PHI', name: 'Eagles', id: '21' } },
+          ],
+        }],
+      }],
+    }
+  }
+
+  function format(situation) {
+    const payload = { league: 'NFL', teams: ['DAL'], whichDay: { today: true } }
+    const games = ESPN.formatScores(payload, liveNflEvent(situation), moment().format('YYYYMMDD'))
+    assert.equal(games.length, 1)
+    return games[0].footballSituation
+  }
+
+  it('maps home possession by competitor id', () => {
+    const fb = format({ shortDownDistanceText: '2nd & 7', possessionText: 'DAL 22', distance: 7, possession: '6', homeTimeouts: 3, awayTimeouts: 2, lastPlay: { text: 'run for 3 yards' } })
+    assert.equal(fb.possession, 'home')
+    assert.equal(fb.downDistance, '2nd & 7')
+    assert.equal(fb.possessionText, 'DAL 22')
+    assert.equal(fb.lastPlay, 'run for 3 yards')
+    assert.equal(fb.ballX, 78)
+    assert.equal(fb.firstDownX, 71)
+    assert.equal(fb.homeTimeouts, 3)
+    assert.equal(fb.awayTimeouts, 2)
+  })
+
+  it('maps away possession by competitor id', () => {
+    const fb = format({ possession: '21' })
+    assert.equal(fb.possession, 'away')
+  })
+
+  it('unknown possession id degrades to null', () => {
+    const fb = format({ possession: '9999' })
+    assert.equal(fb.possession, null)
+  })
+
+  it('halftime-style partial situation null-guards every field', () => {
+    const fb = format({ homeTimeouts: 3, awayTimeouts: 3 })
+    assert.equal(fb.downDistance, '')
+    assert.equal(fb.possessionText, '')
+    assert.equal(fb.ballX, null)
+    assert.equal(fb.firstDownX, null)
+    assert.equal(fb.possession, null)
+    assert.equal(fb.isRedZone, false)
+    assert.equal(fb.homeTimeouts, 3)
+  })
+
+  it('no situation object yields null footballSituation', () => {
+    assert.equal(format(undefined), null)
+  })
+
+  it('falls back to full downDistanceText when short form missing', () => {
+    const fb = format({ downDistanceText: '2nd & 7 at DAL 22' })
+    assert.equal(fb.downDistance, '2nd & 7 at DAL 22')
+  })
+})
+
+describe('ESPN.computeFieldPosition', () => {
+  const cfp = (text, distance, possession) => ESPN.computeFieldPosition(text, distance, possession, 'DAL', 'PHI')
+
+  it('visitor own side maps directly', () => {
+    assert.equal(cfp('PHI 22').ballX, 22)
+  })
+
+  it('home own side mirrors to 100 - n', () => {
+    assert.equal(cfp('DAL 22').ballX, 78)
+  })
+
+  it('midfield "50" maps to 50', () => {
+    assert.equal(cfp('50').ballX, 50)
+  })
+
+  it('first down toward visitor end zone for home possession', () => {
+    const r = cfp('DAL 22', 7, 'home')
+    assert.equal(r.ballX, 78)
+    assert.equal(r.firstDownX, 71)
+  })
+
+  it('first down toward home end zone for away possession', () => {
+    const r = cfp('PHI 40', 10, 'away')
+    assert.equal(r.ballX, 40)
+    assert.equal(r.firstDownX, 50)
+  })
+
+  it('goal-to-go hides the first-down marker', () => {
+    const r = cfp('PHI 4', 4, 'home')
+    assert.equal(r.ballX, 4)
+    assert.equal(r.firstDownX, null)
+  })
+
+  it('unknown abbreviation yields null ballX', () => {
+    assert.equal(cfp('XYZ 22').ballX, null)
+  })
+
+  it('unparseable text yields null ballX', () => {
+    assert.equal(cfp('MIDFIELD').ballX, null)
+    assert.equal(cfp('').ballX, null)
+    assert.equal(cfp(null).ballX, null)
+  })
+
+  it('missing distance yields null firstDownX', () => {
+    const r = cfp('DAL 22', undefined, 'home')
+    assert.equal(r.ballX, 78)
+    assert.equal(r.firstDownX, null)
+  })
+
+  it('trims trailing-space abbreviations (SDSU collision fix)', () => {
+    const r = ESPN.computeFieldPosition('SDSU 22', 5, 'home', 'SDSU ', 'MTST')
+    assert.equal(r.ballX, 78)
+    assert.equal(r.firstDownX, 73)
+  })
+})

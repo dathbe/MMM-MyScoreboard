@@ -34,9 +34,13 @@ Module.register('MMM-MyScoreboard', {
     debugHours: 0,
     debugMinutes: 0,
     showPlayoffStatus: false,
-    showBaseballDetail: false,
-    baseballDetailInterval: 15,
-    baseballDetailViewOverride: true,
+    showDetail: false,
+    detailInterval: 15,
+    detailViewOverride: true,
+    /*
+      Deprecated aliases (mapped onto the unified options in start()):
+      showBaseballDetail, baseballDetailInterval, baseballDetailViewOverride
+    */
     showScoreAnimation: false,
     showUpcomingGames: false,
     sports: [
@@ -319,9 +323,16 @@ Module.register('MMM-MyScoreboard', {
   noGamesToday: {},
   logoIndex: 0,
   baseballLeagues: ['MLB', 'NCAAB', 'WBC'],
+  footballLeagues: ['NFL', 'NCAAF'],
   highScoringLeagues: ['NBA', 'NCAAM', 'NCAAM_MM', 'NCAAW', 'WNBA', 'NBAG'],
-  baseballFastPollTimer: null,
-  baseballFastPollActive: false,
+  fastPollTimers: {},
+  fastPollActive: {},
+  footballFieldState: {},
+  localLogoRetryTimer: null,
+  fastPollSports: [
+    { key: 'baseball', leagues: 'baseballLeagues', show: 'showDetail', interval: 'detailInterval' },
+    { key: 'football', leagues: 'footballLeagues', show: 'showDetail', interval: 'detailInterval' },
+  ],
 
   viewStyleHasLogos: function (v) {
     switch (v) {
@@ -432,8 +443,14 @@ Module.register('MMM-MyScoreboard', {
     var viewStyle = this.config.viewStyle
 
     // Override viewStyle for active baseball games with detail enabled
-    if (this.config.showBaseballDetail && this.config.baseballDetailViewOverride
+    if (this.config.showDetail && this.config.detailViewOverride
       && gameObj.baseballSituation && this.baseballLeagues.includes(league)) {
+      viewStyle = 'largeLogos'
+    }
+
+    // Override viewStyle for active football games with detail enabled
+    if (this.config.showDetail && this.config.detailViewOverride
+      && gameObj.footballSituation && this.footballLeagues.includes(league)) {
       viewStyle = 'largeLogos'
     }
 
@@ -637,7 +654,7 @@ Module.register('MMM-MyScoreboard', {
     }
 
     // add baseball detail for active games
-    if (this.config.showBaseballDetail && gameObj.baseballSituation) {
+    if (this.config.showDetail && gameObj.baseballSituation) {
       var canShowDetail = true
       if (['smallLogos', 'oneLine', 'oneLineWithLogos', 'stacked', 'stackedWithLogos'].includes(viewStyle)) {
         canShowDetail = false
@@ -715,6 +732,209 @@ Module.register('MMM-MyScoreboard', {
         // Move broadcast out of status and into boxScore so it can be positioned at the bottom
         if (gameObj.broadcast != null) {
           boxScore.classList.add('baseball-has-broadcast')
+          boxScore.appendChild(broadcastPart)
+        }
+      }
+    }
+
+    // add football detail for active games
+    var fbGameKey = label + ':' + gameObj.vTeam + '@' + gameObj.hTeam
+    if (this.footballLeagues.includes(league)
+      && (gameObj.gameMode === this.gameModes.FINAL || !gameObj.footballSituation)) {
+      delete this.footballFieldState[fbGameKey]
+    }
+    if (this.config.showDetail && gameObj.footballSituation) {
+      var canShowFbDetail = !['smallLogos', 'oneLine', 'oneLineWithLogos', 'stacked', 'stackedWithLogos'].includes(viewStyle)
+      var fsit = gameObj.footballSituation
+      var hasFbContent = fsit.downDistance || fsit.possessionText
+        || fsit.homeTimeouts !== null || fsit.awayTimeouts !== null || fsit.possession
+
+      if (canShowFbDetail && hasFbContent) {
+        boxScore.classList.add('football-live-detail')
+        if (fsit.isRedZone) boxScore.classList.add('red-zone')
+
+        var fbDetail = document.createElement('div')
+        fbDetail.classList.add('football-detail')
+
+        // Top row: down & distance + field position (empty at halftime / quarter breaks)
+        if (fsit.downDistance || fsit.possessionText) {
+          var fbTop = document.createElement('div')
+          fbTop.classList.add('football-detail-top')
+          if (fsit.downDistance) {
+            var downDistance = document.createElement('span')
+            downDistance.classList.add('football-down-distance')
+            downDistance.innerHTML = fsit.downDistance
+            fbTop.appendChild(downDistance)
+          }
+          if (fsit.possessionText) {
+            var fieldPosition = document.createElement('span')
+            fieldPosition.classList.add('football-field-position')
+            fieldPosition.innerHTML = fsit.possessionText
+            fbTop.appendChild(fieldPosition)
+          }
+          fbDetail.appendChild(fbTop)
+        }
+
+        boxScore.appendChild(fbDetail)
+
+        // Gridiron field graphic with ball spot, first-down line, and
+        // slide/trail animation when the spot changes between updates.
+        // On a touchdown the feed carries no spot: keep the field and park
+        // the ball in the end zone the scoring team reached (persists
+        // through the PAT until the kickoff spot arrives).
+        var prevPos = this.footballFieldState[fbGameKey]
+        var tdSide = null
+        if (typeof fsit.ballX !== 'number') {
+          if (fsit.lastPlay && /touchdown/i.test(fsit.lastPlay) && fsit.possession) {
+            tdSide = fsit.possession === 'home' ? 'visitor' : 'home'
+          }
+          else if (prevPos && prevPos.tdSide) {
+            tdSide = prevPos.tdSide
+          }
+        }
+
+        if (typeof fsit.ballX === 'number' || tdSide) {
+          boxScore.classList.add('football-has-field')
+
+          var field = document.createElement('div')
+          field.classList.add('football-field')
+
+          var ezV = document.createElement('div')
+          ezV.classList.add('field-endzone', 'visitor')
+          field.appendChild(ezV)
+
+          var playArea = document.createElement('div')
+          playArea.classList.add('field-play-area')
+          if (typeof fsit.ballX === 'number') {
+            var willSlide = prevPos && typeof prevPos.x === 'number' && Math.abs(prevPos.x - fsit.ballX) >= 0.5
+            // Turnovers reverse drive direction: no trail, no marker hold
+            var samePossession = willSlide && fsit.possession && prevPos.possession === fsit.possession
+
+            // First-down marker: on a new set of downs, hold the old
+            // line-to-gain while the ball slides, then jump/vanish
+            var prevFd = (samePossession && typeof prevPos.fd === 'number') ? prevPos.fd : null
+            if (fsit.firstDownX !== null) {
+              var fdLine = document.createElement('div')
+              fdLine.classList.add('field-first-down')
+              fdLine.style.left = fsit.firstDownX + '%'
+              if (prevFd !== null && Math.abs(prevFd - fsit.firstDownX) >= 0.5) {
+                fdLine.style.setProperty('--fd-prev-x', prevFd + '%')
+                fdLine.style.setProperty('--fd-x', fsit.firstDownX + '%')
+                fdLine.classList.add('hold')
+              }
+              playArea.appendChild(fdLine)
+            }
+            else if (prevFd !== null) {
+              // Goal-to-go reached: old marker holds through the slide, then fades
+              var fdLineOut = document.createElement('div')
+              fdLineOut.classList.add('field-first-down', 'hold-out')
+              fdLineOut.style.setProperty('--fd-prev-x', prevFd + '%')
+              playArea.appendChild(fdLineOut)
+            }
+
+            var ball = document.createElement('div')
+            ball.classList.add('field-ball')
+            ball.style.setProperty('--ball-x', fsit.ballX + '%')
+            if (willSlide) {
+              // Keyframes referencing the custom props auto-start when MM
+              // attaches the node (same mechanism as the score fireworks)
+              ball.style.setProperty('--ball-prev-x', prevPos.x + '%')
+              ball.classList.add('slide')
+              if (samePossession) {
+                var isGain = fsit.possession === 'home' ? fsit.ballX < prevPos.x : fsit.ballX > prevPos.x
+                var trail = document.createElement('div')
+                trail.classList.add('field-trail', isGain ? 'gain' : 'loss')
+                trail.style.left = Math.min(prevPos.x, fsit.ballX) + '%'
+                trail.style.width = Math.abs(prevPos.x - fsit.ballX) + '%'
+                playArea.appendChild(trail)
+              }
+            }
+            playArea.appendChild(ball)
+          }
+          field.appendChild(playArea)
+
+          var ezH = document.createElement('div')
+          ezH.classList.add('field-endzone', 'home')
+          field.appendChild(ezH)
+
+          // Touchdown: ball ends up in the end zone the scoring team reached.
+          // If the previous spot is known (the scoring play), slide the ball
+          // in from there with a gain trail; later updates (PAT) render it
+          // statically so the animation plays once.
+          if (tdSide) {
+            if (prevPos && typeof prevPos.x === 'number') {
+              var tdBall = document.createElement('div')
+              tdBall.classList.add('field-ball')
+              tdBall.style.setProperty('--ball-prev-x', prevPos.x + '%')
+              tdBall.style.setProperty('--ball-x', tdSide === 'visitor' ? '-5px' : 'calc(100% + 5px)')
+              tdBall.classList.add('slide')
+              if (fsit.possession && prevPos.possession === fsit.possession) {
+                var tdTrail = document.createElement('div')
+                tdTrail.classList.add('field-trail', 'gain')
+                tdTrail.style.left = (tdSide === 'visitor' ? 0 : prevPos.x) + '%'
+                tdTrail.style.width = (tdSide === 'visitor' ? prevPos.x : 100 - prevPos.x) + '%'
+                playArea.appendChild(tdTrail)
+              }
+              playArea.appendChild(tdBall)
+            }
+            else {
+              var tdBallStatic = document.createElement('div')
+              tdBallStatic.classList.add('field-ball', 'in-endzone')
+              ;(tdSide === 'visitor' ? ezV : ezH).appendChild(tdBallStatic)
+            }
+          }
+
+          boxScore.appendChild(field)
+
+          this.footballFieldState[fbGameKey] = tdSide
+            ? { tdSide: tdSide, possession: fsit.possession }
+            : { x: fsit.ballX, possession: fsit.possession, fd: fsit.firstDownX }
+        }
+        else {
+          // Halftime / no parseable spot: no field, reset drive state
+          delete this.footballFieldState[fbGameKey]
+        }
+
+        // Static last-play description at the bottom (truncated, no scroll).
+        // Shown even without a field so touchdown/PAT text stays visible.
+        if (fsit.lastPlay) {
+          if (typeof fsit.ballX !== 'number' && !tdSide) {
+            boxScore.classList.add('football-has-playtext')
+          }
+          var playText = document.createElement('div')
+          playText.classList.add('football-play-text')
+          playText.innerHTML = fsit.lastPlay
+          boxScore.appendChild(playText)
+        }
+
+        // Possession indicator beside the possessing team's logo
+        if (fsit.possession) {
+          var possIcon = document.createElement('span')
+          possIcon.classList.add('possession-indicator', fsit.possession === 'home' ? 'home' : 'visitor')
+          boxScore.appendChild(possIcon)
+        }
+
+        // Timeouts remaining: three dots under each score
+        var buildTimeouts = function (count, side) {
+          if (count === null) return null
+          var wrap = document.createElement('span')
+          wrap.classList.add('football-timeouts', side)
+          for (var t = 0; t < 3; t++) {
+            var dot = document.createElement('span')
+            dot.classList.add('timeout-dot')
+            if (t < count) dot.classList.add('active')
+            wrap.appendChild(dot)
+          }
+          return wrap
+        }
+        var hTimeouts = buildTimeouts(fsit.homeTimeouts, 'home')
+        if (hTimeouts) boxScore.appendChild(hTimeouts)
+        var vTimeouts = buildTimeouts(fsit.awayTimeouts, 'visitor')
+        if (vTimeouts) boxScore.appendChild(vTimeouts)
+
+        // Move broadcast out of status and into boxScore so it can be positioned at the bottom
+        if (gameObj.broadcast != null && gameObj.broadcast.length > 0) {
+          boxScore.classList.add('football-has-broadcast')
           boxScore.appendChild(broadcastPart)
         }
       }
@@ -1009,37 +1229,39 @@ Module.register('MMM-MyScoreboard', {
         }
       }
 
-      // Manage fast polling for active baseball games
-      if (this.config.showBaseballDetail) {
-        var hasActiveBaseball = false
-        var baseballLabels = this.config.sports
-          .filter(function (s) { return ['MLB', 'NCAAB', 'WBC'].includes(s.league) })
+      // Manage fast polling for active games in detail-enabled sports
+      this.fastPollSports.forEach(function (fastPollSport) {
+        if (!self.config[fastPollSport.show]) return
+        var fastPollLeagues = self[fastPollSport.leagues]
+        var hasActiveGame = false
+        var fastPollLabels = self.config.sports
+          .filter(function (s) { return fastPollLeagues.includes(s.league) })
           .map(function (s) { return s.label || s.league })
-        for (var i = 0; i < baseballLabels.length; i++) {
-          var labelData = this.sportsData[baseballLabels[i]]
+        for (var i = 0; i < fastPollLabels.length; i++) {
+          var labelData = self.sportsData[fastPollLabels[i]]
           if (labelData && labelData.scores) {
             for (var j = 0; j < labelData.scores.length; j++) {
-              if (labelData.scores[j].gameMode === this.gameModes.IN_PROGRESS) {
-                hasActiveBaseball = true
+              if (labelData.scores[j].gameMode === self.gameModes.IN_PROGRESS) {
+                hasActiveGame = true
                 break
               }
             }
           }
-          if (hasActiveBaseball) break
+          if (hasActiveGame) break
         }
-        if (hasActiveBaseball && !this.baseballFastPollActive) {
-          this.baseballFastPollActive = true
-          var interval = Math.max(1, this.config.baseballDetailInterval) * 1000
-          this.baseballFastPollTimer = setInterval(function () {
-            self.getBaseballScoresOnly()
+        if (hasActiveGame && !self.fastPollActive[fastPollSport.key]) {
+          self.fastPollActive[fastPollSport.key] = true
+          var interval = Math.max(1, self.config[fastPollSport.interval]) * 1000
+          self.fastPollTimers[fastPollSport.key] = setInterval(function () {
+            self.getFastPollScoresOnly(fastPollLeagues)
           }, interval)
         }
-        else if (!hasActiveBaseball && this.baseballFastPollActive) {
-          clearInterval(this.baseballFastPollTimer)
-          this.baseballFastPollTimer = null
-          this.baseballFastPollActive = false
+        else if (!hasActiveGame && self.fastPollActive[fastPollSport.key]) {
+          clearInterval(self.fastPollTimers[fastPollSport.key])
+          self.fastPollTimers[fastPollSport.key] = null
+          self.fastPollActive[fastPollSport.key] = false
         }
-      }
+      })
     }
     else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
       // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
@@ -1093,6 +1315,14 @@ Module.register('MMM-MyScoreboard', {
       }
     }
     else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
+      // Duplicate responses possible (startup request is retried until
+      // answered) — only the first one may set up polling
+      if (this.localLogoRetryTimer === null) {
+        return
+      }
+      clearInterval(this.localLogoRetryTimer)
+      this.localLogoRetryTimer = null
+
       this.localLogos = payload.logos
       this.localLogosCustom = payload.logosCustom
 
@@ -1300,6 +1530,21 @@ Module.register('MMM-MyScoreboard', {
     Log.info('Starting module: ' + this.name)
 
     /*
+      Deprecated option mapping: older configs used baseball-specific
+      detail options. They keep working, but the unified showDetail /
+      detailInterval / detailViewOverride options are the documented ones.
+    */
+    if (this.config.showBaseballDetail) {
+      this.config.showDetail = true
+    }
+    if (typeof this.config.baseballDetailInterval === 'number' && this.config.detailInterval === 15) {
+      this.config.detailInterval = this.config.baseballDetailInterval
+    }
+    if (this.config.baseballDetailViewOverride === false) {
+      this.config.detailViewOverride = false
+    }
+
+    /*
       scrub the config to ensure only supported leagues are included
     */
     var scrubbedSports = []
@@ -1352,10 +1597,16 @@ Module.register('MMM-MyScoreboard', {
       Get list of local logo images files.
       These will override the URL provided by the feed
 
-      Once this returns the list, we'll start polling for data
+      Once this returns the list, we'll start polling for data.
+      Retry until answered: if this request is emitted before the node
+      helper's socket is bound (slow startup), it is lost and no score
+      polling would ever start.
     */
 
     this.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: this.identifier })
+    this.localLogoRetryTimer = setInterval(function () {
+      self.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: self.identifier })
+    }, 2000)
 
     // Schedule the first logo rotation
     this.rotateChannels()
@@ -1459,14 +1710,14 @@ Module.register('MMM-MyScoreboard', {
     })
   },
 
-  getBaseballScoresOnly: function () {
+  getFastPollScoresOnly: function (leagues) {
     var gameDate = moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes')
     if (this.config.DEBUG_gameDate) {
       gameDate = moment(this.config.DEBUG_gameDate, 'YYYYMMDD')
     }
     var self = this
     this.config.sports.forEach(function (sport, index) {
-      if (!self.baseballLeagues.includes(sport.league)) return
+      if (!leagues.includes(sport.league)) return
       var thisLabel = sport.label || sport.league
       var payload = {
         instanceId: self.identifier,

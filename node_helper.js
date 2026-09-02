@@ -49,6 +49,9 @@ module.exports = NodeHelper.create({
 
   getDirectoryTree(dirPath) {
     const result = []
+    if (!fs.existsSync(dirPath)) {
+      return result
+    }
     const files = fs.readdirSync(dirPath, { withFileTypes: true })
 
     files.forEach((file) => {
@@ -79,6 +82,7 @@ module.exports = NodeHelper.create({
           sport's index from the config's order
       */
 
+      Log.debug(`[MMM-MyScoreboard] GET-SCORES ${payload.league} whichDay=${JSON.stringify(payload.whichDay)} gameDate=${payload.gameDate}`)
       var self = this
       var provider = this.providers[payload.provider]
       var provider2 = this.providers[payload.provider]
@@ -88,6 +92,7 @@ module.exports = NodeHelper.create({
 
       if (payload.whichDay.today) {
         provider.getScores(payload, moment(payload.gameDate), function (scores, sortIdx, noGamesToday) {
+          Log.debug(`[MMM-MyScoreboard] SCORE-UPDATE ${payload.league} games=${scores.length} noGamesToday=${noGamesToday}`)
           self.sendSocketNotification('MMM-MYSCOREBOARD-SCORE-UPDATE', { instanceId: payload.instanceId, index: payload.league, scores: scores, label: payload.label, sortIdx: sortIdx, provider: payload.provider, noGamesToday: noGamesToday })
         })
       }

@@ -32,7 +32,7 @@ function copyModuleSources() {
   // tests/e2e/.tmp (recursion!), .git, package-lock.json.
   fs.mkdirSync(MODULE_TARGET, { recursive: true })
   const SKIP = new Set([
-    'node_modules', '.git', '.github', 'tests', 'logos_custom',
+    'node_modules', '.git', '.github', 'tests',
   ])
   function walk(srcDir, dstDir) {
     for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
