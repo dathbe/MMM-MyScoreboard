@@ -159,6 +159,7 @@ describe('ESPN.extractNextGame', () => {
     assert.equal(next.hTeamLogoUrl, 'https://espn.com/tor.png')
     assert.equal(next.broadcast.length, 0)
     assert.equal(next.baseballSituation, null)
+    assert.equal(next.footballSituation, null)
     assert.equal(next.gameDate, future)
   })
 

@@ -1086,6 +1086,37 @@ module.exports = {
         }
       }
 
+      // Extract football situation data for in-progress football games
+      var footballSituation = null
+      if (gameState === 1 && leaguePath && leaguePath.startsWith('football/')) {
+        var fbSituation = game.competitions[0].situation
+        if (fbSituation) {
+          var possessionSide = null
+          if (fbSituation.possession != null) {
+            var possId = String(fbSituation.possession)
+            var hId = hTeamData.id != null ? String(hTeamData.id) : (hTeamData.team && hTeamData.team.id != null ? String(hTeamData.team.id) : null)
+            var vId = vTeamData.id != null ? String(vTeamData.id) : (vTeamData.team && vTeamData.team.id != null ? String(vTeamData.team.id) : null)
+            if (hId !== null && possId === hId) possessionSide = 'home'
+            else if (vId !== null && possId === vId) possessionSide = 'away'
+          }
+          var fieldPos = this.computeFieldPosition(
+            fbSituation.possessionText, fbSituation.distance, possessionSide,
+            hTeamData.team && hTeamData.team.abbreviation,
+            vTeamData.team && vTeamData.team.abbreviation)
+          footballSituation = {
+            downDistance: fbSituation.shortDownDistanceText || fbSituation.downDistanceText || '',
+            possessionText: fbSituation.possessionText || '',
+            lastPlay: (fbSituation.lastPlay && fbSituation.lastPlay.text) ? fbSituation.lastPlay.text : '',
+            ballX: fieldPos.ballX,
+            firstDownX: fieldPos.firstDownX,
+            possession: possessionSide,
+            isRedZone: !!fbSituation.isRedZone,
+            homeTimeouts: (typeof fbSituation.homeTimeouts === 'number') ? fbSituation.homeTimeouts : null,
+            awayTimeouts: (typeof fbSituation.awayTimeouts === 'number') ? fbSituation.awayTimeouts : null,
+          }
+        }
+      }
+
       if (payload.league !== 'SOCCER_ON_TV' || (broadcast.length > 0)) {
         formattedGamesList.push({
           classes: classes,
@@ -1104,6 +1135,7 @@ module.exports = {
           vTeamLogoUrl: vTeamData.team.logo ? vTeamData.team.logo : '',
           playoffStatus: playoffStatus,
           baseballSituation: baseballSituation,
+          footballSituation: footballSituation,
         })
       }
     })
@@ -1112,6 +1144,37 @@ module.exports = {
       this.noGamesToday = true
     }
     return formattedGamesList
+  },
+
+  /*
+    Compute gridiron coordinates from ESPN's possessionText ("DAL 22", "50").
+    x scale: 0 = visitor goal line (left), 100 = home goal line (right).
+    Abbreviations are trimmed because formatScores may append a trailing
+    space to disambiguate colliding NCAA abbreviations (e.g. 'SDSU ').
+  */
+  computeFieldPosition: function (possessionText, distance, possession, hAbbr, vAbbr) {
+    var result = { ballX: null, firstDownX: null }
+    var text = (possessionText == null ? '' : String(possessionText)).trim()
+    if (text === '50') {
+      result.ballX = 50
+    }
+    else {
+      var m = text.match(/^(.*\S)\s+(\d{1,2})$/)
+      if (!m) return result
+      var abbr = m[1].trim()
+      var n = parseInt(m[2], 10)
+      if (n < 1 || n > 50) return result
+      if (abbr === (vAbbr || '').trim()) result.ballX = n
+      else if (abbr === (hAbbr || '').trim()) result.ballX = 100 - n
+      else return result
+    }
+    if (typeof distance === 'number' && distance > 0
+      && (possession === 'home' || possession === 'away')) {
+      var fd = possession === 'home' ? result.ballX - distance : result.ballX + distance
+      // Goal-to-go lands in the end zone: the goal line itself is the marker
+      if (fd > 0 && fd < 100) result.firstDownX = fd
+    }
+    return result
   },
 
   formatT25Ranking: function (rank) {
@@ -1310,6 +1373,7 @@ module.exports = {
       vTeamLogoUrl: getLogo(vData.team),
       playoffStatus: '',
       baseballSituation: null,
+      footballSituation: null,
       gameDate: comp.date,
     }
   },
