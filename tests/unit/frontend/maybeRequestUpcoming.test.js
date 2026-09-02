@@ -119,7 +119,7 @@ describe('maybeRequestUpcoming (PR #198)', () => {
     assert.equal(inst.sentNotifications.length, 1)
     const { notification, payload } = inst.sentNotifications[0]
     assert.equal(notification, 'MMM-MYSCOREBOARD-GET-UPCOMING')
-    assert.equal(payload.instanceId, inst.identifier)
+    assert.equal(payload.instanceId, inst.instanceId)
     assert.equal(payload.label, 'NHL')
     assert.equal(payload.league, 'NHL')
     assert.equal(payload.provider, 'ESPN')

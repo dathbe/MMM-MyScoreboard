@@ -974,7 +974,7 @@ Module.register('MMM-MyScoreboard', {
 
   socketNotificationReceived: function (notification, payload) {
     var self = this
-    if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.identifier) {
+    if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE' && payload.instanceId == this.instanceId) {
       // Log.debug(`[MMM-MyScoreboard] Updating ${payload.label} Scores`)
       this.loaded = true
       var newData = { scores: payload.scores, league: payload.index, sortIdx: payload.sortIdx }
@@ -1041,7 +1041,7 @@ Module.register('MMM-MyScoreboard', {
         }
       }
     }
-    else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.identifier) {
+    else if (notification === 'MMM-MYSCOREBOARD-SCORE-UPDATE-YD' && payload.instanceId == this.instanceId) {
       // Log.info('[MMM-MyScoreboard] Updating Yesterday\'s Scores')
       this.loaded = true
       var newYdData = { scores: payload.scores, league: payload.index, sortIdx: payload.sortIdx }
@@ -1059,7 +1059,7 @@ Module.register('MMM-MyScoreboard', {
       }
       this.ydLoaded[payload.index] = { loaded: stopGrabbingYD, date: moment().add(this.config.debugHours, 'hours').add(this.config.debugMinutes, 'minutes').format('YYYY-MM-DD') }
     }
-    else if (notification === 'MMM-MYSCOREBOARD-UPCOMING-UPDATE' && payload.instanceId == this.identifier) {
+    else if (notification === 'MMM-MYSCOREBOARD-UPCOMING-UPDATE' && payload.instanceId == this.instanceId) {
       var followed = this.followedTeams[payload.label] || []
       var ordered = []
       for (var fi = 0; fi < followed.length; fi++) {
@@ -1092,7 +1092,7 @@ Module.register('MMM-MyScoreboard', {
         }
       }
     }
-    else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.identifier) {
+    else if (notification === 'MMM-MYSCOREBOARD-LOCAL-LOGO-LIST' && payload.instanceId == this.instanceId) {
       this.localLogos = payload.logos
       this.localLogosCustom = payload.logosCustom
 
@@ -1191,7 +1191,7 @@ Module.register('MMM-MyScoreboard', {
     this.upcomingRequestedTeams[label] = teamsSig
 
     this.sendSocketNotification('MMM-MYSCOREBOARD-GET-UPCOMING', {
-      instanceId: this.identifier,
+      instanceId: this.instanceId,
       label: label,
       league: sport.league,
       provider: provider,
@@ -1300,6 +1300,22 @@ Module.register('MMM-MyScoreboard', {
     Log.info('Starting module: ' + this.name)
 
     /*
+      Unique id for this module instance ON THIS PAGE LOAD (issue #233).
+
+      The node helper broadcasts its socket notifications to every
+      connected client, and this.identifier (module_N_MMM-MyScoreboard)
+      is derived from the module's position in the config, so it is
+      IDENTICAL on every connected browser. On a server instance with
+      more than one client (a kiosk display plus another open browser
+      tab, or a stale tab left open with an older config), one client's
+      responses are accepted by all of them — a stale client polling
+      without a teams filter overwrites every display with unfiltered
+      scores. Tagging requests with a per-page-load nonce means each
+      client only accepts responses to its own requests.
+    */
+    this.instanceId = this.identifier + '::' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
+
+    /*
       scrub the config to ensure only supported leagues are included
     */
     var scrubbedSports = []
@@ -1355,7 +1371,7 @@ Module.register('MMM-MyScoreboard', {
       Once this returns the list, we'll start polling for data
     */
 
-    this.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: this.identifier })
+    this.sendSocketNotification('MMM-MYSCOREBOARD-GET-LOCAL-LOGOS', { instanceId: this.instanceId })
 
     // Schedule the first logo rotation
     this.rotateChannels()
@@ -1438,7 +1454,7 @@ Module.register('MMM-MyScoreboard', {
         thisLabel = sport.league
       }
       var payload = {
-        instanceId: self.identifier,
+        instanceId: self.instanceId,
         index: index,
         league: sport.league,
         teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
@@ -1469,7 +1485,7 @@ Module.register('MMM-MyScoreboard', {
       if (!self.baseballLeagues.includes(sport.league)) return
       var thisLabel = sport.label || sport.league
       var payload = {
-        instanceId: self.identifier,
+        instanceId: self.instanceId,
         index: index,
         league: sport.league,
         teams: self.makeTeamList(self, sport.league, sport.teams, sport.groups),
