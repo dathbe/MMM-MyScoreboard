@@ -1377,14 +1377,18 @@
   color: #f8dd70;
 }
 
-/* Red zone accent */
-.MMM-MyScoreboard .box-score.red-zone .football-field-position,
-.MMM-MyScoreboard .wrapper.colored .box-score.red-zone .football-field-position {
-  color: #ff5a5a;
+/* Red zone accent: white emphasis in mono, red when colored */
+.MMM-MyScoreboard .box-score.red-zone .football-field-position {
+  color: #FFF;
   font-weight: bold;
 }
+.MMM-MyScoreboard .wrapper.colored .box-score.red-zone .football-field-position {
+  color: #ff5a5a;
+}
 
-.MMM-MyScoreboard .box-score.red-zone .possession-indicator,
+.MMM-MyScoreboard .box-score.red-zone .possession-indicator {
+  background-color: #FFF;
+}
 .MMM-MyScoreboard .wrapper.colored .box-score.red-zone .possession-indicator {
   background-color: #ff5a5a;
 }
@@ -1433,9 +1437,12 @@
   box-sizing: border-box;
   display: flex;
   overflow: hidden;
-  background-color: #1e3324;
+  background-color: #242424;
   border: 1px solid #333;
   border-radius: 3px;
+}
+.MMM-MyScoreboard .wrapper.colored .football-field {
+  background-color: #1e3324;
 }
 .MMM-MyScoreboard .box-score.football-has-broadcast .football-field {
   bottom: 38px;
@@ -1513,8 +1520,11 @@
   bottom: 0;
   width: 2px;
   margin-left: -1px;
-  background-color: #ffe14d;
+  background-color: #CCC;
   opacity: 0.9;
+}
+.MMM-MyScoreboard .wrapper.colored .field-first-down {
+  background-color: #ffe14d;
 }
 
 /* On a new set of downs the marker stays at the old line-to-gain while the
@@ -1590,9 +1600,15 @@
   animation: msb-fb-trail-fade 2s ease-out forwards;
 }
 .MMM-MyScoreboard .field-trail.gain {
-  background-color: rgba(90, 220, 110, 0.55);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 .MMM-MyScoreboard .field-trail.loss {
+  background-color: rgba(110, 110, 110, 0.6);
+}
+.MMM-MyScoreboard .wrapper.colored .field-trail.gain {
+  background-color: rgba(90, 220, 110, 0.55);
+}
+.MMM-MyScoreboard .wrapper.colored .field-trail.loss {
   background-color: rgba(255, 90, 90, 0.55);
 }
 @keyframes msb-fb-trail-fade {
@@ -1610,7 +1626,9 @@
 .MMM-MyScoreboard .wrapper.colored .field-ball {
   background-color: #f8dd70;
 }
-.MMM-MyScoreboard .box-score.red-zone .field-ball,
+.MMM-MyScoreboard .box-score.red-zone .field-ball {
+  background-color: #FFF;
+}
 .MMM-MyScoreboard .wrapper.colored .box-score.red-zone .field-ball {
   background-color: #ff5a5a;
 }

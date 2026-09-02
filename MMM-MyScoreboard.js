@@ -856,11 +856,31 @@ Module.register('MMM-MyScoreboard', {
           ezH.classList.add('field-endzone', 'home')
           field.appendChild(ezH)
 
-          // Touchdown: ball sits in the end zone the scoring team reached
+          // Touchdown: ball ends up in the end zone the scoring team reached.
+          // If the previous spot is known (the scoring play), slide the ball
+          // in from there with a gain trail; later updates (PAT) render it
+          // statically so the animation plays once.
           if (tdSide) {
-            var tdBall = document.createElement('div')
-            tdBall.classList.add('field-ball', 'in-endzone')
-            ;(tdSide === 'visitor' ? ezV : ezH).appendChild(tdBall)
+            if (prevPos && typeof prevPos.x === 'number') {
+              var tdBall = document.createElement('div')
+              tdBall.classList.add('field-ball')
+              tdBall.style.setProperty('--ball-prev-x', prevPos.x + '%')
+              tdBall.style.setProperty('--ball-x', tdSide === 'visitor' ? '-5px' : 'calc(100% + 5px)')
+              tdBall.classList.add('slide')
+              if (fsit.possession && prevPos.possession === fsit.possession) {
+                var tdTrail = document.createElement('div')
+                tdTrail.classList.add('field-trail', 'gain')
+                tdTrail.style.left = (tdSide === 'visitor' ? 0 : prevPos.x) + '%'
+                tdTrail.style.width = (tdSide === 'visitor' ? prevPos.x : 100 - prevPos.x) + '%'
+                playArea.appendChild(tdTrail)
+              }
+              playArea.appendChild(tdBall)
+            }
+            else {
+              var tdBallStatic = document.createElement('div')
+              tdBallStatic.classList.add('field-ball', 'in-endzone')
+              ;(tdSide === 'visitor' ? ezV : ezH).appendChild(tdBallStatic)
+            }
           }
 
           boxScore.appendChild(field)
