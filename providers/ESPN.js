@@ -674,21 +674,38 @@ module.exports = {
     try {
       var body = await this.fetchScoreboardEvents(payload.league, primaryDate)
 
+      /*
+        The free-game-of-the-day feed is a nice-to-have (it only adds the
+        "MLB free game" broadcast logo). It lives on MLB's own infra, which
+        for some networks/regions answers with an HTML error page instead
+        of JSON — that must never take down the whole MLB scoreboard
+        (issue #181: the resulting SyntaxError aborted getScores before the
+        callback, leaving the module stuck on "Loading" forever, and the
+        shared catch blamed the ESPN scoreboard URL for it).
+      */
       if (this.freeGameOfTheDay['day'] !== moment(gameDate).format('YYYY-MM-DD') && payload.league === 'MLB' && !payload.hideBroadcasts) {
-        const freeGameResponse = await fetch(MLBurl)
-        Log.debug(`[MMM-MyScoreboard] ${MLBurl} fetched`)
-        const freeGameBody = await freeGameResponse.json()
-        if (freeGameBody['results']) {
-          freeGameBody['results'].forEach ((game) => {
-            if (game['videoFeeds'].length > 0 && game['videoFeeds'][0]['freeGame']) {
-              this.freeGameOfTheDay['day'] = moment().add(payload.debugHours, 'hours').add(payload.debugMinutes, 'minutes').format('YYYY-MM-DD')
-              this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
-              this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
-              if (this.freeGameOfTheDay['teams'].includes('AZ')) {
-                this.freeGameOfTheDay['teams'].push('ARI')
+        try {
+          const freeGameResponse = await fetch(MLBurl)
+          Log.debug(`[MMM-MyScoreboard] ${MLBurl} fetched`)
+          if (!freeGameResponse.ok) {
+            throw new Error(`HTTP ${freeGameResponse.status}`)
+          }
+          const freeGameBody = await freeGameResponse.json()
+          if (freeGameBody['results']) {
+            freeGameBody['results'].forEach ((game) => {
+              if (game['videoFeeds'].length > 0 && game['videoFeeds'][0]['freeGame']) {
+                this.freeGameOfTheDay['day'] = moment().add(payload.debugHours, 'hours').add(payload.debugMinutes, 'minutes').format('YYYY-MM-DD')
+                this.freeGameOfTheDay['teams'].push(game['gameData']['away']['teamAbbrv'])
+                this.freeGameOfTheDay['teams'].push(game['gameData']['home']['teamAbbrv'])
+                if (this.freeGameOfTheDay['teams'].includes('AZ')) {
+                  this.freeGameOfTheDay['teams'].push('ARI')
+                }
               }
-            }
-          })
+            })
+          }
+        }
+        catch (freeGameError) {
+          Log.error(`[MMM-MyScoreboard] free game feed failed (non-fatal): ${freeGameError} ${MLBurl}`)
         }
       }
 
