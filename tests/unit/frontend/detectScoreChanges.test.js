@@ -25,6 +25,7 @@ function game(opts) {
 describe('detectScoreChanges', () => {
   function setup() {
     const inst = makeInstance(def, {
+      config: { showScoreAnimation: true },
       followedTeams: { NHL: ['TOR'] },
     })
     inst.gameModes = gameModes
@@ -118,5 +119,124 @@ describe('detectScoreChanges', () => {
       [],
       [game({ h: 'TOR', v: 'MTL', hScore: 1, vScore: 0, gameMode: 1 })])
     assert.equal(Object.keys(inst.scoreAnimations).length, 0)
+  })
+
+  it('broadcasts no events by default', () => {
+    const inst = setup()
+    inst.detectScoreChanges('NHL',
+      [game({ h: 'TOR', v: 'MTL', hScore: 3, vScore: 1, gameMode: 1 })],
+      [game({ h: 'TOR', v: 'MTL', hScore: 3, vScore: 1, gameMode: 2 })],
+      'NHL')
+    assert.deepEqual(inst.broadcastNotifications, [])
+  })
+
+  it('broadcasts a neutral final event for a followed team', () => {
+    const inst = setup()
+    inst.config.gameEventNotifications = { enabled: true, events: ['game.final'] }
+    const oldGame = game({ h: 'TOR', v: 'MTL', hScore: 3, vScore: 1, gameMode: 1 })
+    const newGame = Object.assign(
+      game({ h: 'TOR', v: 'MTL', hScore: 3, vScore: 1, gameMode: 2 }),
+      { hTeamLong: 'Toronto Maple Leafs', vTeamLong: 'Montreal Canadiens', status: ['Final'] },
+    )
+    inst.followedTeams.Hockey = ['TOR']
+
+    inst.detectScoreChanges('Hockey', [oldGame], [newGame], 'NHL')
+
+    assert.equal(inst.broadcastNotifications.length, 1)
+    assert.equal(inst.broadcastNotifications[0].notification, 'MYSCOREBOARD_GAME_EVENT')
+    assert.deepEqual(inst.broadcastNotifications[0].payload, {
+      event: 'game.final',
+      league: 'NHL',
+      label: 'Hockey',
+      gameId: 'NHL:MTL@TOR',
+      timestamp: inst.broadcastNotifications[0].payload.timestamp,
+      home: { name: 'Toronto Maple Leafs', abbreviation: 'TOR', score: 3 },
+      away: { name: 'Montreal Canadiens', abbreviation: 'MTL', score: 1 },
+      followedTeams: ['TOR'],
+      status: 'Final',
+      result: 'win',
+    })
+  })
+
+  it('broadcasts when a followed team game starts', () => {
+    const inst = setup()
+    inst.config.showScoreAnimation = false
+    inst.config.gameEventNotifications = { enabled: true, events: ['game.started'] }
+
+    inst.detectScoreChanges('NHL',
+      [game({ h: 'TOR', v: 'MTL', hScore: 0, vScore: 0, gameMode: 0 })],
+      [game({ h: 'TOR', v: 'MTL', hScore: 0, vScore: 0, gameMode: 1 })],
+      'NHL')
+
+    assert.equal(inst.broadcastNotifications.length, 1)
+    assert.equal(inst.broadcastNotifications[0].payload.event, 'game.started')
+  })
+
+  it('broadcasts halftime once without broadcasting every score', () => {
+    const inst = setup()
+    inst.config.showScoreAnimation = false
+    inst.config.gameEventNotifications = { enabled: true, events: ['game.halftime'] }
+    const oldGame = Object.assign(
+      game({ h: 'TOR', v: 'MTL', hScore: 48, vScore: 44, gameMode: 1 }),
+      { status: ['2nd 0:02'] },
+    )
+    const halftime = Object.assign(
+      game({ h: 'TOR', v: 'MTL', hScore: 50, vScore: 44, gameMode: 1 }),
+      { status: ['Halftime'] },
+    )
+
+    inst.detectScoreChanges('NHL', [oldGame], [halftime], 'NBA')
+    inst.detectScoreChanges('NHL', [halftime], [halftime], 'NBA')
+
+    assert.equal(inst.broadcastNotifications.length, 1)
+    assert.equal(inst.broadcastNotifications[0].payload.event, 'game.halftime')
+    assert.equal(inst.broadcastNotifications[0].payload.checkpoint, 'halftime')
+  })
+
+  it('supports opt-in score events for low-scoring sports', () => {
+    const inst = setup()
+    inst.config.showScoreAnimation = false
+    inst.config.gameEventNotifications = { enabled: true, events: ['game.score'] }
+
+    inst.detectScoreChanges('NHL',
+      [game({ h: 'TOR', v: 'MTL', hScore: 0, vScore: 0, gameMode: 1 })],
+      [game({ h: 'TOR', v: 'MTL', hScore: 1, vScore: 0, gameMode: 1 })],
+      'NHL')
+
+    assert.equal(inst.broadcastNotifications.length, 1)
+    assert.equal(inst.broadcastNotifications[0].payload.event, 'game.score')
+    assert.equal(inst.broadcastNotifications[0].payload.scoringTeam, 'TOR')
+  })
+
+  it('detects broadcasts from score updates when animations are disabled', () => {
+    const inst = makeInstance(def, {
+      identifier: 'scoreboard-1',
+      config: {
+        rolloverHours: 24,
+        showScoreAnimation: false,
+        gameEventNotifications: { enabled: true, events: ['game.final'] },
+      },
+      followedTeams: { NHL: ['TOR'] },
+      sportsData: {
+        NHL: {
+          scores: [game({ h: 'TOR', v: 'MTL', hScore: 3, vScore: 1, gameMode: 1 })],
+          league: 'NHL',
+          sortIdx: 0,
+        },
+      },
+    })
+    inst.gameModes = gameModes
+
+    inst.socketNotificationReceived('MMM-MYSCOREBOARD-SCORE-UPDATE', {
+      instanceId: 'scoreboard-1',
+      label: 'NHL',
+      index: 'NHL',
+      sortIdx: 0,
+      scores: [game({ h: 'TOR', v: 'MTL', hScore: 3, vScore: 1, gameMode: 2 })],
+    })
+
+    assert.equal(inst.broadcastNotifications.length, 1)
+    assert.equal(inst.broadcastNotifications[0].payload.event, 'game.final')
+    assert.deepEqual(inst.scoreAnimations, {})
   })
 })

@@ -38,6 +38,10 @@ Module.register('MMM-MyScoreboard', {
     baseballDetailInterval: 15,
     baseballDetailViewOverride: true,
     showScoreAnimation: false,
+    gameEventNotifications: {
+      enabled: false,
+      events: ['game.started', 'game.halftime', 'game.final'],
+    },
     showUpcomingGames: false,
     sports: [
       {
@@ -981,9 +985,9 @@ Module.register('MMM-MyScoreboard', {
       var oldData = this.sportsData[payload.label]
       var dataChanged = !oldData || JSON.stringify(oldData.scores) !== JSON.stringify(newData.scores)
 
-      // Detect score changes for animations
-      if (this.config.showScoreAnimation && oldData && oldData.scores && dataChanged) {
-        this.detectScoreChanges(payload.label, oldData.scores, payload.scores)
+      // Detect followed-team changes for animations and optional broadcasts
+      if ((this.config.showScoreAnimation || this.gameEventNotificationsEnabled()) && oldData && oldData.scores && dataChanged) {
+        this.detectScoreChanges(payload.label, oldData.scores, payload.scores, payload.index)
       }
 
       this.sportsData[payload.label] = newData
@@ -1202,7 +1206,46 @@ Module.register('MMM-MyScoreboard', {
     })
   },
 
-  detectScoreChanges: function (label, oldScores, newScores) {
+  gameEventNotificationsEnabled: function () {
+    return this.config.gameEventNotifications
+      && this.config.gameEventNotifications.enabled === true
+      && Array.isArray(this.config.gameEventNotifications.events)
+  },
+
+  gameEventEnabled: function (event) {
+    return this.gameEventNotificationsEnabled()
+      && this.config.gameEventNotifications.events.includes(event)
+  },
+
+  gameStatusText: function (game) {
+    return Array.isArray(game.status) ? game.status.join(' ') : String(game.status || '')
+  },
+
+  sendGameEvent: function (event, league, label, game, followedTeams, extra) {
+    if (!this.gameEventEnabled(event)) return
+
+    this.sendNotification('MYSCOREBOARD_GAME_EVENT', Object.assign({
+      event: event,
+      league: league || label,
+      label: label,
+      gameId: game.gameId || (league || label) + ':' + game.vTeam + '@' + game.hTeam,
+      timestamp: Date.now(),
+      home: {
+        name: game.hTeamLong || game.hTeam,
+        abbreviation: game.hTeam,
+        score: game.hScore,
+      },
+      away: {
+        name: game.vTeamLong || game.vTeam,
+        abbreviation: game.vTeam,
+        score: game.vScore,
+      },
+      followedTeams: followedTeams,
+      status: this.gameStatusText(game),
+    }, extra || {}))
+  },
+
+  detectScoreChanges: function (label, oldScores, newScores, league) {
     var followed = this.followedTeams[label]
     if (!followed) return
 
@@ -1221,28 +1264,56 @@ Module.register('MMM-MyScoreboard', {
       var gameKey = label + ':' + newGame.vTeam + '@' + newGame.hTeam
       var hIsFollowed = followed.includes(newGame.hTeam)
       var vIsFollowed = followed.includes(newGame.vTeam)
+      var followedInGame = followed.filter(function (team) {
+        return team === newGame.hTeam || team === newGame.vTeam
+      })
+      var newStatus = this.gameStatusText(newGame)
+      var oldStatus = this.gameStatusText(oldGame)
+
+      if (followedInGame.length === 0) continue
+
+      // Broadcast a followed team's game starting.
+      if (newGame.gameMode === this.gameModes.IN_PROGRESS
+        && oldGame.gameMode === this.gameModes.SCHEDULED
+        && !/half[ -]?time/i.test(newStatus)) {
+        this.sendGameEvent('game.started', league, label, newGame, followedInGame)
+      }
+
+      // Broadcast halftime once when the provider status first enters halftime.
+      if (/half[ -]?time/i.test(newStatus) && !/half[ -]?time/i.test(oldStatus)) {
+        this.sendGameEvent('game.halftime', league, label, newGame, followedInGame, { checkpoint: 'halftime' })
+      }
 
       // Check if followed team scored
-      if (hIsFollowed && newGame.hScore > oldGame.hScore) {
-        this.scoreAnimations[gameKey] = { type: 'score', team: 'home' }
-        this.animationBlockUntil = Math.max(this.animationBlockUntil, Date.now() + 4000)
+      if (newGame.gameMode !== this.gameModes.FINAL && hIsFollowed && newGame.hScore > oldGame.hScore) {
+        if (this.config.showScoreAnimation) {
+          this.scoreAnimations[gameKey] = { type: 'score', team: 'home' }
+          this.animationBlockUntil = Math.max(this.animationBlockUntil, Date.now() + 4000)
+        }
+        this.sendGameEvent('game.score', league, label, newGame, followedInGame, { scoringTeam: newGame.hTeam })
       }
-      else if (vIsFollowed && newGame.vScore > oldGame.vScore) {
-        this.scoreAnimations[gameKey] = { type: 'score', team: 'visitor' }
-        this.animationBlockUntil = Math.max(this.animationBlockUntil, Date.now() + 4000)
+      else if (newGame.gameMode !== this.gameModes.FINAL && vIsFollowed && newGame.vScore > oldGame.vScore) {
+        if (this.config.showScoreAnimation) {
+          this.scoreAnimations[gameKey] = { type: 'score', team: 'visitor' }
+          this.animationBlockUntil = Math.max(this.animationBlockUntil, Date.now() + 4000)
+        }
+        this.sendGameEvent('game.score', league, label, newGame, followedInGame, { scoringTeam: newGame.vTeam })
       }
 
-      // Check if game just ended and followed team won
+      // Check if game just ended.
       if (newGame.gameMode === this.gameModes.FINAL && oldGame.gameMode !== this.gameModes.FINAL) {
         var followedWon = (hIsFollowed && newGame.hScore > newGame.vScore)
           || (vIsFollowed && newGame.vScore > newGame.hScore)
-        if (followedWon) {
+        if (followedWon && this.config.showScoreAnimation) {
           this.scoreAnimations[gameKey] = { type: 'win' }
           // winGlow CSS animation runs 8s; hold off any non-animation DOM
           // rebuild (e.g. the upcoming-games update that often arrives just
           // after a final) until it has visibly finished.
           this.animationBlockUntil = Math.max(this.animationBlockUntil, Date.now() + 8500)
         }
+        this.sendGameEvent('game.final', league, label, newGame, followedInGame, {
+          result: newGame.hScore === newGame.vScore ? 'tie' : (followedWon ? 'win' : 'loss'),
+        })
       }
     }
   },
