@@ -419,7 +419,9 @@ module.exports = {
 
   broadcastIcons: {
     'ACC Network': 'https://upload.wikimedia.org/wikipedia/commons/f/fd/ACC_Network_ESPN_logo.svg',
-    'ACC Extra': './modules/MMM-MyScoreboard/logos/channels/ACC-NX-logo.png',
+    'ACC Extra': './modules/MMM-MyScoreboard/logos/channels/ACCNX.png',
+    'ACCNX': './modules/MMM-MyScoreboard/logos/channels/ACCNX.png',
+    'Angels.TV': './modules/MMM-MyScoreboard/logos/channels/angelstv.png',
     'Apple TV': 'https://upload.wikimedia.org/wikipedia/en/e/eb/Apple_TV_logo_2025.png',
     'B1G+': './modules/MMM-MyScoreboard/logos/channels/B1GPlus.png',
     'BTN': 'https://upload.wikimedia.org/wikipedia/en/3/39/Big_Ten_Network_Logo.svg',
@@ -464,6 +466,7 @@ module.exports = {
     'USA Net': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/USA_Network_logo_%282016%29.svg',
     'Universo': './modules/MMM-MyScoreboard/logos/channels/Universo.svg',
     'Victory+': './modules/MMM-MyScoreboard/logos/channels/Victory+.svg',
+    'YouTube': './modules/MMM-MyScoreboard/logos/channels/YouTube.svg',
 
     'Altitude 2 Sports': './modules/MMM-MyScoreboard/logos/channels/Altitude2Sports.png',
     'Arizona\'s Family 3TV': 'https://upload.wikimedia.org/wikipedia/commons/0/00/KTVK_logo.svg',
