@@ -39,6 +39,7 @@ Module.register('MMM-MyScoreboard', {
     baseballDetailViewOverride: true,
     showScoreAnimation: false,
     showUpcomingGames: false,
+    liveTennisApiKey: '', // free key: https://livetennisapi.com/subscribe/free (needed for ATP/WTA/TENNIS)
     sports: [
       {
         league: 'NHL',
@@ -92,6 +93,11 @@ Module.register('MMM-MyScoreboard', {
     'PLL': { provider: 'ESPN', logoFormat: 'url' },
 
     'PWHL': { provider: 'PWHL', logoFormat: 'url' },
+
+    // Tennis (Live Tennis API — requires config.liveTennisApiKey)
+    'ATP': { provider: 'LiveTennisAPI', logoFormat: 'url' },
+    'WTA': { provider: 'LiveTennisAPI', logoFormat: 'url' },
+    'TENNIS': { provider: 'LiveTennisAPI', logoFormat: 'url' },
 
     // International Soccer
     'ALL_SOCCER': { provider: 'Scorepanel', logoFormat: 'url', homeTeamFirst: true },
@@ -1446,6 +1452,7 @@ Module.register('MMM-MyScoreboard', {
         label: thisLabel,
         gameDate: gameDate,
         whichDay: whichDay,
+        apiKey: self.config.liveTennisApiKey,
         hideBroadcasts: self.config.hideBroadcasts,
         skipChannels: self.config.skipChannels,
         showLocalBroadcasts: self.config.showLocalBroadcasts,

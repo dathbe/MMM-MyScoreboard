@@ -157,6 +157,14 @@ Currently this module supports the following leagues.  Use the bold uppercase sh
 
 **Note:** You can probably guess the team abbreviations based on the city, but team abbreviation code lists for the leagues above are later in this README.  If you notice an error, open an issue and let me know.
 
+### Tennis
+
+* `ATP` - ATP Tour (men's singles and doubles)
+* `WTA` - WTA Tour (women's singles and doubles)
+* `TENNIS` - All tours (ATP, WTA, Challenger, ITF, Juniors)
+
+Tennis is served by the [Live Tennis API](https://livetennisapi.com) and needs a free API key.  See [Tennis (ATP / WTA / TENNIS)](#tennis-atp--wta--tennis) below for setup, the free-tier limits, and how player names are used in place of team codes.
+
 ### Soccer Leagues & Competitions
 
 #### Most Popular
@@ -1851,6 +1859,40 @@ Teams:
 - Vancouver
 ```
 </details>
+
+### Tennis (ATP / WTA / TENNIS)
+
+Tennis (league codes `ATP`, `WTA`, and `TENNIS` for all tours) is served by the [Live Tennis API](https://livetennisapi.com).
+
+**Disclosure:** this provider and this section were written by the operator of the Live Tennis API, so treat it as vendor-authored.  There is also a separate dedicated MagicMirror module, [MMM-LiveTennis](https://github.com/livetennisapi/MMM-LiveTennis); this provider is for people who want tennis inside their one unified MMM-MyScoreboard scoreboard rather than a second module — the two do not conflict.
+
+**API key (required).**  Tennis needs a key, set once at the top level of the module config as `liveTennisApiKey`.  A free key is self-serve at [livetennisapi.com/subscribe/free](https://livetennisapi.com/subscribe/free).
+
+**Free-tier limits — please read.**  The free tier is **30 requests/minute and 100 requests/day**.  This provider refreshes on a shared 15-minute cycle and spends **two calls per refresh** (live + upcoming) no matter how many tennis leagues you follow — about 96 calls/day, which fits inside the free 100/day.  It is fine for a mirror; it is **not** enough for sustained fast polling, which needs a paid tier.  The free tier serves **live and upcoming** matches, so the tennis rows show today's in-progress and scheduled matches; **completed/final results are part of the paid History product** and are not shown on a free key.
+
+**Following players instead of teams.**  Tennis has no team codes, so the `teams` array is used for **player surnames** (matched case-insensitively against both players).  Omit `teams` to show the whole tour's slate for the day.
+
+```js
+{
+  module: 'MMM-MyScoreboard',
+  position: 'top_left',
+  config: {
+    liveTennisApiKey: 'YOUR_FREE_KEY',
+    sports: [
+      {
+        league: 'ATP',
+        teams: ['Alcaraz', 'Djokovic'], // player surnames; omit for the full slate
+      },
+      {
+        league: 'WTA',
+        teams: ['Gauff', 'Swiatek'],
+      },
+    ],
+  },
+},
+```
+
+**What the score shows.**  Completed sets won appear in the two score slots; the status line shows the set-by-set games (e.g. `6-4 3-6 2-1`), the current game points (e.g. `40-30`, or `TB 5-3` in a tiebreak), and a `BP` marker on break point.  A `•` next to a player marks who is serving.
 
 ## Logos
 
