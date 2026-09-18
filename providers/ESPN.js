@@ -420,7 +420,6 @@ module.exports = {
   broadcastIcons: {
     'ACC Network': 'https://upload.wikimedia.org/wikipedia/commons/f/fd/ACC_Network_ESPN_logo.svg',
     'ACC Extra': './modules/MMM-MyScoreboard/logos/channels/ACC-NX-logo.png',
-    'Apple TV': 'https://upload.wikimedia.org/wikipedia/en/e/eb/Apple_TV_logo_2025.png',
     'B1G+': './modules/MMM-MyScoreboard/logos/channels/B1GPlus.png',
     'BTN': 'https://upload.wikimedia.org/wikipedia/en/3/39/Big_Ten_Network_Logo.svg',
     'CW': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/The_CW_2024.svg',
@@ -548,6 +547,7 @@ module.exports = {
 
   broadcastIconsInvert: {
     'ABC': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/ABC-2021-LOGO.svg',
+    'Apple TV': 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Apple_TV_logo.svg',
     'Apple TV+': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg',
     // CBS: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/CBS_Eyemark.svg',
     'CBS': 'https://upload.wikimedia.org/wikipedia/commons/e/ee/CBS_logo_%282020%29.svg',
