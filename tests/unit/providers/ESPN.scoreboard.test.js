@@ -1,6 +1,6 @@
 'use strict'
 
-const { describe, it } = require('node:test')
+const { describe, it, beforeEach, afterEach } = require('node:test')
 const assert = require('node:assert/strict')
 const path = require('node:path')
 
@@ -143,5 +143,89 @@ describe('ESPN module shape', () => {
     for (const lg of ['NFL', 'NBA', 'NHL', 'MLB', 'MLS', 'NCAAF']) {
       assert.ok(ESPN.LEAGUE_PATHS[lg], `${lg} should be in LEAGUE_PATHS`)
     }
+  })
+})
+
+describe('getScores MLB free-game feed resilience (issue #181)', () => {
+  const { mockFetch } = require('../../helpers/mock-fetch')
+  const moment = require('moment-timezone')
+  let mock
+
+  const ymd = () => moment().format('YYYYMMDD')
+  const dashed = () => moment().format('YYYY-MM-DD')
+  const SCOREBOARD = () => `https://site.web.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard?dates=${ymd()}&limit=200`
+  const NEIGHBOR = d => `https://site.web.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard?dates=${d}&limit=200`
+  const FREEGAME = () => `https://mastapi.mobile.mlbinfra.com/api/epg/v3/search?date=${dashed()}&exp=MLB`
+
+  function routeScoreboard(events = []) {
+    mock.route(SCOREBOARD(), { events })
+    // Non-Eastern timezones also fetch a neighboring ESPN day (issue #210)
+    mock.route(NEIGHBOR(moment().add(1, 'day').format('YYYYMMDD')), { events: [] })
+    mock.route(NEIGHBOR(moment().subtract(1, 'day').format('YYYYMMDD')), { events: [] })
+  }
+
+  function payload() {
+    return { league: 'MLB', teams: null, whichDay: { today: true }, hideBroadcasts: false, debugHours: 0, debugMinutes: 0 }
+  }
+
+  function getScoresOnce() {
+    return new Promise((resolve) => {
+      let done = false
+      ESPN.getScores(payload(), moment(), (scores) => {
+        done = true
+        resolve({ called: true, scores })
+      })
+      setTimeout(() => {
+        if (!done) resolve({ called: false })
+      }, 1000)
+    })
+  }
+
+  beforeEach(() => {
+    ESPN.freeGameOfTheDay = { day: '', teams: [] }
+    mock = mockFetch()
+  })
+
+  afterEach(() => {
+    mock.restore()
+  })
+
+  it('HTML error page from the free-game feed does not abort the scoreboard', async () => {
+    routeScoreboard()
+    mock.route(FREEGAME(), '<!DOCTYPE html><html><body>Access Denied</body></html>')
+
+    const r = await getScoresOnce()
+    assert.equal(r.called, true, 'callback must fire despite non-JSON free-game feed')
+    assert.deepEqual(r.scores, [])
+  })
+
+  it('HTTP error from the free-game feed does not abort the scoreboard', async () => {
+    routeScoreboard()
+    mock.route(FREEGAME(), 'Service Unavailable', { status: 503 })
+
+    const r = await getScoresOnce()
+    assert.equal(r.called, true)
+  })
+
+  it('network failure of the free-game feed does not abort the scoreboard', async () => {
+    routeScoreboard()
+    mock.setError(FREEGAME(), new Error('ECONNREFUSED'))
+
+    const r = await getScoresOnce()
+    assert.equal(r.called, true)
+  })
+
+  it('healthy free-game feed still records the free game of the day', async () => {
+    routeScoreboard()
+    mock.route(FREEGAME(), {
+      results: [{
+        videoFeeds: [{ freeGame: true }],
+        gameData: { away: { teamAbbrv: 'CHC' }, home: { teamAbbrv: 'MIL' } },
+      }],
+    })
+
+    const r = await getScoresOnce()
+    assert.equal(r.called, true)
+    assert.deepEqual(ESPN.freeGameOfTheDay.teams, ['CHC', 'MIL'])
   })
 })
