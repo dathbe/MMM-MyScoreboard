@@ -10,7 +10,7 @@ before(() => {
   def = loadFrontend().def
 })
 
-const gameModes = { SCHEDULED: 0, IN_PROGRESS: 1, FINAL: 2 }
+const gameModes = { FUTURE: 0, IN_PROGRESS: 1, FINAL: 2 }
 
 function game(opts) {
   return {

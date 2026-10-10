@@ -1274,7 +1274,7 @@ Module.register('MMM-MyScoreboard', {
 
       // Broadcast a followed team's game starting.
       if (newGame.gameMode === this.gameModes.IN_PROGRESS
-        && oldGame.gameMode === this.gameModes.SCHEDULED
+        && oldGame.gameMode === this.gameModes.FUTURE
         && !/half[ -]?time/i.test(newStatus)) {
         this.sendGameEvent('game.started', league, label, newGame, followedInGame)
       }
