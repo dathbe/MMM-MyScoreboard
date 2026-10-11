@@ -41,6 +41,7 @@ Module.register('MMM-MyScoreboard', {
     gameEventNotifications: {
       enabled: false,
       events: ['game.started', 'game.halftime', 'game.final'],
+      leagueEvents: {},
     },
     showUpcomingGames: false,
     sports: [
@@ -1207,14 +1208,23 @@ Module.register('MMM-MyScoreboard', {
   },
 
   gameEventNotificationsEnabled: function () {
-    return this.config.gameEventNotifications
-      && this.config.gameEventNotifications.enabled === true
-      && Array.isArray(this.config.gameEventNotifications.events)
+    var notifications = this.config.gameEventNotifications
+    return notifications
+      && notifications.enabled === true
+      && (Array.isArray(notifications.events)
+        || (notifications.leagueEvents && typeof notifications.leagueEvents === 'object'))
   },
 
-  gameEventEnabled: function (event) {
-    return this.gameEventNotificationsEnabled()
-      && this.config.gameEventNotifications.events.includes(event)
+  gameEventEnabled: function (event, league, label) {
+    if (!this.gameEventNotificationsEnabled()) return false
+    var notifications = this.config.gameEventNotifications
+    var leagueEvents = notifications.leagueEvents || {}
+    var selected = Array.isArray(leagueEvents[league])
+      ? leagueEvents[league]
+      : Array.isArray(leagueEvents[label])
+        ? leagueEvents[label]
+        : notifications.events
+    return Array.isArray(selected) && selected.includes(event)
   },
 
   gameStatusText: function (game) {
@@ -1222,7 +1232,7 @@ Module.register('MMM-MyScoreboard', {
   },
 
   sendGameEvent: function (event, league, label, game, followedTeams, extra) {
-    if (!this.gameEventEnabled(event)) return
+    if (!this.gameEventEnabled(event, league, label)) return
 
     this.sendNotification('MYSCOREBOARD_GAME_EVENT', Object.assign({
       event: event,

@@ -208,6 +208,21 @@ describe('detectScoreChanges', () => {
     assert.equal(inst.broadcastNotifications[0].payload.scoringTeam, 'TOR')
   })
 
+  it('supports per-league event overrides without enabling noisy scores globally', () => {
+    const inst = setup()
+    inst.config.gameEventNotifications = {
+      enabled: true,
+      events: ['game.started', 'game.halftime', 'game.final'],
+      leagueEvents: {
+        USA_MLS: ['game.started', 'game.halftime', 'game.score', 'game.final'],
+      },
+    }
+
+    assert.equal(inst.gameEventEnabled('game.score', 'USA_MLS', 'USA_MLS'), true)
+    assert.equal(inst.gameEventEnabled('game.score', 'NBA', 'NBA'), false)
+    assert.equal(inst.gameEventEnabled('game.final', 'NBA', 'NBA'), true)
+  })
+
   it('detects broadcasts from score updates when animations are disabled', () => {
     const inst = makeInstance(def, {
       identifier: 'scoreboard-1',
