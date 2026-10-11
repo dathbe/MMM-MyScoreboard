@@ -69,6 +69,7 @@ function makeInstance(def, init = {}) {
     noGamesToday: init.noGamesToday ?? {},
     scoreAnimations: init.scoreAnimations ?? {},
     sentNotifications: [],
+    broadcastNotifications: [],
     domUpdated: 0,
   })
 
@@ -76,6 +77,12 @@ function makeInstance(def, init = {}) {
     instance.sentNotifications.push({ notification, payload })
     if (typeof init.onSendSocket === 'function') {
       init.onSendSocket(notification, payload)
+    }
+  }
+  instance.sendNotification = function (notification, payload) {
+    instance.broadcastNotifications.push({ notification, payload })
+    if (typeof init.onSend === 'function') {
+      init.onSend(notification, payload)
     }
   }
   instance.updateDom = function () {
